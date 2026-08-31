@@ -1,17 +1,12 @@
 import { createContext, useContext, useState } from "react";
+import headphoneImage from "../assets/wireless-headphones.jpg";
 
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
-  const [cartItems, setCartItems] = useState([
-  {
-    id: 1,
-    name: "Wireless Headphones",
-    price: 50,
-    image: "https://via.placeholder.com/150",
-    quantity: 1,
-  },
-]);
+  const [cartItems, setCartItems] = useState([]);
+
+  const [savedItems, setSavedItems] = useState([]);
 
   const addToCart = (product) => {
     setCartItems((currentItems) => {
@@ -48,6 +43,57 @@ export function CartProvider({ children }) {
       )
     );
   };
+const clearCart = () => {
+  setCartItems([]);
+};
+  const increaseQuantity = (productId) => {
+    setCartItems((currentItems) =>
+      currentItems.map((item) =>
+        item.id === productId
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
+  };
+
+  const decreaseQuantity = (productId) => {
+    setCartItems((currentItems) =>
+      currentItems.map((item) =>
+        item.id === productId && item.quantity > 1
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      )
+    );
+  };
+const saveForLater = (productId) => {
+  setCartItems((currentItems) => {
+    const itemToSave = currentItems.find(
+      (item) => item.id === productId
+    );
+
+    if (!itemToSave) return currentItems;
+
+    setSavedItems((currentSavedItems) => [
+      ...currentSavedItems,
+      itemToSave,
+    ]);
+
+    return currentItems.filter(
+      (item) => item.id !== productId
+    );
+  });
+};
+
+  const moveToCart = (productId) => {
+    const item = savedItems.find((item) => item.id === productId);
+
+    if (item) {
+      setCartItems((currentItems) => [...currentItems, item]);
+      setSavedItems((currentItems) =>
+        currentItems.filter((item) => item.id !== productId)
+      );
+    }
+  };
 
   const getSubtotal = () => {
     return cartItems.reduce(
@@ -56,14 +102,28 @@ export function CartProvider({ children }) {
     );
   };
 
+  const getCartCount = () => {
+    return cartItems.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
+  };
+
   return (
     <CartContext.Provider
       value={{
         cartItems,
+        savedItems,
         addToCart,
         removeFromCart,
         updateQuantity,
+        increaseQuantity,
+        decreaseQuantity,
+        saveForLater,
+        moveToCart,
         getSubtotal,
+        getCartCount,
+        clearCart,
       }}
     >
       {children}
