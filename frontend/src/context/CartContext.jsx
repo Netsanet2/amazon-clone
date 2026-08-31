@@ -1,12 +1,18 @@
-import { createContext, useContext, useState } from "react";
-import headphoneImage from "../assets/wireless-headphones.jpg";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(() => {
+    const savedCart = localStorage.getItem("cartItems");
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
 
   const [savedItems, setSavedItems] = useState([]);
+
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const addToCart = (product) => {
     setCartItems((currentItems) => {
@@ -43,9 +49,11 @@ export function CartProvider({ children }) {
       )
     );
   };
-const clearCart = () => {
-  setCartItems([]);
-};
+
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
   const increaseQuantity = (productId) => {
     setCartItems((currentItems) =>
       currentItems.map((item) =>
@@ -65,30 +73,34 @@ const clearCart = () => {
       )
     );
   };
-const saveForLater = (productId) => {
-  setCartItems((currentItems) => {
-    const itemToSave = currentItems.find(
+
+  const saveForLater = (productId) => {
+    setCartItems((currentItems) => {
+      const itemToSave = currentItems.find(
+        (item) => item.id === productId
+      );
+
+      if (!itemToSave) return currentItems;
+
+      setSavedItems((currentSavedItems) => [
+        ...currentSavedItems,
+        itemToSave,
+      ]);
+
+      return currentItems.filter(
+        (item) => item.id !== productId
+      );
+    });
+  };
+
+  const moveToCart = (productId) => {
+    const item = savedItems.find(
       (item) => item.id === productId
     );
 
-    if (!itemToSave) return currentItems;
-
-    setSavedItems((currentSavedItems) => [
-      ...currentSavedItems,
-      itemToSave,
-    ]);
-
-    return currentItems.filter(
-      (item) => item.id !== productId
-    );
-  });
-};
-
-  const moveToCart = (productId) => {
-    const item = savedItems.find((item) => item.id === productId);
-
     if (item) {
       setCartItems((currentItems) => [...currentItems, item]);
+
       setSavedItems((currentItems) =>
         currentItems.filter((item) => item.id !== productId)
       );

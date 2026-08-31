@@ -4,13 +4,14 @@ import CartItem from "../../components/CartItem/CartItem";
 function Cart() {
 
   const { cartItems, savedItems, moveToCart } = useCart();
-
+const navigate = useNavigate();
   const subtotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
-  const shipping = subtotal > 0 ? 5 : 0;
+  const shipping = subtotal === 0 ? 0 : subtotal >= 50 ? 0 : 5;
+  console.log("SUBTOTAL:", subtotal, "SHIPPING:", shipping);
   const savings = subtotal * 0.1;
   const total = subtotal + shipping - savings;
 
@@ -31,7 +32,7 @@ function Cart() {
 
                 <div className="mb-5 flex items-center justify-between border-b border-gray-200 pb-4">
                   <h2 className="text-xl font-medium">
-                    Cart Items
+                    <CartItem items={cartItems} />
                   </h2>
 
                   <span className="text-sm text-gray-500">
@@ -55,10 +56,13 @@ function Cart() {
                 <p className="mt-2 text-gray-600">
                   Add products to your cart to see them here.
                 </p>
-
-                <button className="mt-6 rounded-full bg-[#ffd814] px-8 py-3 font-medium hover:bg-[#f7ca00]">
-                  Continue Shopping
-                </button>
+<button
+  type="button"
+  onClick={() => window.location.href = "/products"}
+  className="mt-6 rounded-full bg-[#ffd814] px-8 py-3 font-medium hover:bg-[#f7ca00]"
+>
+  Continue Shopping
+</button>
               </div>
             )}
 
@@ -103,12 +107,12 @@ function Cart() {
             </h2>
 
             <div className="space-y-4 text-sm">
-
-              <div className="flex justify-between text-gray-700">
-                <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
-              </div>
-
+<div className="flex justify-between text-gray-700">
+  <span>Shipping</span>
+  <span>
+    {shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}
+  </span>
+</div>
               <div className="flex justify-between text-gray-700">
                 <span>Shipping</span>
                 <span>${shipping.toFixed(2)}</span>
