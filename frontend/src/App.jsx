@@ -1,11 +1,8 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Cart from "./pages/Cart/Cart";
-import Orders from "./pages/Orders/Orders";
+import Cart from "./pages/cart/Cart";
 import Navbar from "./components/Navbar/Navbar";
-import Checkout from "./pages/Checkout/Checkout";
-import Products from "./pages/Products/Products";
 
 function App() {
   return (
@@ -19,34 +16,10 @@ function App() {
           element={<h1>Home Page</h1>}
         />
 
-        {/* Products */}
-        <Route
-          path="/products"
-          element={<Products />}
-        />
-
-        {/* Product Details */}
-        <Route
-          path="/product/:id"
-          element={<h1>Product Details</h1>}
-        />
-
-        {/* Cart */}
+        {/* Cart - Person 3 */}
         <Route
           path="/cart"
           element={<Cart />}
-        />
-
-        {/* Checkout */}
-        <Route
-          path="/checkout"
-          element={<Checkout />}
-        />
-
-        {/* Orders */}
-        <Route
-          path="/orders"
-          element={<Orders />}
         />
 
         {/* Login */}
