@@ -1,5 +1,8 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Checkout from './pages/Checkout/Checkout';
+import Confirmation from './pages/OrderConfirmation/Confirmation';
+import OrdersPage from './pages/Orders/OrdersPage';
 
 // Auth Pages
 import Login from './pages/Login/Login';
@@ -60,7 +63,9 @@ export default function App() {
         <Route path="/products" element={<h1>Products Page</h1>} />
         <Route path="/product/:id" element={<h1>Product Details</h1>} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<h1>Checkout Page</h1>} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/confirmation" element={<Confirmation />} />
+        <Route path="/orders" element={<OrdersPage />} />
 
         {/* Default Route */}
         <Route
@@ -161,11 +166,6 @@ export default function App() {
         ========================== */}
 
         <Route
-          path="/orders"
-          element={<PlaceholderPage title="Your Orders" />}
-        />
-
-        <Route
   path="/messages"
   element={
     <ProtectedRoute>
@@ -185,10 +185,9 @@ export default function App() {
 
 
         {/* =========================
-            404 FALLBACK
+          404 FALLBACK
         ========================== */}
 
-        
 <Route
   path="/gift-cards/buy"
   element={
