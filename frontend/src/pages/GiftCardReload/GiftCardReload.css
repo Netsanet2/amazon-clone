@@ -1,0 +1,430 @@
+/* =========================================
+   GIFT CARD RELOAD PAGE
+   ========================================= */
+
+.gift-reload-page {
+  min-height: 100vh;
+  background-color: #eaeded;
+  padding: 30px 20px 50px;
+}
+
+.gift-reload-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* =========================================
+   BREADCRUMB
+   ========================================= */
+
+.amazon-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #565959;
+}
+
+.amazon-breadcrumb a {
+  color: #007185;
+  text-decoration: none;
+}
+
+.amazon-breadcrumb a:hover {
+  color: #c45500;
+  text-decoration: underline;
+}
+
+.amazon-breadcrumb span {
+  color: #565959;
+}
+
+/* =========================================
+   HEADER
+   ========================================= */
+
+.gift-reload-header {
+  margin-bottom: 25px;
+}
+
+.gift-reload-header h1 {
+  font-size: 32px;
+  font-weight: 500;
+  color: #0f1111;
+  margin-bottom: 8px;
+}
+
+.gift-reload-header p {
+  font-size: 15px;
+  color: #565959;
+}
+
+/* =========================================
+   MAIN LAYOUT
+   ========================================= */
+
+.gift-reload-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.8fr);
+  gap: 25px;
+  align-items: start;
+}
+
+/* =========================================
+   RELOAD FORM CARD
+   ========================================= */
+
+.gift-reload-form-card {
+  background-color: #ffffff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 2px 5px rgba(15, 17, 17, 0.08);
+}
+
+.gift-reload-form-card h2 {
+  font-size: 22px;
+  font-weight: 500;
+  color: #0f1111;
+  margin-bottom: 18px;
+}
+
+/* =========================================
+   AMOUNT BUTTONS
+   ========================================= */
+
+.reload-amount-options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.reload-amount-button {
+  min-height: 50px;
+  background-color: #ffffff;
+  border: 1px solid #888c8c;
+  border-radius: 7px;
+  color: #0f1111;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.reload-amount-button:hover {
+  background-color: #f7f7f7;
+  border-color: #007185;
+}
+
+.reload-amount-button.selected {
+  background-color: #e7f3f5;
+  border: 2px solid #007185;
+  color: #007185;
+}
+
+/* =========================================
+   FORM GROUP
+   ========================================= */
+
+.reload-form-group {
+  margin-top: 10px;
+}
+
+.reload-form-group label {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f1111;
+  margin-bottom: 8px;
+}
+
+.custom-amount-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 350px;
+  height: 45px;
+  border: 1px solid #888c8c;
+  border-radius: 6px;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+.custom-amount-wrapper:focus-within {
+  border-color: #007185;
+  box-shadow: 0 0 0 2px rgba(0, 113, 133, 0.15);
+}
+
+.custom-amount-wrapper span {
+  padding-left: 13px;
+  font-size: 16px;
+  color: #565959;
+}
+
+.custom-amount-wrapper input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  padding: 0 12px;
+  font-size: 16px;
+  color: #0f1111;
+}
+
+.reload-form-group small {
+  display: block;
+  margin-top: 7px;
+  color: #565959;
+  font-size: 13px;
+}
+
+/* =========================================
+   DIVIDER
+   ========================================= */
+
+.reload-divider {
+  height: 1px;
+  background-color: #eaeded;
+  margin: 28px 0;
+}
+
+/* =========================================
+   PAYMENT OPTIONS
+   ========================================= */
+
+.reload-payment-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 15px;
+  margin-bottom: 10px;
+  border: 1px solid #d5d9d9;
+  border-radius: 7px;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.reload-payment-option:hover {
+  border-color: #007185;
+  background-color: #f8fbfb;
+}
+
+.reload-payment-option input {
+  margin-top: 4px;
+  accent-color: #007185;
+}
+
+.reload-payment-option > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.reload-payment-option strong {
+  font-size: 15px;
+  color: #0f1111;
+}
+
+.reload-payment-option span {
+  font-size: 13px;
+  color: #565959;
+}
+
+/* =========================================
+   SUMMARY
+   ========================================= */
+
+.reload-summary {
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+.reload-summary > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  font-size: 15px;
+}
+
+.reload-summary > div span {
+  color: #565959;
+}
+
+.reload-summary > div strong {
+  color: #0f1111;
+}
+
+.reload-summary .reload-total {
+  border-top: 1px solid #d5d9d9;
+  margin-top: 8px;
+  padding-top: 16px;
+}
+
+.reload-summary .reload-total span {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f1111;
+}
+
+.reload-summary .reload-total strong {
+  font-size: 22px;
+  color: #b12704;
+}
+
+/* =========================================
+   SUCCESS MESSAGE
+   ========================================= */
+
+.reload-success {
+  background-color: #e7f6e7;
+  border: 1px solid #7ac77a;
+  color: #067d62;
+  padding: 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+/* =========================================
+   RELOAD BUTTON
+   ========================================= */
+
+.reload-now-button {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #a88734;
+  border-radius: 25px;
+  background-color: #ffd814;
+  color: #0f1111;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.reload-now-button:hover {
+  background-color: #f7ca00;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================================
+   RIGHT INFORMATION AREA
+   ========================================= */
+
+.gift-reload-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info-card {
+  background-color: #ffffff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 5px rgba(15, 17, 17, 0.06);
+}
+
+.info-card h2 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #0f1111;
+  margin-bottom: 15px;
+}
+
+.info-balance {
+  font-size: 32px;
+  font-weight: 600;
+  color: #b12704;
+  margin-bottom: 15px;
+}
+
+.info-card p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #565959;
+}
+
+.info-card ul {
+  padding-left: 18px;
+  list-style: disc;
+}
+
+.info-card li {
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #565959;
+}
+
+/* =========================================
+   BOTTOM LINKS
+   ========================================= */
+
+.gift-reload-bottom-links {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 35px;
+  padding-top: 25px;
+  border-top: 1px solid #d5d9d9;
+}
+
+.gift-reload-bottom-links a {
+  color: #007185;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.gift-reload-bottom-links a:hover {
+  color: #c45500;
+  text-decoration: underline;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 850px) {
+  .gift-reload-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .gift-reload-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .gift-reload-page {
+    padding: 20px 12px 40px;
+  }
+
+  .gift-reload-header h1 {
+    font-size: 26px;
+  }
+
+  .gift-reload-form-card {
+    padding: 20px;
+  }
+
+  .reload-amount-options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gift-reload-info {
+    grid-template-columns: 1fr;
+  }
+
+  .gift-reload-bottom-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+}
