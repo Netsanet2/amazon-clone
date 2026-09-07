@@ -1,4 +1,4 @@
-import React from 'react';
+import "./App.css";
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 // Auth Pages
@@ -27,6 +27,7 @@ import SubscribeSave from "./pages/SubscribeSave/SubscribeSave";
 import ManageContent from "./pages/ManageContent/ManageContent";
 import DigitalDownloads from "./pages/DigitalDownloads/DigitalDownloads";
 import AccountPreferences from "./pages/AccountPreferences/AccountPreferences";
+import Cart from "./pages/cart/Cart";
 
 // Placeholder for pages not created yet
 const PlaceholderPage = ({ title }) => (
@@ -56,6 +57,10 @@ export default function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/products" element={<h1>Products Page</h1>} />
+        <Route path="/product/:id" element={<h1>Product Details</h1>} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<h1>Checkout Page</h1>} />
 
         {/* Default Route */}
         <Route
