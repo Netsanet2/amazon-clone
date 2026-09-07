@@ -1,0 +1,90 @@
+.account-main-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Amazon Ember", Arial, sans-serif;
+  color: #0f1111;
+}
+
+.account-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.account-card {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  background-color: #ffffff;
+  text-decoration: none;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.account-card:hover {
+  background-color: #f7fafa;
+  border-color: #a8acac;
+}
+
+.card-icon {
+  width: 50px;
+  height: 50px;
+  margin-right: 16px;
+  object-fit: contain;
+}
+
+.card-text h2 {
+  font-size: 17px;
+  font-weight: 400;
+  color: #0f1111;
+  margin: 0 0 4px 0;
+}
+
+.card-text p {
+  font-size: 13px;
+  color: #565959;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.account-divider {
+  border: none;
+  border-top: 1px solid #e7e7e7;
+  margin: 32px 0;
+}
+
+.account-sections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.account-section-column h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  color: #0f1111;
+}
+
+.account-section-column ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.account-section-column li {
+  margin-bottom: 8px;
+}
+
+.account-section-column a {
+  font-size: 13px;
+  color: #0066c0;
+  text-decoration: none;
+}
+
+.account-section-column a:hover {
+  color: #c45500;
+  text-decoration: underline;
+}

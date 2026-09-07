@@ -1,0 +1,37 @@
+.auth-container {
+  background-color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 14px;
+  font-family: "Amazon Ember", Arial, sans-serif;
+  color: #111111;
+}
+
+.auth-logo {
+  width: 103px;
+  object-fit: contain;
+  margin-bottom: 18px;
+}
+
+.auth-footer {
+  margin-top: 26px;
+  border-top: 1px solid #e7e7e7;
+  width: 100%;
+  padding-top: 26px;
+  text-align: center;
+  font-size: 11px;
+  color: #555555;
+}
+
+.auth-footer-links a {
+  color: #0066c0;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+.auth-footer-links a:hover {
+  color: #c45500;
+  text-decoration: underline;
+}

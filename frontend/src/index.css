@@ -22,3 +22,110 @@ a:hover {
   color: #c7511f;
   text-decoration: underline;
 }
+
+/* ===== BUTTONS ===== */
+
+button {
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* ===== FORM ELEMENTS ===== */
+
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+
+input,
+textarea,
+select {
+  outline: none;
+}
+
+/* ===== IMAGES ===== */
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ===== LISTS ===== */
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ===== TABLES ===== */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* ===== COMMON CONTAINER ===== */
+
+.container {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ===== PAGE ===== */
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* ===== ACCESSIBILITY ===== */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #007185;
+  outline-offset: 2px;
+}
+
+/* ===== RESPONSIVE CONTAINER ===== */
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 12px;
+  }
+}
+.amazon-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #565959;
+}
+
+.amazon-breadcrumb a {
+  color: #007185;
+  text-decoration: none;
+}
+
+.amazon-breadcrumb a:hover {
+  color: #c45500;
+  text-decoration: underline;
+}
+
+.amazon-breadcrumb span {
+  color: #565959;
+}

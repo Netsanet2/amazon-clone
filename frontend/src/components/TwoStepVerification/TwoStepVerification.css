@@ -1,0 +1,197 @@
+.two-step-card {
+  background-color: #ffffff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+.two-step-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding-bottom: 20px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #eaeded;
+}
+
+.two-step-header h2 {
+  margin: 0 0 6px;
+  font-size: 21px;
+  font-weight: 500;
+  color: #0f1111;
+}
+
+.two-step-header p {
+  margin: 0;
+  font-size: 13px;
+  color: #565959;
+}
+
+.two-step-close {
+  border: none;
+  background: transparent;
+  color: #565959;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.two-step-close:hover {
+  color: #000000;
+}
+
+.two-step-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background-color: #eaeded;
+  font-size: 28px;
+}
+
+.two-step-card h3 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 500;
+  color: #0f1111;
+}
+
+.two-step-description {
+  margin: 0 0 20px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #565959;
+}
+
+.two-step-form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.two-step-form-group label {
+  margin-bottom: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f1111;
+}
+
+.two-step-form-group input {
+  width: 100%;
+  height: 42px;
+  padding: 9px 11px;
+  border: 1px solid #888c8c;
+  border-radius: 5px;
+  font-size: 14px;
+  outline: none;
+}
+
+.two-step-form-group input:focus {
+  border-color: #007185;
+  box-shadow: 0 0 0 2px #c8f3fa;
+}
+
+.two-step-primary-button {
+  width: 100%;
+  padding: 10px 18px;
+  border: 1px solid #a88734;
+  border-radius: 20px;
+  background-color: #ffd814;
+  color: #0f1111;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.two-step-primary-button:hover {
+  background-color: #f7ca00;
+}
+
+.two-step-back-button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 9px 18px;
+  border: 1px solid #888c8c;
+  border-radius: 20px;
+  background-color: #ffffff;
+  color: #0f1111;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.two-step-back-button:hover {
+  background-color: #eaeded;
+}
+
+.verification-phone {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #0f1111;
+}
+
+.demo-code {
+  margin: 0 0 15px;
+  font-size: 12px;
+  color: #565959;
+}
+
+.two-step-success {
+  text-align: center;
+  padding: 20px 10px;
+}
+
+.success-icon {
+  width: 65px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background-color: #e7f3f5;
+  color: #007185;
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.two-step-success h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 500;
+  color: #0f1111;
+}
+
+.two-step-success p {
+  margin: 0 0 20px;
+  font-size: 14px;
+  color: #565959;
+}
+
+.two-step-done-button {
+  padding: 10px 30px;
+  border: 1px solid #a88734;
+  border-radius: 20px;
+  background-color: #ffd814;
+  color: #0f1111;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.two-step-done-button:hover {
+  background-color: #f7ca00;
+}
+
+@media (max-width: 600px) {
+  .two-step-card {
+    padding: 20px 16px;
+  }
+
+  .two-step-header h2 {
+    font-size: 19px;
+  }
+}
