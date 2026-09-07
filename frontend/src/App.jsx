@@ -188,10 +188,7 @@ export default function App() {
             404 FALLBACK
         ========================== */}
 
-        <Route
-          path="*"
-          element={<Navigate to="/account" replace />}
-        />
+        
 <Route
   path="/gift-cards/buy"
   element={
@@ -256,6 +253,10 @@ export default function App() {
     </ProtectedRoute>
   }
 />
+<Route
+          path="*"
+          element={<Navigate to="/account" replace />}
+        />
       </Routes>
     </Router>
   );
