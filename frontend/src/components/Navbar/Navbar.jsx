@@ -1,54 +1,80 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import "./Navbar.css";
+import React, { useState } from 'react';
+import amazonLogo from '../../assets/amazon-logo.png';
+import { Link } from 'react-router-dom';
+import SearchBar from '../SearchBar/SearchBar';
+import Sidebar from '../Sidebar/Sidebar';
+import './Navbar.css';
 
-function Navbar() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const navigate = useNavigate();
-
-  function handleSearch(e) {
-    e.preventDefault();
-    if (searchTerm.trim() === "") return;
-    navigate(`/products?search=${encodeURIComponent(searchTerm.trim())}`);
-  }
+const Navbar = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <>
-      <nav className="navbar">
-        <div className="navbar-left">
-          <Link to="/" className="navbar-logo">
-            MyStore
-          </Link>
-        </div>
+      <header>
+        <div className="nav-top">
+          {/* Logo */}
+          <div className="nav-logo">
+            <Link to="/">
+              <img src={amazonLogo} alt="Amazon" className="logo-image" />
+            </Link>
+          </div>
 
-        <form className="navbar-search" onSubmit={handleSearch}>
-          <input
-            type="text"
-            placeholder="Search products..."
-            className="navbar-search-input"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <button type="submit" className="navbar-search-button">🔍</button>
-        </form>
+          {/* Deliver to */}
+          <div className="nav-deliver">
+            <i className="fas fa-map-marker-alt loc-icon"></i>
+            <div>
+              <div className="deliver-text">Deliver to</div>
+              <div className="deliver-country">Ethiopia</div>
+            </div>
+          </div>
 
-        <div className="navbar-right">
-          <Link to="/login" className="navbar-link">Sign In</Link>
-          <Link to="/orders" className="navbar-link">Orders</Link>
-          <Link to="/cart" className="navbar-link navbar-cart">🛒 Cart</Link>
+          {/* Search Bar */}
+          <SearchBar />
+
+          {/* Language */}
+          <div className="nav-language">
+            <span className="flag-icon">🇺🇸</span>
+            <span className="lang-text">EN</span>
+            <i className="fas fa-caret-down lang-caret"></i>
+          </div>
+
+          {/* Account & Lists */}
+          <div className="nav-account">
+            <span className="line1">Hello, sign in</span>
+            <span className="line2">Account & Lists <i className="fas fa-caret-down"></i></span>
+          </div>
+
+          {/* Returns & Orders */}
+          <div className="nav-returns">
+            <span className="line1">Returns</span>
+            <span className="line2">& Orders</span>
+          </div>
+
+          {/* Cart */}
+          <div className="nav-cart">
+            <span className="cart-count">0</span>
+            <i className="fas fa-shopping-cart cart-icon"></i>
+            <span className="cart-text">Cart</span>
+          </div>
         </div>
+      </header>
+
+      {/* Secondary Nav */}
+      <nav className="nav-secondary">
+        <span className="all-menu" onClick={() => setSidebarOpen(true)}>
+          <i className="fas fa-bars"></i> All
+        </span>
+        <span className="nav-link">Today's Deals</span>
+        <span className="nav-link">Customer Service</span>
+        <span className="nav-link">Registry</span>
+        <span className="nav-link">Gift Cards</span>
+        <span className="nav-link">Sell</span>
+        <span className="nav-link sale">Labor Day Sale</span>
       </nav>
 
-      <div className="category-bar">
-        <Link to="/products?category=electronics" className="category-link">Electronics</Link>
-        <Link to="/products?category=fashion" className="category-link">Fashion</Link>
-        <Link to="/products?category=home" className="category-link">Home & Kitchen</Link>
-        <Link to="/products?category=beauty" className="category-link">Beauty</Link>
-        <Link to="/products?category=toys" className="category-link">Toys</Link>
-        <Link to="/products" className="category-link">All Products</Link>
-      </div>
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
     </>
   );
-}
+};
 
 export default Navbar;

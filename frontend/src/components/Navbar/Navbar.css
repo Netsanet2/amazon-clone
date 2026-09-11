@@ -1,73 +1,148 @@
-.navbar {
+.nav-top {
+  background-color: #131a22;
+  color: #fff;
+  padding: 0 10px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background-color: #131921;
-  color: white;
-  padding: 10px 20px;
-  gap: 20px;
+  gap: 10px; /* Keeps items close together */
+  height: 60px;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  width: 100%;
+  
 }
 
-.navbar-logo {
-  color: white;
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-decoration: none;
-  white-space: nowrap;
-}
+/* Logo */
+.nav-logo { display: flex; align-items: center; flex-shrink: 0; }
+.nav-logo .logo-image { height: 30px; width: auto; display: block; object-fit: contain; margin-top: 5px; }
 
-.navbar-search {
+/* Deliver to */
+.nav-deliver {
   display: flex;
-  flex: 1;
-  max-width: 600px;
+  align-items: center;
+  font-size: 12px;
+  color: #ccc;
+  padding: 8px 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  flex-shrink: 0;
 }
+.nav-deliver:hover { border: 1px solid #fff; border-radius: 2px; }
+.nav-deliver .loc-icon { color: #fff; margin-right: 4px; font-size: 14px; }
+.nav-deliver .deliver-text { font-size: 12px; color: #ccc; line-height: 1.2; }
+.nav-deliver .deliver-country { font-size: 14px; font-weight: 700; color: #fff; line-height: 1.2; }
 
-.navbar-search-input {
-  flex: 1;
-  padding: 8px 10px;
+/* Search Bar - This takes up the middle space */
+.nav-search {
+  flex: 1; /* This forces the search bar to take up the middle space */
+  display: flex;
+  align-items: center;
+  height: 40px;
+  background: #fff;
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 150px; /* Stops it from disappearing on small screens */
+  margin: 0 5px;
+}
+.nav-search .search-select {
+  background: #f3f3f3;
   border: none;
+  border-right: 1px solid #cdcdcd;
+  padding: 0 8px;
+  font-size: 12px;
+  color: #555;
+  cursor: pointer;
   border-radius: 4px 0 0 4px;
   outline: none;
+  height: 100%;
 }
-
-.navbar-search-button {
-  background-color: #febd69;
+.nav-search .search-input {
+  flex: 1;
   border: none;
-  padding: 8px 12px;
-  border-radius: 0 4px 4px 0;
-  cursor: pointer;
+  padding: 0 10px;
+  font-size: 15px;
+  outline: none;
+  height: 100%;
+  min-width: 50px;
 }
-
-.navbar-right {
+.nav-search .search-btn {
+  background: #febd69;
+  border: none;
+  width: 45px;
+  height: 100%;
+  cursor: pointer;
+  font-size: 18px;
+  color: #333;
   display: flex;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
+}
+.nav-search .search-btn:hover { background: #f3a847; }
+
+/* Language, Account, Returns, Cart */
+.nav-language, .nav-account, .nav-returns, .nav-cart {
+  flex-shrink: 0; /* Prevents them from squishing */
 }
 
-.navbar-link {
-  color: white;
-  text-decoration: none;
-  white-space: nowrap;
+.nav-language {
+  display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 700;
+  padding: 8px 6px; border: 1px solid transparent; cursor: pointer;
 }
+.nav-language:hover { border: 1px solid #fff; border-radius: 2px; }
+.nav-language .flag-icon { font-size: 16px; }
+.nav-language .lang-caret { font-size: 10px; color: #ccc; margin-left: 2px; }
 
-.navbar-link:hover {
-  text-decoration: underline;
+.nav-account {
+  display: flex; flex-direction: column; font-size: 12px;
+  padding: 8px 6px; border: 1px solid transparent; cursor: pointer;
 }
-.category-bar {
-  display: flex;
-  gap: 20px;
+.nav-account:hover { border: 1px solid #fff; border-radius: 2px; }
+.nav-account .line1 { color: #ccc; font-size: 12px; line-height: 1.2; }
+.nav-account .line2 { font-weight: 700; font-size: 14px; color: #fff; line-height: 1.2; display: flex; align-items: center; gap: 4px; }
+.nav-account .line2 i { font-size: 10px; color: #ccc; }
+
+.nav-returns {
+  display: flex; flex-direction: column; font-size: 12px;
+  padding: 8px 6px; border: 1px solid transparent; cursor: pointer;
+}
+.nav-returns:hover { border: 1px solid #fff; border-radius: 2px; }
+.nav-returns .line1 { color: #ccc; font-size: 12px; line-height: 1.2; }
+.nav-returns .line2 { font-weight: 700; font-size: 14px; color: #fff; line-height: 1.2; }
+
+.nav-cart {
+  display: flex; align-items: flex-end; padding: 8px 6px;
+  border: 1px solid transparent; cursor: pointer; position: relative;
+}
+.nav-cart:hover { border: 1px solid #fff; border-radius: 2px; }
+.nav-cart .cart-icon { font-size: 26px; color: #fff; margin-bottom: -4px; }
+.nav-cart .cart-count { 
+  color: #febd69; font-weight: 700; font-size: 16px; 
+  position: absolute; top: 2px; left: 18px;
+}
+.nav-cart .cart-text { font-weight: 700; font-size: 14px; color: #fff; margin-left: 2px; margin-bottom: 2px;}
+/* ===============================
+   SECONDARY NAV (Categories)
+   =============================== */
+.nav-secondary {
   background-color: #232f3e;
-  padding: 8px 20px;
-  overflow-x: auto;
+  color: #fff;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 39px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
 }
-
-.category-link {
-  color: white;
-  text-decoration: none;
-  font-size: 0.85rem;
-  white-space: nowrap;
+.nav-secondary .all-menu {
+  display: flex; align-items: center; gap: 6px; font-weight: 700;
+  padding: 6px 8px; border: 1px solid transparent; cursor: pointer; height: 100%;
 }
-
-.category-link:hover {
-  text-decoration: underline;
+.nav-secondary .all-menu:hover { border: 1px solid #fff; border-radius: 2px; }
+.nav-secondary .all-menu i { font-size: 18px; }
+.nav-secondary .nav-link {
+  padding: 6px 8px; border: 1px solid transparent; cursor: pointer;
+  font-size: 14px; white-space: nowrap; height: 100%; display: flex; align-items: center;
 }
+.nav-secondary .nav-link:hover { border: 1px solid #fff; border-radius: 2px; }
+.nav-secondary .nav-link.sale { color: #febd69; font-weight: 700; }

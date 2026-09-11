@@ -1,51 +1,52 @@
-import "./Footer.css";
+import React from 'react';
+import './Footer.css';
 
-function Footer() {
+const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-top">
-        <button
-          className="footer-back-to-top"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        >
-          Back to top
-        </button>
-      </div>
-
-      <div className="footer-main">
-        <div className="footer-column">
+        <div className="footer-col">
           <h4>Get to Know Us</h4>
-          <ul>
-            <li>About Us</li>
-            <li>Careers</li>
-            <li>Press Releases</li>
-          </ul>
+          <a href="#">About Amazon</a>
+          <a href="#">Careers</a>
+          <a href="#">Press Releases</a>
+          <a href="#">Amazon Science</a>
         </div>
-
-        <div className="footer-column">
+        <div className="footer-col">
           <h4>Connect with Us</h4>
-          <ul>
-            <li>Facebook</li>
-            <li>Twitter</li>
-            <li>Instagram</li>
-          </ul>
+          <a href="#">Facebook</a>
+          <a href="#">Twitter</a>
+          <a href="#">Instagram</a>
         </div>
-
-        <div className="footer-column">
+        <div className="footer-col">
+          <h4>Make Money with Us</h4>
+          <a href="#">Sell on Amazon</a>
+          <a href="#">Become an Affiliate</a>
+          <a href="#">Advertise Your Products</a>
+        </div>
+        <div className="footer-col">
           <h4>Let Us Help You</h4>
-          <ul>
-            <li>Your Account</li>
-            <li>Returns & Orders</li>
-            <li>Help</li>
-          </ul>
+          <a href="#">Your Account</a>
+          <a href="#">Returns Centre</a>
+          <a href="#">100% Purchase Protection</a>
+          <a href="#">Help</a>
+        </div>
+        <div className="footer-col">
+          <h4>Shop by Category</h4>
+          <a href="#">Laptops</a>
+          <a href="#">PCs</a>
+          <a href="#">Electronics</a>
+          <a href="#">Home</a>
+          <a href="#">Dogs</a>
+          <a href="#">Cats</a>
         </div>
       </div>
-
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} MyStore Clone — Internship Project</p>
+        <div className="footer-logo">amazon<span>.com</span></div>
+        <p>&copy; 2026 Amazon.com, Inc. or its affiliates. All rights reserved.</p>
       </div>
     </footer>
   );
-}
+};
 
 export default Footer;

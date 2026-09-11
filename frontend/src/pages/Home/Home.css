@@ -1,77 +1,200 @@
+/* ===============================
+   GENERAL HOME LAYOUT
+   =============================== */
 .home {
-  padding: 20px;
+  background-color: #eaeded;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  font-family: 'Amazon Ember', Arial, sans-serif;
 }
 
+/* ===============================
+   HERO BANNER
+   =============================== */
 .hero {
-  background: linear-gradient(135deg, #232f3e, #37475a);
-  color: white;
-  border-radius: 8px;
-  padding: 60px 40px;
-  margin-bottom: 30px;
-  text-align: center;
+  position: relative;
+  width: 100%;
+  height: 400px;
+  
+  /* 1. Fallback dark color so white text is ALWAYS readable */
+  background-color: #232f3e; 
+  
+  /* 2. Your image from the public folder */
+  background-image: url("../../assets/school-hero.jpg"); 
+  background-size: cover;
+  background-position: center;
+  
+  display: flex;
+  align-items: center;
 }
 
-.hero-text h1 {
-  font-size: 2.2rem;
+/* 3. The fade effect at the bottom */
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(to bottom, transparent, #eaeded);
+  pointer-events: none;
+}
+
+.hero-content {
+  padding: 0 60px;
+  max-width: 600px;
+  position: relative;
+  z-index: 2; /* Keeps text above the fade */
+}
+
+.hero-content h1 {
+  font-size: 48px;
+  font-weight: 900;
+  color: #123b5d;
   margin-bottom: 10px;
+  line-height: 1.1;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
-.hero-text p {
-  font-size: 1rem;
-  margin-bottom: 20px;
-  color: #ddd;
+.hero-content p {
+  font-size: 24px;
+  color: #294c60;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
 
-.hero-button {
-  display: inline-block;
-  background-color: #febd69;
-  color: #131921;
-  padding: 10px 24px;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.hero-button:hover {
-  background-color: #f3a847;
-}
-
-.deals h2,
-.recommendations h2 {
-  margin-bottom: 15px;
-}
-
-.deals-grid {
+/* ===============================
+   THE 3-ROW GRID
+   =============================== */
+.home-grid {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 20px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 16px;
-  margin-bottom: 40px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  
+  /* Pulls the first row up over the banner */
+  margin-top: -120px; 
+  position: relative;
+  z-index: 2;
+  
+  row-gap: 20px; 
 }
 
-.deal-card {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+/* White boxes */
+.grid-box {
+  background: #fff;
   padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  min-height: 350px; 
+}
+
+.box-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0F1111;
+  margin-bottom: 16px;
+}
+
+/* Inner grids (2x2 layout) */
+.supplies-grid, .product-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  flex-grow: 1;
+}
+
+/* Small supply cards */
+.supply-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f8f8f8;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+}
+.supply-card i { 
+  font-size: 24px; 
+  color: #555; 
+  margin-bottom: 8px; 
+}
+.supply-card span { 
+  font-size: 13px; 
+  font-weight: 600; 
+  color: #0F1111; 
+}
+
+/* ===============================
+   SINGLE ITEM LAYOUT
+   =============================== */
+.single-item-layout {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.single-item-image {
+  width: 100%;
+  height: 200px; 
+  background: #f8f8f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.single-item-image i {
+  font-size: 80px;
+  color: #ccc;
+}
+
+.single-item-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0F1111;
   text-align: center;
 }
 
-.deal-image-placeholder {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
+/* "See more" link */
+.box-link {
+  color: #007185;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 16px;
+  cursor: pointer;
+}
+.box-link:hover { 
+  text-decoration: underline; 
 }
 
-.deal-title {
-  font-weight: bold;
-  margin-bottom: 4px;
+/* ===============================
+   RESPONSIVE
+   =============================== */
+@media (max-width: 1024px) {
+  .home-grid { 
+    grid-template-columns: 1fr 1fr; /* 2 columns on tablets */
+  }
 }
 
-.deal-price {
-  color: #b12704;
-  font-size: 0.9rem;
-}
-
-.recommendations-note {
-  color: #666;
-  font-style: italic;
+@media (max-width: 768px) {
+  .home-grid { 
+    grid-template-columns: 1fr; /* 1 column on phones */
+    margin-top: -50px; 
+  }
+  .hero-content { 
+    padding: 0 20px; 
+    text-align: center; 
+  }
+  .hero-content h1 {
+    font-size: 32px;
+  }
 }
