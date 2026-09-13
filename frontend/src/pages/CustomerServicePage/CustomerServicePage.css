@@ -1,0 +1,241 @@
+/* CustomerServicePage.css */
+
+* {
+  box-sizing: border-box;
+}
+
+.cs-page-container {
+  background-color: #ffffff;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  color: #0f1111;
+}
+
+/* 1. Hero Section */
+.cs-hero-section {
+  background-color: #007185; /* Amazon's teal color */
+  padding: 40px 20px 60px 20px;
+  color: white;
+}
+
+.cs-hero-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cs-hero-content h1 {
+  font-size: 32px;
+  font-weight: 400;
+  margin: 0 0 10px 0;
+}
+
+.cs-hero-content p {
+  font-size: 16px;
+  margin: 0 0 30px 0;
+  color: #e6f2f4;
+}
+
+/* Action Cards Grid */
+.cs-action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.cs-action-card {
+  background-color: #f8f8f8;
+  color: #0f1111;
+  border-radius: 8px;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.cs-action-card:hover {
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.cs-action-icon {
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e7e9ec; /* Placeholder for icons */
+  border-radius: 50%;
+  color: #565959;
+}
+
+/* 2. Quick Links Ribbon */
+.cs-quick-links-ribbon {
+  background-color: #f0f2f2;
+  border-top: 1px solid #d5d9d9;
+  border-bottom: 1px solid #d5d9d9;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.cs-quick-link-item {
+  flex: 1 1 200px;
+}
+
+.cs-quick-link-item h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+  color: #0f1111;
+}
+
+.cs-quick-link-item p {
+  font-size: 12px;
+  color: #565959;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* 3. Main Content Layout */
+.cs-main-content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* Search Block */
+.cs-search-block {
+  margin-bottom: 40px;
+}
+
+.cs-search-block h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 15px 0;
+}
+
+.cs-search-input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #888c8c;
+  border-radius: 8px;
+  padding: 8px 15px;
+  background: #fff;
+  max-width: 800px;
+  box-shadow: 0 2px 5px rgba(15,17,17,.05);
+}
+
+.cs-search-input-wrapper:focus-within {
+  border-color: #007185;
+  box-shadow: 0 0 0 3px rgba(0, 113, 133, 0.15);
+}
+
+.cs-search-icon {
+  margin-right: 10px;
+  color: #565959;
+}
+
+.cs-search-input-wrapper input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  padding: 5px 0;
+}
+
+/* Topics Layout (Sidebar + Grid) */
+.cs-topics-layout {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* Sidebar */
+.cs-sidebar {
+  flex: 0 0 250px; /* Fixed width sidebar */
+  position: sticky;
+  top: 20px;
+}
+
+.cs-sidebar h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 15px 0;
+}
+
+.cs-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cs-sidebar-btn {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0f1111;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cs-sidebar-btn:hover {
+  background-color: #f0f2f2;
+}
+
+.cs-sidebar-btn.active {
+  background-color: #007185;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Help Topic Grid */
+.cs-topic-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.cs-help-topic-card {
+  background: #ffffff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cs-help-topic-card:hover {
+  border-color: #007185;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.cs-help-topic-card h4 {
+  font-size: 16px;
+  color: #007185; /* Amazon Link Blue */
+  margin: 0 0 8px 0;
+  font-weight: 600;
+}
+
+.cs-help-topic-card p {
+  font-size: 14px;
+  color: #565959;
+  margin: 0;
+  line-height: 1.4;
+}

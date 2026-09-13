@@ -1,26 +1,36 @@
+/* Card Container */
 .product-card {
-  background: #fff;
-  padding: 10px;
-  border-radius: 4px;
   display: flex;
   flex-direction: column;
-  border: 1px solid #e7e7e7;
-  color: #0F1111; /* <--- THIS IS CRITICAL. Forces text to be dark. */
+  align-items: flex-start;
+  text-align: left;
+  cursor: pointer;
 }
 
-.product-image-container {
-  height: 100px; /* Small image area for the 2x2 grid */
-  background: #f8f8f8;
+/* Light Grey Image Box */
+.product-card-img-wrapper {
+  background-color: #f7f7f7;
+  width: 100%;
+  height: 110px; /* Gives it the square Amazon shape */
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 6px;
 }
 
-.product-icon { font-size: 30px; color: #ccc; }
-.product-title { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
-.product-sub { font-size: 11px; color: #565959; }
-.product-price { font-size: 14px; font-weight: 700; margin-top: 4px; }
+/* Image behavior inside box */
+.product-card-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Fills the whole box like Amazon */
+}
 
-/* Hide the rating and button in this small grid view to match Amazon */
-.product-rating, .add-to-cart-btn { display: none; }
+/* Label text below the box */
+.product-card h3 {
+  font-size: 12px;
+  font-weight: 500;
+  color: #0f1111;
+  margin: 0;
+}
