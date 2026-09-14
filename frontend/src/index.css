@@ -1,24 +1,14 @@
-/* Base Resets */
-* {
-  box-sizing: border-box;
+html {
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
 }
 
 body {
-  background-color: #eaeded;
-  color: #0f1111;
-  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
+  background: #eaeded;
 }
 
-/* Common Links */
-a {
-  color: #007185;
-  text-decoration: none;
-}
-
-a:hover {
-  color: #c7511f;
-  text-decoration: underline;
+#root {
+  min-height: 100vh;
 }

@@ -1,21 +1,18 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Checkout from './pages/Checkout/Checkout';
-import Confirmation from './pages/OrderConfirmation/Confirmation';
-import OrdersPage from './pages/Orders/OrdersPage';
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Home from "./pages/Home";
+import ProductDetails from "./pages/ProductDetails";
+
+import "./App.css";
 
 function App() {
   return (
-    <div className="app">
+    <BrowserRouter>
       <Routes>
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/confirmation" element={<Confirmation />} />
-        <Route path="/orders" element={<OrdersPage />} />
-        {/* Default route redirects to checkout */}
-        <Route path="*" element={<Checkout />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/products/:id" element={<ProductDetails />} />
       </Routes>
-    </div>
+    </BrowserRouter>
   );
 }
 
