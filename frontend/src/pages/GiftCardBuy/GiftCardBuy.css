@@ -1,0 +1,521 @@
+/* =========================
+   Gift Card Buy Page
+========================= */
+
+.gift-buy-page {
+  min-height: 100vh;
+  background: #eaeded;
+  padding: 35px 20px 60px;
+  color: #0f1111;
+}
+
+.gift-buy-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* =========================
+   Breadcrumb
+========================= */
+
+.amazon-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #565959;
+}
+
+.amazon-breadcrumb a {
+  color: #007185;
+  text-decoration: none;
+}
+
+.amazon-breadcrumb a:hover {
+  color: #c45500;
+  text-decoration: underline;
+}
+
+.amazon-breadcrumb span {
+  color: #565959;
+}
+
+/* =========================
+   Header
+========================= */
+
+.gift-buy-header {
+  margin-bottom: 30px;
+}
+
+.gift-buy-header h1 {
+  font-size: 32px;
+  font-weight: 500;
+  margin: 0 0 7px;
+}
+
+.gift-buy-header p {
+  color: #565959;
+  font-size: 15px;
+}
+
+/* =========================
+   Main Layout
+========================= */
+
+.gift-buy-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 30px;
+  align-items: start;
+}
+
+/* =========================
+   Preview Card
+========================= */
+
+.gift-buy-preview-card {
+  background: white;
+  border: 1px solid #d5d9d9;
+  border-radius: 4px;
+  padding: 35px;
+}
+
+.large-gift-card {
+  width: 100%;
+  max-width: 430px;
+  height: 250px;
+  margin: 0 auto 30px;
+  padding: 30px;
+  position: relative;
+
+  border-radius: 14px;
+
+  background: linear-gradient(
+    135deg,
+    #ffb300,
+    #ff9900,
+    #e47911
+  );
+
+  color: white;
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+
+  overflow: hidden;
+}
+
+.large-gift-card::before {
+  content: "";
+  position: absolute;
+
+  width: 230px;
+  height: 230px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.13);
+
+  right: -70px;
+  top: -80px;
+}
+
+.large-gift-card-brand {
+  font-size: 30px;
+  font-weight: bold;
+  position: relative;
+  z-index: 1;
+}
+
+.large-gift-card-value {
+  margin-top: 45px;
+  font-size: 38px;
+  font-weight: 600;
+  position: relative;
+  z-index: 1;
+}
+
+.large-gift-card-text {
+  position: absolute;
+  left: 30px;
+  bottom: 28px;
+
+  font-size: 21px;
+  letter-spacing: 4px;
+  font-weight: 600;
+}
+
+.gift-buy-preview-card h3 {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.gift-buy-preview-card > p {
+  color: #565959;
+  line-height: 1.5;
+}
+
+/* =========================
+   Form Card
+========================= */
+
+.gift-buy-form-card {
+  background: white;
+  border: 1px solid #d5d9d9;
+  border-radius: 4px;
+  padding: 35px;
+}
+
+.gift-buy-form-card h2 {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 25px;
+}
+
+/* =========================
+   Amount Buttons
+========================= */
+
+.amount-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.amount-button {
+  background: white;
+  border: 1px solid #888c8c;
+  border-radius: 5px;
+
+  padding: 10px 22px;
+
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.amount-button:hover {
+  background: #f3f3f3;
+}
+
+.amount-button.selected {
+  border: 2px solid #007185;
+  background: #e7f3f3;
+  font-weight: 600;
+}
+
+/* =========================
+   Divider
+========================= */
+
+.form-divider {
+  border: 0;
+  border-top: 1px solid #d5d9d9;
+  margin: 28px 0;
+}
+
+/* =========================
+   Form Groups
+========================= */
+
+.gift-form-group {
+  margin-bottom: 22px;
+}
+
+.gift-form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.gift-form-group input,
+.gift-form-group textarea {
+  width: 100%;
+
+  border: 1px solid #888c8c;
+  border-radius: 4px;
+
+  padding: 10px 12px;
+
+  font-size: 15px;
+  outline: none;
+}
+
+.gift-form-group input:focus,
+.gift-form-group textarea:focus {
+  border-color: #007185;
+
+  box-shadow:
+    0 0 0 3px rgba(0, 113, 133, 0.15);
+}
+
+.gift-form-group textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.character-count {
+  display: block;
+  text-align: right;
+
+  color: #565959;
+  font-size: 12px;
+
+  margin-top: 5px;
+}
+
+/* =========================
+   Delivery
+========================= */
+
+.delivery-option {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding: 14px;
+
+  margin-bottom: 12px;
+
+  border: 1px solid #d5d9d9;
+  border-radius: 5px;
+
+  cursor: pointer;
+}
+
+.delivery-option:hover {
+  background: #f7f7f7;
+}
+
+.delivery-option input {
+  width: 17px;
+  height: 17px;
+  margin-top: 2px;
+}
+
+.delivery-option span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.delivery-option strong {
+  font-size: 14px;
+}
+
+.delivery-option small {
+  color: #565959;
+  font-size: 13px;
+}
+
+/* =========================
+   Summary
+========================= */
+
+.gift-buy-summary {
+  background: #f7f7f7;
+
+  border: 1px solid #d5d9d9;
+  border-radius: 5px;
+
+  padding: 18px;
+
+  margin-top: 25px;
+}
+
+.gift-buy-summary > div {
+  display: flex;
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+
+  font-size: 14px;
+}
+
+.gift-buy-summary span {
+  color: #565959;
+}
+
+.gift-buy-summary strong {
+  font-weight: 600;
+}
+
+.gift-buy-summary .summary-total {
+  border-top: 1px solid #d5d9d9;
+
+  padding-top: 14px;
+  margin-top: 14px;
+  margin-bottom: 0;
+
+  font-size: 18px;
+}
+
+.gift-buy-summary .summary-total span,
+.gift-buy-summary .summary-total strong {
+  color: #0f1111;
+}
+
+/* =========================
+   Success Message
+========================= */
+
+.gift-buy-success {
+  margin-top: 20px;
+
+  padding: 14px;
+
+  border-radius: 5px;
+
+  background: #e7f6e7;
+  border: 1px solid #a8d5a8;
+
+  color: #067d62;
+
+  font-size: 14px;
+}
+
+/* =========================
+   Buttons
+========================= */
+
+.buy-gift-card-button,
+.add-cart-demo-button {
+  width: 100%;
+
+  border-radius: 20px;
+
+  padding: 11px;
+
+  cursor: pointer;
+
+  font-size: 15px;
+}
+
+.buy-gift-card-button {
+  margin-top: 22px;
+
+  background: #ffd814;
+  border: 1px solid #fcd200;
+}
+
+.buy-gift-card-button:hover {
+  background: #f7ca00;
+}
+
+.add-cart-demo-button {
+  margin-top: 12px;
+
+  background: white;
+  border: 1px solid #888c8c;
+}
+
+.add-cart-demo-button:hover {
+  background: #f3f3f3;
+}
+
+/* =========================
+   Information
+========================= */
+
+.gift-buy-information {
+  margin-top: 30px;
+
+  background: white;
+
+  border: 1px solid #d5d9d9;
+  border-radius: 4px;
+
+  padding: 35px;
+}
+
+.gift-buy-information h2 {
+  font-size: 23px;
+  font-weight: 500;
+
+  margin-bottom: 25px;
+}
+
+.information-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 25px;
+}
+
+.information-grid h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.information-grid p {
+  color: #565959;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* =========================
+   Bottom Links
+========================= */
+
+.gift-buy-bottom-links {
+  margin-top: 30px;
+
+  display: flex;
+  justify-content: center;
+
+  gap: 30px;
+}
+
+.gift-buy-bottom-links a {
+  color: #007185;
+  font-size: 14px;
+}
+
+.gift-buy-bottom-links a:hover {
+  color: #c45500;
+  text-decoration: underline;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 850px) {
+  .gift-buy-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .information-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .gift-buy-page {
+    padding: 20px 12px 40px;
+  }
+
+  .gift-buy-preview-card,
+  .gift-buy-form-card,
+  .gift-buy-information {
+    padding: 22px;
+  }
+
+  .gift-buy-header h1 {
+    font-size: 27px;
+  }
+
+  .large-gift-card {
+    height: 210px;
+    padding: 23px;
+  }
+
+  .gift-buy-bottom-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+}

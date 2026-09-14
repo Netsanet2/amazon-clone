@@ -1,0 +1,81 @@
+.orders-wrapper {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.orders-wrapper h1 {
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.order-card {
+  background: white;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.order-header {
+  background: #f0f2f2;
+  padding: 14px 20px;
+  display: flex;
+  gap: 40px;
+  border-bottom: 1px solid #d5d9d9;
+  font-size: 12px;
+  color: #565959;
+}
+
+.order-header div {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-header .label {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.order-id {
+  margin-left: auto;
+}
+
+.order-body {
+  padding: 20px;
+}
+
+.item-row {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.item-row img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.item-details h3 {
+  font-size: 15px;
+  color: #007185;
+  margin-bottom: 6px;
+}
+
+.item-price {
+  font-size: 14px;
+  color: #b12704;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.buy-again-btn {
+  background: #ffd814;
+  border: 1px solid #fcd200;
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 12px;
+  cursor: pointer;
+}
