@@ -7,7 +7,6 @@ import { useLanguage } from '../LanguageContext/LanguageContext';
 const translations = {
   EN: {
     heroTitle: "Shop Back to School",
-    heroSub: "School essentials at every price",
     fashionTitle: "Shop Fashions for less",
     suppliesTitle: "Must-have school supplies",
     gamingTitle: "Get your game on",
