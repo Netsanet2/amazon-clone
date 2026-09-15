@@ -6,10 +6,11 @@ const fallbackHatSVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/20
 
 const ProductCard = ({ product }) => {
   const [imgSrc, setImgSrc] = useState(product.image);
+  const title = product.title || product.name;
 
   const handleImageError = () => {
     // Determine the backup depending on the product title. If "Hats", use the baseline SVG inline code.
-    if (product.title.toLowerCase().includes('hat')) {
+    if (title.toLowerCase().includes('hat')) {
       setImgSrc(fallbackHatSVG);
     } else {
       // General baseline item photo backup
@@ -23,7 +24,7 @@ const ProductCard = ({ product }) => {
         {imgSrc ? (
           <img 
             src={imgSrc} 
-            alt={product.title} 
+            alt={title}
             onError={handleImageError} 
             loading="lazy"
           />
@@ -31,7 +32,13 @@ const ProductCard = ({ product }) => {
           <i className={`fas ${product.icon}`}></i>
         )}
       </div>
-      <h3>{product.title}</h3>
+      <div className="product-info">
+        <h3 className="product-name">{title}</h3>
+        {product.brand && <p className="product-brand">{product.brand}</p>}
+        {product.rating && <div className="product-rating">⭐ {product.rating}</div>}
+        {product.price !== undefined && <p className="product-price">${Number(product.price).toFixed(2)}</p>}
+        {product.availability && <p className={product.availability === 'In Stock' ? 'product-available' : 'product-unavailable'}>{product.availability}</p>}
+      </div>
     </div>
   );
 };

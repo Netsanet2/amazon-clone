@@ -1,0 +1,328 @@
+/* =========================================
+   MESSAGES PAGE
+   ========================================= */
+
+.messages-page {
+  min-height: 100vh;
+  background-color: #eaeded;
+  padding: 30px 20px 50px;
+}
+
+.messages-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* =========================================
+   BREADCRUMB
+   ========================================= */
+
+.amazon-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #565959;
+}
+
+.amazon-breadcrumb a {
+  color: #007185;
+  text-decoration: none;
+}
+
+.amazon-breadcrumb a:hover {
+  color: #c45500;
+  text-decoration: underline;
+}
+
+.amazon-breadcrumb span {
+  color: #565959;
+}
+
+/* =========================================
+   HEADER
+   ========================================= */
+
+.messages-header {
+  margin-bottom: 25px;
+}
+
+.messages-header h1 {
+  font-size: 32px;
+  font-weight: 500;
+  color: #0f1111;
+  margin-bottom: 8px;
+}
+
+.messages-header p {
+  color: #565959;
+  font-size: 15px;
+}
+
+/* =========================================
+   TABS
+   ========================================= */
+
+.messages-tabs {
+  display: flex;
+  background-color: #ffffff;
+  border: 1px solid #d5d9d9;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  overflow-x: auto;
+}
+
+.message-tab {
+  padding: 15px 25px;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background-color: transparent;
+  color: #565959;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.message-tab:hover {
+  color: #007185;
+}
+
+.message-tab.active {
+  color: #0f1111;
+  border-bottom-color: #ff9900;
+  font-weight: 600;
+}
+
+/* =========================================
+   MESSAGES CARD
+   ========================================= */
+
+.messages-card {
+  background-color: #ffffff;
+  border: 1px solid #d5d9d9;
+  border-radius: 0 0 8px 8px;
+  min-height: 300px;
+}
+
+/* =========================================
+   EMPTY STATE
+   ========================================= */
+
+.empty-messages {
+  text-align: center;
+  padding: 60px 25px;
+}
+
+.empty-messages-icon {
+  font-size: 50px;
+  margin-bottom: 15px;
+}
+
+.empty-messages h2 {
+  color: #0f1111;
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.empty-messages p {
+  max-width: 500px;
+  margin: 0 auto 25px;
+  color: #565959;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* =========================================
+   ACCOUNT BUTTON
+   ========================================= */
+
+.messages-account-button {
+  display: inline-block;
+  padding: 10px 22px;
+
+  background-color: #ffd814;
+  border: 1px solid #a88734;
+  border-radius: 22px;
+
+  color: #0f1111;
+  font-size: 14px;
+  font-weight: 600;
+
+  text-decoration: none;
+}
+
+.messages-account-button:hover {
+  background-color: #f7ca00;
+}
+
+/* =========================================
+   MESSAGE LIST
+   ========================================= */
+
+.message-list {
+  width: 100%;
+}
+
+.message-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 22px 25px;
+  border-bottom: 1px solid #eaeded;
+}
+
+.message-item:last-child {
+  border-bottom: none;
+}
+
+.message-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+  background-color: #f3f3f3;
+  font-size: 20px;
+}
+
+.message-content {
+  flex: 1;
+}
+
+.message-content h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f1111;
+  margin-bottom: 5px;
+}
+
+.message-content p {
+  color: #565959;
+  font-size: 14px;
+  margin-bottom: 7px;
+}
+
+.message-content span {
+  color: #767676;
+  font-size: 12px;
+}
+
+/* =========================================
+   INFORMATION
+   ========================================= */
+
+.messages-information {
+  background-color: #ffffff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  padding: 28px;
+  margin-top: 30px;
+}
+
+.messages-information > h2 {
+  color: #0f1111;
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 22px;
+}
+
+.messages-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+.messages-info-grid h3 {
+  color: #0f1111;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+.messages-info-grid p {
+  color: #565959;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* =========================================
+   BOTTOM LINKS
+   ========================================= */
+
+.messages-bottom-links {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+
+  margin-top: 35px;
+  padding-top: 25px;
+
+  border-top: 1px solid #d5d9d9;
+}
+
+.messages-bottom-links a {
+  color: #007185;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.messages-bottom-links a:hover {
+  color: #c45500;
+  text-decoration: underline;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 750px) {
+  .messages-info-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .messages-page {
+    padding: 20px 12px 40px;
+  }
+
+  .messages-header h1 {
+    font-size: 27px;
+  }
+
+  .messages-tabs {
+    overflow-x: auto;
+  }
+
+  .message-tab {
+    padding: 13px 17px;
+  }
+
+  .empty-messages {
+    padding: 45px 20px;
+  }
+
+  .message-item {
+    padding: 18px 15px;
+    gap: 12px;
+  }
+
+  .messages-information {
+    padding: 22px;
+  }
+
+  .messages-bottom-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+}

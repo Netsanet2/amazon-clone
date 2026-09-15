@@ -1,0 +1,274 @@
+.preferences-page {
+  min-height: 100vh;
+  background-color: #eaeded;
+  padding: 28px 20px 60px;
+}
+
+.preferences-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Breadcrumb */
+
+.preferences-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 22px;
+  font-size: 13px;
+  color: #565959;
+}
+
+.preferences-breadcrumb a {
+  color: #007185;
+}
+
+.preferences-breadcrumb a:hover {
+  color: #c45500;
+  text-decoration: underline;
+}
+
+/* Header */
+
+.preferences-container > h1 {
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  color: #0f1111;
+}
+
+.preferences-intro {
+  font-size: 14px;
+  color: #565959;
+  margin-bottom: 24px;
+}
+
+/* Main sections */
+
+.preference-section {
+  background: #ffffff;
+  border: 1px solid #d5d9d9;
+  border-radius: 4px;
+  margin-bottom: 18px;
+  overflow: hidden;
+}
+
+.section-heading {
+  padding: 22px 24px;
+  border-bottom: 1px solid #eaeded;
+  background-color: #f7f7f7;
+}
+
+.section-heading h2 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #0f1111;
+  margin-bottom: 6px;
+}
+
+.section-heading p {
+  font-size: 13px;
+  color: #565959;
+}
+
+/* Preference rows */
+
+.preference-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  padding: 22px 24px;
+  border-bottom: 1px solid #eaeded;
+}
+
+.preference-row:last-child {
+  border-bottom: none;
+}
+
+.preference-info {
+  flex: 1;
+}
+
+.preference-info h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f1111;
+  margin-bottom: 5px;
+}
+
+.preference-info p {
+  max-width: 700px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #565959;
+}
+
+/* Select */
+
+.preference-control select {
+  min-width: 190px;
+  padding: 9px 32px 9px 10px;
+  border: 1px solid #888c8c;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #0f1111;
+  font-size: 14px;
+}
+
+.preference-control select:focus {
+  outline: 2px solid #007eb9;
+  outline-offset: 1px;
+}
+
+/* Toggle */
+
+.toggle {
+  position: relative;
+  width: 46px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background-color: #aab0b0;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 3px;
+  top: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+.toggle input:checked + .slider {
+  background-color: #007185;
+}
+
+.toggle input:checked + .slider::before {
+  transform: translateX(22px);
+}
+
+/* Buttons */
+
+.preferences-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.save-button {
+  border: 1px solid #a88734;
+  border-radius: 8px;
+  padding: 9px 18px;
+  background: #ffd814;
+  color: #0f1111;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.save-button:hover {
+  background: #f7ca00;
+}
+
+.cancel-button {
+  border: 1px solid #888c8c;
+  border-radius: 8px;
+  padding: 9px 18px;
+  background: #ffffff;
+  color: #0f1111;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background: #f7f7f7;
+}
+
+/* Help */
+
+.preferences-help {
+  background: #ffffff;
+  border: 1px solid #d5d9d9;
+  border-radius: 4px;
+  padding: 22px 24px;
+}
+
+.preferences-help h2 {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 7px;
+}
+
+.preferences-help p {
+  font-size: 13px;
+  color: #565959;
+  margin-bottom: 14px;
+}
+
+.help-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.help-links a {
+  color: #007185;
+  font-size: 13px;
+}
+
+.help-links a:hover {
+  color: #c45500;
+  text-decoration: underline;
+}
+
+/* Responsive */
+
+@media (max-width: 700px) {
+  .preferences-page {
+    padding: 20px 12px 40px;
+  }
+
+  .preference-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .preference-control {
+    width: 100%;
+  }
+
+  .preference-control select {
+    width: 100%;
+  }
+
+  .preferences-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .save-button,
+  .cancel-button {
+    width: 100%;
+  }
+}

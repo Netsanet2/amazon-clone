@@ -1,0 +1,14 @@
+.category-page {
+  padding: 20px;
+}
+
+.category-page h2 {
+  margin-bottom: 10px;
+  font-size: 24px;
+  color: #111;
+}
+
+.category-page > p {
+  padding: 30px 0;
+  color: #666;
+}
