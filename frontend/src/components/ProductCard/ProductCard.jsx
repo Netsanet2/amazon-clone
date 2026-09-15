@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './ProductCard.css';
+import { Link } from 'react-router-dom';
 
 // A bulletproof, lightweight base64 SVG hat visual that never relies on the internet to load
 const fallbackHatSVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%23333"><path d="M50 20c-15 0-25 10-25 25v10c0 3 2 5 5 5h40c3 0 5-2 5-5V45c0-15-10-25-25-25zm-25 35c-15 2-15 15 0 15h60c15 0 15-13 0-15H25z"/></svg>`;
@@ -19,7 +20,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="product-card">
+    <Link to={product.id ? `/product/${product.id}` : '#'} className="product-card">
       <div className="product-card-img-wrapper">
         {imgSrc ? (
           <img 
@@ -39,7 +40,7 @@ const ProductCard = ({ product }) => {
         {product.price !== undefined && <p className="product-price">${Number(product.price).toFixed(2)}</p>}
         {product.availability && <p className={product.availability === 'In Stock' ? 'product-available' : 'product-unavailable'}>{product.availability}</p>}
       </div>
-    </div>
+    </Link>
   );
 };
 

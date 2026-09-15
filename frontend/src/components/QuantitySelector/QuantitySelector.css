@@ -1,0 +1,53 @@
+.quantity-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.quantity-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+
+  border: 1px solid #888;
+  border-radius: 7px;
+
+  overflow: hidden;
+
+  background: #f0f2f2;
+}
+
+.quantity-selector button {
+  width: 38px;
+  height: 34px;
+
+  border: none;
+  background: #f0f2f2;
+
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.quantity-selector button:hover:not(:disabled) {
+  background: #e7e9e9;
+}
+
+.quantity-selector button:disabled {
+  color: #999;
+  cursor: not-allowed;
+}
+
+.quantity-selector span {
+  width: 40px;
+  text-align: center;
+
+  background: #ffffff;
+
+  line-height: 34px;
+  font-weight: 600;
+}

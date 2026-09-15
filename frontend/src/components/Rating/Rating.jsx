@@ -1,22 +1,22 @@
-import React from 'react';
-import './Rating.css';
+import "./Rating.css";
 
-const Rating = ({ value, max = 5 }) => {
-  const fullStars = Math.floor(value);
-  const halfStar = value % 1 >= 0.5;
-  const emptyStars = max - fullStars - (halfStar ? 1 : 0);
+function Rating({ value, rating = value ?? 0, reviews, max = 5, showReviews = true }) {
+  const numericRating = Number(rating) || 0;
+  const fullStars = Math.floor(numericRating);
+  const hasHalfStar = numericRating % 1 >= 0.5;
+  const emptyStars = Math.max(0, max - fullStars - (hasHalfStar ? 1 : 0));
 
   return (
     <span className="rating">
-      {[...Array(fullStars)].map((_, i) => (
-        <i key={`full-${i}`} className="fas fa-star star-full"></i>
-      ))}
-      {halfStar && <i className="fas fa-star-half-alt star-half"></i>}
-      {[...Array(emptyStars)].map((_, i) => (
-        <i key={`empty-${i}`} className="far fa-star star-empty"></i>
-      ))}
+      <span className="rating-value">{numericRating.toFixed(1)}</span>
+      <span className="rating-stars">
+        {[...Array(fullStars)].map((_, index) => <span className="rating-star" key={`full-${index}`}>★</span>)}
+        {hasHalfStar && <span className="rating-star" aria-label="half star">★</span>}
+        {[...Array(emptyStars)].map((_, index) => <span className="rating-star-empty" key={`empty-${index}`}>★</span>)}
+      </span>
+      {showReviews && reviews !== undefined && <span className="rating-reviews">{Number(reviews).toLocaleString()} ratings</span>}
     </span>
   );
-};
+}
 
 export default Rating;

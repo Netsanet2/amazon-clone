@@ -1,25 +1,63 @@
-/* Base Resets */
-* {
+/* =====================================================
+   GLOBAL STYLES — AMAZON CLONE
+   ===================================================== */
+
+/* ===== RESET ===== */
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
 }
 
 body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
   background-color: #eaeded;
   color: #0f1111;
+  line-height: 1.4;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Common Links */
+/* ===== ROOT ===== */
+
+#root {
+  min-height: 100vh;
+}
+
+/* ===== HEADINGS ===== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: 700;
+}
+
+/* ===== PARAGRAPHS ===== */
+
+p {
+  margin: 0;
+}
+
+/* ===== LINKS ===== */
+
 a {
-  color: #007185;
+  color: inherit;
   text-decoration: none;
 }
 
 a:hover {
-  color: #c7511f;
   text-decoration: underline;
 }
 
@@ -106,26 +144,4 @@ select:focus-visible {
   .container {
     padding: 0 12px;
   }
-}
-.amazon-breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 20px;
-  font-size: 13px;
-  color: #565959;
-}
-
-.amazon-breadcrumb a {
-  color: #007185;
-  text-decoration: none;
-}
-
-.amazon-breadcrumb a:hover {
-  color: #c45500;
-  text-decoration: underline;
-}
-
-.amazon-breadcrumb span {
-  color: #565959;
 }

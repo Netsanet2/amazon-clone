@@ -1,0 +1,199 @@
+.product-info {
+  width: 100%;
+  color: #0f1111;
+}
+
+.product-title {
+  margin: 0 0 8px;
+
+  font-size: 28px;
+  line-height: 1.25;
+  font-weight: 500;
+
+  color: #0f1111;
+}
+
+.product-brand {
+  margin: 8px 0;
+
+  font-size: 14px;
+}
+
+.product-brand span {
+  margin-left: 5px;
+
+  color: #007185;
+  cursor: pointer;
+}
+
+.product-brand span:hover {
+  color: #c45500;
+  text-decoration: underline;
+}
+
+.info-divider {
+  border-top: 1px solid #dddddd;
+  margin: 12px 0;
+}
+
+/* Deal */
+
+.deal-badge {
+  display: inline-block;
+
+  background: #cc0c39;
+  color: #ffffff;
+
+  padding: 6px 10px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  margin: 8px 0;
+}
+
+/* Price */
+
+.price-row {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 5px;
+}
+
+.discount-percent {
+  color: #cc0c39;
+
+  font-size: 27px;
+  font-weight: 400;
+}
+
+.current-price {
+  color: #0f1111;
+
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.list-price {
+  margin-top: 4px;
+
+  color: #565959;
+
+  font-size: 13px;
+}
+
+.list-price span {
+  margin-left: 5px;
+
+  text-decoration: line-through;
+}
+
+/* Delivery */
+
+.delivery-info {
+  margin: 16px 0;
+
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.delivery-line span {
+  color: #007600;
+  font-weight: 600;
+}
+
+.delivery-line strong {
+  color: #007600;
+}
+
+.delivery-location {
+  color: #007185;
+
+  margin-top: 5px;
+
+  cursor: pointer;
+}
+
+.delivery-location:hover {
+  text-decoration: underline;
+}
+
+/* Stock */
+
+.stock {
+  font-size: 18px;
+  margin: 15px 0;
+}
+
+.in-stock {
+  color: #007600;
+}
+
+.out-of-stock {
+  color: #b12704;
+}
+
+/* Buttons */
+
+.purchase-buttons {
+  max-width: 300px;
+}
+
+.purchase-buttons button {
+  margin-bottom: 10px;
+}
+
+/* Secure */
+
+.secure-payment {
+  color: #565959;
+
+  font-size: 13px;
+
+  margin: 8px 0 18px;
+}
+
+/* Seller */
+
+.seller-information {
+  border-top: 1px solid #dddddd;
+
+  padding-top: 15px;
+
+  font-size: 14px;
+}
+
+.seller-row {
+  display: grid;
+
+  grid-template-columns: 90px 1fr;
+
+  margin-bottom: 10px;
+}
+
+.seller-row span {
+  color: #565959;
+}
+
+.seller-row strong {
+  color: #007185;
+  font-weight: 400;
+}
+
+@media (max-width: 700px) {
+
+  .product-title {
+    font-size: 22px;
+  }
+
+  .current-price {
+    font-size: 27px;
+  }
+
+  .purchase-buttons {
+    max-width: 100%;
+  }
+}

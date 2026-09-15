@@ -1,8 +1,13 @@
 .rating {
-  color: #f90;
-  font-size: 16px;
-  letter-spacing: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
 }
-.star-full { color: #f90; }
-.star-half { color: #f90; }
-.star-empty { color: #d3d3d3; }
+
+.rating-value { color: #007185; font-size: 15px; }
+.rating-stars { display: flex; letter-spacing: 1px; }
+.rating-star, .star-full, .star-half { color: #ffa41c; font-size: 18px; }
+.rating-star-empty, .star-empty { color: #cccccc; font-size: 18px; }
+.rating-reviews { color: #007185; cursor: pointer; }
+.rating-reviews:hover { color: #c45500; text-decoration: underline; }
