@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 import { useLanguage } from "../../pages/LanguageContext/LanguageContext";
+import SideBar from "./SideBar";
 
 const navTranslations = {
   EN: {
@@ -121,6 +122,7 @@ const navTranslations = {
 export default function Navbar() {
   const { language, setLanguage } = useLanguage();
   const tNav = navTranslations[language] || navTranslations.EN;
+  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
   const handleLanguageChange = (e) => {
     if (setLanguage) {
@@ -141,6 +143,7 @@ export default function Navbar() {
             />
           </Link>
         </div>
+
         {/* Deliver Location */}
         <div className="nav-item nav-deliver">
           <span className="nav-line1">{tNav.deliverTo}</span>
@@ -287,7 +290,8 @@ export default function Navbar() {
 
       {/* SECONDARY NAVBAR */}
       <div className="nav-secondary">
-        <div className="all-menu">
+        {/* FIXED: State variable matched correctly to setIsSideBarOpen */}
+        <div className="all-menu" onClick={() => setIsSideBarOpen(true)}> 
           <span>☰</span>
           <span>{tNav.all}</span>
         </div>
@@ -307,6 +311,9 @@ export default function Navbar() {
           {tNav.sell}
         </Link>
       </div>
+
+      {/* RENDER SIDEBAR COMPONENT HERE */}
+      <SideBar isOpen={isSideBarOpen} onClose={() => setIsSideBarOpen(false)} />
     </>
   );
 }
