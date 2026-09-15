@@ -1,0 +1,30 @@
+.btn {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.btn-primary {
+  background: #febd69;
+  color: #111;
+}
+.btn-primary:hover {
+  background: #f3a847;
+}
+.btn-secondary {
+  background: #e7e7e7;
+  color: #111;
+}
+.btn-secondary:hover {
+  background: #d5d5d5;
+}
+.btn-gold {
+  background: #f08804;
+  color: #fff;
+}
+.btn-gold:hover {
+  background: #d97706;
+}

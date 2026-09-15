@@ -1,0 +1,188 @@
+/* Container & Base Styles */
+.incentives-container {
+  font-family: "Amazon Ember", Arial, sans-serif;
+  color: #0f1111;
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+/* 1. Top Announcement Bar */
+.top-banner {
+  background-color: #004d40;
+  color: #ffffff;
+  text-align: center;
+  padding: 10px 16px;
+  font-size: 14px;
+}
+
+.top-banner-link {
+  color: #ffffff;
+  text-decoration: underline;
+  margin-left: 6px;
+  font-weight: bold;
+}
+
+/* 2. Simplified Navbar */
+.navbar {
+  border-bottom: 1px solid #e7e7e7;
+  padding: 12px 32px;
+  background-color: #ffffff;
+}
+
+.nav-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-logo {
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.brand-amazon {
+  color: #0f1111;
+}
+
+.brand-sell {
+  color: #565959;
+  font-size: 15px;
+  font-weight: normal;
+  margin-left: 4px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #0f1111;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: #e47911;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-login {
+  background-color: #f7f7f7;
+  color: #0f1111;
+  border: 1px solid transparent;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-login:hover {
+  background-color: #e7e7e7;
+}
+
+.btn-start {
+  background-color: #e47911;
+  color: #ffffff;
+  border: none;
+  padding: 9px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-start:hover {
+  background-color: #d06b0e;
+}
+
+/* 3. Hero Section */
+.hero-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.hero-left {
+  flex: 1;
+  max-width: 550px;
+}
+
+.hero-heading {
+  font-size: 56px;
+  line-height: 1.1;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: #0f1111;
+}
+
+.highlight-text {
+  color: #d9531e;
+}
+
+.hero-description {
+  font-size: 20px;
+  color: #565959;
+  line-height: 1.4;
+  margin-bottom: 32px;
+  max-width: 460px;
+}
+
+.btn-cta {
+  background-color: #e47911;
+  color: #ffffff;
+  border: none;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.btn-cta:hover {
+  background-color: #d06b0e;
+}
+
+.hero-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hero-img {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 24px;
+  object-fit: cover;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .hero-section {
+    flex-direction: column;
+    text-align: center;
+    padding: 32px 16px;
+  }
+
+  .hero-heading {
+    font-size: 40px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+}
