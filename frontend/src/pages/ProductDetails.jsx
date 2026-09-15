@@ -12,9 +12,22 @@ function ProductDetails() {
 
   const { id } = useParams();
 
-  const product = products.find(
+  const foundProduct = products.find(
     (item) => item.id === Number(id)
   );
+
+  const product = foundProduct && {
+    ...foundProduct,
+    images: foundProduct.images?.length ? foundProduct.images : [foundProduct.image],
+    description: foundProduct.description?.length
+      ? foundProduct.description
+      : [`Quality ${foundProduct.name} from ${foundProduct.brand}.`],
+    reviews: foundProduct.reviews ?? 0,
+    discount: foundProduct.discount ?? 0,
+    oldPrice: foundProduct.oldPrice ?? foundProduct.price,
+    stock: foundProduct.stock ?? (foundProduct.availability === "In Stock" ? 10 : 0),
+    seller: foundProduct.seller ?? foundProduct.brand,
+  };
 
   /* Product not found */
 

@@ -30,6 +30,7 @@ import SubscribeSave from "./pages/SubscribeSave/SubscribeSave";
 import ManageContent from "./pages/ManageContent/ManageContent";
 import DigitalDownloads from "./pages/DigitalDownloads/DigitalDownloads";
 import AccountPreferences from "./pages/AccountPreferences/AccountPreferences";
+import ProductDetails from "./pages/ProductDetails";
 
 function ProductRoutes() {
   const [filters, setFilters] = useState({ category: "All", minPrice: "", maxPrice: "", rating: "0", availability: "All", brand: "All" });
@@ -84,7 +85,7 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/products" element={<ProductRoutes />} />
-        <Route path="/product/:id" element={<h1>Product Details</h1>} />
+        <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/confirmation" element={<Confirmation />} />
@@ -109,7 +110,7 @@ export default function App() {
         <Route path="/manage-content" element={<ProtectedRoute><ManageContent /></ProtectedRoute>} />
         <Route path="/digital-downloads" element={<ProtectedRoute><DigitalDownloads /></ProtectedRoute>} />
         <Route path="/account-preferences" element={<ProtectedRoute><AccountPreferences /></ProtectedRoute>} />
-        <Route path="/" element={<Navigate to="/account" replace />} />
+        <Route path="/" element={<Navigate to="/products" replace />} />
         <Route path="*" element={<Navigate to="/account" replace />} />
       </Routes>
     </Router>
