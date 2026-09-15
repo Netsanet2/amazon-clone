@@ -1,0 +1,939 @@
+/* =========================================================
+   LISTS PAGE
+========================================================= */
+
+.lists-container {
+  min-height: 100vh;
+  background-color: #eaeded;
+  padding: 35px 20px 60px;
+  font-family: "Amazon Ember", Arial, sans-serif;
+  color: #0f1111;
+}
+
+.lists-wrapper {
+  width: 100%;
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+/* =========================================================
+   PAGE TITLE
+========================================================= */
+
+.lists-title-section {
+  margin-bottom: 25px;
+}
+
+.lists-header {
+  margin: 0 0 6px;
+  font-size: 30px;
+  font-weight: 400;
+  color: #0f1111;
+}
+
+.lists-title-section p {
+  margin: 0;
+  color: #565959;
+  font-size: 14px;
+}
+
+/* =========================================================
+   LIST INFORMATION HEADER
+========================================================= */
+
+.list-info-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 22px 24px;
+  margin-bottom: 25px;
+
+  background-color: #ffffff;
+
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+
+  box-shadow: 0 1px 2px rgba(15, 17, 17, 0.08);
+}
+
+.list-info-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.list-main-icon {
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background-color: #eaeded;
+
+  color: #007185;
+
+  font-size: 27px;
+}
+
+.list-info-card h2 {
+  margin: 0 0 4px;
+
+  font-size: 20px;
+
+  font-weight: 500;
+}
+
+.list-info-card p {
+  margin: 0;
+
+  color: #565959;
+
+  font-size: 13px;
+}
+
+/* =========================================================
+   CREATE LIST BUTTON
+========================================================= */
+
+.create-list-button {
+  padding: 10px 20px;
+
+  border: 1px solid #a88734;
+
+  border-radius: 20px;
+
+  background-color: #ffd814;
+
+  color: #0f1111;
+
+  font-size: 13px;
+
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: background-color 0.15s ease;
+}
+
+.create-list-button:hover {
+  background-color: #f7ca00;
+}
+
+/* =========================================================
+   CREATE LIST FORM
+========================================================= */
+
+.create-list-card {
+  background-color: #ffffff;
+
+  border: 1px solid #d5d9d9;
+
+  border-radius: 8px;
+
+  padding: 25px;
+
+  margin-bottom: 30px;
+
+  box-shadow: 0 2px 5px rgba(15, 17, 17, 0.12);
+}
+
+.create-list-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  gap: 20px;
+
+  padding-bottom: 18px;
+
+  margin-bottom: 20px;
+
+  border-bottom: 1px solid #eaeded;
+}
+
+.create-list-header h2 {
+  margin: 0 0 5px;
+
+  font-size: 21px;
+
+  font-weight: 500;
+}
+
+.create-list-header p {
+  margin: 0;
+
+  font-size: 13px;
+
+  color: #565959;
+}
+
+.close-list-button {
+  border: none;
+
+  background: transparent;
+
+  color: #565959;
+
+  font-size: 28px;
+
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.close-list-button:hover {
+  color: #000000;
+}
+
+.create-list-form {
+  max-width: 650px;
+}
+
+.create-list-form label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+.create-list-form input {
+  width: 100%;
+
+  height: 44px;
+
+  padding: 9px 12px;
+
+  border: 1px solid #888c8c;
+
+  border-radius: 5px;
+
+  outline: none;
+
+  font-size: 14px;
+}
+
+.create-list-form input:focus {
+  border-color: #007185;
+
+  box-shadow: 0 0 0 2px #c8f3fa;
+}
+
+.create-list-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 18px;
+}
+
+.cancel-list-button,
+.save-list-button {
+  padding: 9px 19px;
+
+  border-radius: 20px;
+
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+.cancel-list-button {
+  border: 1px solid #888c8c;
+
+  background-color: #ffffff;
+
+  color: #0f1111;
+}
+
+.cancel-list-button:hover {
+  background-color: #f7fafa;
+}
+
+.save-list-button {
+  border: 1px solid #a88734;
+
+  background-color: #ffd814;
+
+  color: #0f1111;
+}
+
+.save-list-button:hover {
+  background-color: #f7ca00;
+}
+
+/* =========================================================
+   YOUR LISTS SECTION
+========================================================= */
+
+.created-lists-section {
+  margin-bottom: 35px;
+}
+
+.section-heading {
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  margin-bottom: 14px;
+}
+
+.section-heading h2 {
+  margin: 0 0 4px;
+
+  font-size: 21px;
+
+  font-weight: 500;
+}
+
+.section-heading p {
+  margin: 0;
+
+  color: #565959;
+
+  font-size: 13px;
+}
+
+.section-heading > span {
+  color: #565959;
+
+  font-size: 13px;
+}
+
+/* =========================================================
+   CREATED LISTS GRID
+========================================================= */
+
+.created-lists {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 18px;
+}
+
+/* =========================================================
+   INDIVIDUAL LIST CARD
+========================================================= */
+
+.created-list-card {
+  position: relative;
+
+  min-height: 245px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  padding: 22px;
+
+  background-color: #ffffff;
+
+  border: 1px solid #d5d9d9;
+
+  border-radius: 8px;
+
+  box-shadow: 0 1px 2px rgba(15, 17, 17, 0.08);
+
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.created-list-card:hover {
+  border-color: #a2a6a6;
+
+  box-shadow: 0 4px 12px rgba(15, 17, 17, 0.14);
+
+  transform: translateY(-2px);
+}
+
+/* Selected list */
+
+.selected-list-card {
+  border: 2px solid #007185;
+
+  box-shadow: 0 3px 10px rgba(0, 113, 133, 0.12);
+}
+
+.selected-list-card:hover {
+  border-color: #007185;
+}
+
+/* =========================================================
+   LIST ICON
+========================================================= */
+
+.created-list-icon {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 18px;
+
+  border-radius: 50%;
+
+  background-color: #f3f3f3;
+
+  color: #007185;
+
+  font-size: 32px;
+}
+
+/* =========================================================
+   LIST CONTENT
+========================================================= */
+
+.created-list-content {
+  flex: 1;
+}
+
+.created-list-content h3 {
+  margin: 0 0 7px;
+
+  font-size: 19px;
+
+  font-weight: 500;
+
+  line-height: 1.3;
+
+  color: #007185;
+}
+
+.list-item-count {
+  margin: 0 0 7px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  color: #0f1111;
+}
+
+.list-description {
+  margin: 0;
+
+  color: #565959;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+/* =========================================================
+   LIST CARD ACTIONS
+========================================================= */
+
+.created-list-actions {
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  margin-top: 20px;
+}
+
+.view-list-button,
+.edit-list-button,
+.delete-list-button,
+.list-small-primary,
+.list-small-secondary {
+  padding: 7px 12px;
+
+  border-radius: 18px;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+/* View */
+
+.view-list-button {
+  border: 1px solid #a88734;
+
+  background-color: #ffd814;
+
+  color: #0f1111;
+}
+
+.view-list-button:hover {
+  background-color: #f7ca00;
+}
+
+/* Rename */
+
+.edit-list-button {
+  border: 1px solid #888c8c;
+
+  background-color: #ffffff;
+
+  color: #0f1111;
+}
+
+.edit-list-button:hover {
+  background-color: #f7fafa;
+
+  border-color: #007185;
+
+  color: #007185;
+}
+
+/* Delete */
+
+.delete-list-button {
+  border: 1px solid #d5d9d9;
+
+  background-color: #ffffff;
+
+  color: #565959;
+}
+
+.delete-list-button:hover {
+  border-color: #b12704;
+
+  color: #b12704;
+
+  background-color: #fff5f3;
+}
+
+/* =========================================================
+   EDIT LIST INPUT
+========================================================= */
+
+.edit-list-input {
+  width: 100%;
+
+  height: 38px;
+
+  padding: 7px 9px;
+
+  border: 2px solid #007185;
+
+  border-radius: 4px;
+
+  outline: none;
+
+  font-size: 17px;
+}
+
+/* Save */
+
+.list-small-primary {
+  border: 1px solid #a88734;
+
+  background-color: #ffd814;
+
+  color: #0f1111;
+}
+
+/* Cancel */
+
+.list-small-secondary {
+  border: 1px solid #888c8c;
+
+  background-color: #ffffff;
+
+  color: #0f1111;
+}
+
+/* =========================================================
+   SAVED ITEMS SECTION
+========================================================= */
+
+.saved-items-section {
+  margin-top: 10px;
+}
+
+.saved-items-header {
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  margin-bottom: 14px;
+}
+
+.saved-items-header h2 {
+  margin: 0 0 3px;
+
+  font-size: 22px;
+
+  font-weight: 500;
+}
+
+.saved-items-header span {
+  color: #565959;
+
+  font-size: 13px;
+}
+
+.selected-list-subtitle {
+  margin: 0;
+
+  color: #565959;
+
+  font-size: 13px;
+}
+
+/* =========================================================
+   PRODUCTS LIST
+========================================================= */
+
+.lists-grid {
+  display: flex;
+
+  flex-direction: column;
+
+  background-color: #ffffff;
+
+  border: 1px solid #d5d9d9;
+
+  border-radius: 8px;
+
+  overflow: hidden;
+
+  box-shadow: 0 1px 2px rgba(15, 17, 17, 0.08);
+}
+
+/* =========================================================
+   PRODUCT CARD
+========================================================= */
+
+.lists-card {
+  display: flex;
+
+  gap: 25px;
+
+  padding: 25px;
+
+  min-height: 190px;
+
+  background-color: #ffffff;
+
+  border-bottom: 1px solid #eaeded;
+
+  transition: background-color 0.15s ease;
+}
+
+.lists-card:last-child {
+  border-bottom: none;
+}
+
+.lists-card:hover {
+  background-color: #f7fafa;
+}
+
+/* =========================================================
+   TEMPORARY PRODUCT IMAGE
+========================================================= */
+
+.list-product-image {
+  width: 170px;
+  height: 170px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background-color: #f7f7f7;
+
+  border: 1px solid #eaeded;
+
+  color: #565959;
+
+  font-size: 13px;
+}
+
+/* =========================================================
+   PRODUCT INFORMATION
+========================================================= */
+
+.list-product-info {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.lists-card h3 {
+  margin: 0 0 8px;
+
+  font-size: 17px;
+
+  font-weight: 500;
+
+  line-height: 1.4;
+
+  color: #007185;
+}
+
+.list-rating {
+  margin: 0 0 8px;
+
+  font-size: 15px;
+
+  color: #f08804;
+
+  letter-spacing: 1px;
+}
+
+.lists-price {
+  margin: 0 0 8px;
+
+  font-size: 21px;
+
+  font-weight: 700;
+
+  color: #b12704;
+}
+
+.list-stock {
+  margin: 0 0 18px;
+
+  font-size: 13px;
+
+  color: #007600;
+}
+
+/* =========================================================
+   PRODUCT ACTIONS
+========================================================= */
+
+.list-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.list-primary-button,
+.list-secondary-button {
+  padding: 9px 18px;
+
+  border-radius: 20px;
+
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+/* Add to Cart */
+
+.list-primary-button {
+  border: 1px solid #a88734;
+
+  background-color: #ffd814;
+
+  color: #0f1111;
+}
+
+.list-primary-button:hover {
+  background-color: #f7ca00;
+}
+
+/* Remove */
+
+.list-secondary-button {
+  border: 1px solid #888c8c;
+
+  background-color: #ffffff;
+
+  color: #0f1111;
+}
+
+.list-secondary-button:hover {
+  background-color: #f7fafa;
+
+  border-color: #007185;
+
+  color: #007185;
+}
+
+/* =========================================================
+   EMPTY LIST
+========================================================= */
+
+.empty-list {
+  padding: 65px 30px;
+
+  text-align: center;
+
+  background-color: #ffffff;
+
+  border: 1px solid #d5d9d9;
+
+  border-radius: 8px;
+
+  box-shadow: 0 1px 2px rgba(15, 17, 17, 0.08);
+}
+
+.empty-list-icon {
+  width: 70px;
+  height: 70px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin: 0 auto 18px;
+
+  border-radius: 50%;
+
+  background-color: #eaeded;
+
+  color: #007185;
+
+  font-size: 35px;
+}
+
+.empty-list h2 {
+  margin: 0 0 8px;
+
+  font-size: 21px;
+
+  font-weight: 500;
+}
+
+.empty-list p {
+  max-width: 450px;
+
+  margin: 0 auto 22px;
+
+  color: #565959;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+.empty-list-button {
+  display: inline-block;
+
+  padding: 10px 22px;
+
+  border: 1px solid #a88734;
+
+  border-radius: 20px;
+
+  background-color: #ffd814;
+
+  color: #0f1111;
+
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+.empty-list-button:hover {
+  background-color: #f7ca00;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 950px) {
+  .created-lists {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .lists-container {
+    padding: 25px 12px 40px;
+  }
+
+  .lists-header {
+    font-size: 25px;
+  }
+
+  .list-info-card {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .create-list-button {
+    width: 100%;
+  }
+
+  .created-lists {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading,
+  .saved-items-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 7px;
+  }
+
+  .lists-card {
+    flex-direction: column;
+
+    gap: 18px;
+  }
+
+  .list-product-image {
+    width: 100%;
+
+    height: 180px;
+  }
+
+  .list-actions {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .list-primary-button,
+  .list-secondary-button {
+    width: 100%;
+  }
+
+  .created-list-actions {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+  .view-list-button,
+  .edit-list-button,
+  .delete-list-button,
+  .list-small-primary,
+  .list-small-secondary {
+    width: 100%;
+  }
+}
