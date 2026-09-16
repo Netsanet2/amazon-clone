@@ -9,6 +9,7 @@ import Cart from "./pages/cart/Cart";
 import Checkout from "./pages/Checkout/Checkout";
 import Confirmation from "./pages/OrderConfirmation/Confirmation";
 import OrdersPage from "./pages/Orders/OrdersPage";
+import OrderDetails from "./pages/Orders/OrdersDetails";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
@@ -68,9 +69,9 @@ function ProductRoutes() {
 
 export default function App() {
   return <LanguageProvider><BrowserRouter><Navbar /><Routes>
-    <Route path="/" element={<Home />} /><Route path="/products" element={<ProductRoutes />} /><Route path="/product/:id" element={<ProductDetails />} />
+    <Route path="/" element={<Home />} /><Route path="/products" element={<ProductRoutes />} /><Route path="/product/:id" element={<ProductDetails />} /><Route path="/products/:id" element={<ProductDetails />} />
     <Route path="/customer-service" element={<CustomerServicePage />} /><Route path="/customer-service/:topic" element={<h1>Customer Service Topic Page</h1>} /><Route path="/todays-deals" element={<TodaysDealsPage />} /><Route path="/registry" element={<RegistryPage />} /><Route path="/sell" element={<SellPage />} /><Route path="/sell/incentives" element={<SellerIncentives />} /><Route path="/customer-preferences" element={<CustomerPreferences />} /><Route path="/labor-day" element={<h1>Labor Day Sale Page</h1>} />
-    <Route path="/cart" element={<Cart />} /><Route path="/checkout" element={<Checkout />} /><Route path="/confirmation" element={<Confirmation />} /><Route path="/orders" element={<OrdersPage />} /><Route path="/login" element={<Login />} /><Route path="/register" element={<Register />} /><Route path="/forgot-password" element={<ForgotPassword />} />
+    <Route path="/cart" element={<Cart />} /><Route path="/checkout" element={<Checkout />} /><Route path="/confirmation" element={<Confirmation />} /><Route path="/orders" element={<OrdersPage />} /><Route path="/orders/:orderId" element={<OrderDetails />} /><Route path="/login" element={<Login />} /><Route path="/register" element={<Register />} /><Route path="/forgot-password" element={<ForgotPassword />} />
     <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} /><Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} /><Route path="/security" element={<ProtectedRoute><Security /></ProtectedRoute>} /><Route path="/addresses" element={<ProtectedRoute><Addresses /></ProtectedRoute>} /><Route path="/payment-methods" element={<ProtectedRoute><PaymentMethods /></ProtectedRoute>} /><Route path="/lists" element={<ProtectedRoute><Lists /></ProtectedRoute>} /><Route path="/gift-cards" element={<ProtectedRoute><GiftCards /></ProtectedRoute>} /><Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} /><Route path="/archived-orders" element={<ProtectedRoute><ArchivedOrders /></ProtectedRoute>} /><Route path="/gift-cards/buy" element={<ProtectedRoute><GiftCardBuy /></ProtectedRoute>} /><Route path="/gift-cards/reload" element={<ProtectedRoute><GiftCardReload /></ProtectedRoute>} /><Route path="/gift-cards/activity" element={<ProtectedRoute><GiftCardActivity /></ProtectedRoute>} /><Route path="/prime" element={<ProtectedRoute><Prime /></ProtectedRoute>} /><Route path="/subscribe-save" element={<ProtectedRoute><SubscribeSave /></ProtectedRoute>} /><Route path="/manage-content" element={<ProtectedRoute><ManageContent /></ProtectedRoute>} /><Route path="/digital-downloads" element={<ProtectedRoute><DigitalDownloads /></ProtectedRoute>} /><Route path="/account-preferences" element={<ProtectedRoute><AccountPreferences /></ProtectedRoute>} /><Route path="*" element={<Navigate to="/" replace />} />
   </Routes><Footer /></BrowserRouter></LanguageProvider>;
 }

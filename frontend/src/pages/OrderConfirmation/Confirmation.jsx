@@ -20,7 +20,7 @@ function Confirmation() {
 
         <div className="actions">
           <Link to="/orders" className="btn-secondary">View Your Orders</Link>
-          <Link to="/" className="btn-primary">Continue Shopping</Link>
+          <Link to="/products" className="btn-primary">Continue Shopping</Link>
         </div>
       </div>
     </div>

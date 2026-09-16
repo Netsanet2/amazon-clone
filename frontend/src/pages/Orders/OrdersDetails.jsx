@@ -1,9 +1,13 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useCart } from '../../context/CartContext';
+import products from '../../data/products';
 import './Orders.css';
 
 function OrderDetails() {
   const { orderId } = useParams();
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
 
   // Mock order data
   const order = {
@@ -33,6 +37,15 @@ function OrderDetails() {
         image: 'https://via.placeholder.com/100'
       }
     ]
+  };
+
+  const handleBuyAgain = (item) => {
+    const product = products.find((existingProduct) => existingProduct.name === item.title);
+
+    if (!product) return;
+
+    addToCart(product);
+    navigate('/cart');
   };
 
   return (
@@ -99,7 +112,9 @@ function OrderDetails() {
               <Link to="#" className="item-title">{item.title}</Link>
               <p className="item-price">{item.price}</p>
               <div className="item-actions">
-                <button className="btn-primary-sm">Buy it again</button>
+                <button className="btn-primary-sm" onClick={() => handleBuyAgain(item)}>
+                  Buy it again
+                </button>
                 <button className="btn-secondary-sm">Write a product review</button>
               </div>
             </div>

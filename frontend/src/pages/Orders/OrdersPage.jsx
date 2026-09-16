@@ -1,7 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from '../../context/CartContext';
+import products from '../../data/products';
 import './Orders.css';
 
 function OrdersPage() {
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
+
   const orders = [
     {
       id: '114-8291038-1029381',
@@ -17,6 +23,15 @@ function OrdersPage() {
       ]
     }
   ];
+
+  const handleBuyAgain = (item) => {
+    const product = products.find((existingProduct) => existingProduct.name === item.name);
+
+    if (!product) return;
+
+    addToCart(product);
+    navigate('/cart');
+  };
 
   return (
     <div className="orders-wrapper">
@@ -52,7 +67,9 @@ function OrdersPage() {
                   <div className="item-details">
                     <h3>{item.name}</h3>
                     <p className="item-price">{item.price}</p>
-                    <button className="buy-again-btn">Buy it again</button>
+                    <button className="buy-again-btn" onClick={() => handleBuyAgain(item)}>
+                      Buy it again
+                    </button>
                   </div>
                 </div>
               ))}
