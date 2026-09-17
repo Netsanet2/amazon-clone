@@ -1,11 +1,14 @@
+import { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 
 import products from "../data/products";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
 import ProductGallery from "../components/ProductGallery/ProductGallery";
 import ProductInfo from "../components/ProductInfo/ProductInfo";
 import Reviews from "../components/Reviews/Reviews";
+import AuthPrompt from "../components/AuthPrompt/AuthPrompt";
 
 import "./ProductDetails.css";
 
@@ -14,6 +17,8 @@ function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { user } = useAuth();
+  const [showBuyNowPrompt, setShowBuyNowPrompt] = useState(false);
 
   const foundProduct = products.find(
     (item) => item.id === Number(id)
@@ -74,7 +79,13 @@ function ProductDetails() {
       "buyNow",
       JSON.stringify(order)
     );
-    navigate("/checkout");
+
+    if (!user) {
+      setShowBuyNowPrompt(true);
+      return;
+    }
+
+    navigate("/checkout", { state: { buyNow: true } });
   };
 
   return (
@@ -144,6 +155,16 @@ function ProductDetails() {
         </ul>
 
       </section>
+
+      {showBuyNowPrompt && (
+        <AuthPrompt
+          modal
+          title="Sign in to continue with your purchase"
+          message="Please sign in to continue with your purchase."
+          destination={{ pathname: "/checkout", state: { buyNow: true } }}
+          onCancel={() => setShowBuyNowPrompt(false)}
+        />
+      )}
 
       {/* Customer Reviews */}
 

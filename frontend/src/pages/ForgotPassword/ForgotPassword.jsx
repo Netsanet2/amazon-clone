@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { isValidEmail, validationMessages } from '../../utils/validation';
 import '../Login/Login.css';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!isValidEmail(email)) {
+      setError(validationMessages.email);
+      return;
+    }
     if (email) {
       setSubmitted(true);
     }
@@ -49,6 +55,7 @@ export default function ForgotPassword() {
             </button>
           </form>
         )}
+        {error && <p className="field-error" role="alert">{error}</p>}
       </div>
     </div>
   );

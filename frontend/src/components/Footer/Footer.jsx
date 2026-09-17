@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import React from 'react';
 import './Footer.css';
 
@@ -7,7 +8,8 @@ const Footer = () => {
       <div className="footer-top">
         <div className="footer-col">
           <h4>Get to Know Us</h4>
-          <a href="#">About Amazon</a>
+          <Link to="/about-amazon">About Amazon</Link>
+          
           <a href="#">Careers</a>
           <a href="#">Press Releases</a>
           <a href="#">Amazon Science</a>

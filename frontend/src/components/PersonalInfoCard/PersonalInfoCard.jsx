@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { isValidEmail, isValidPhone, sanitizePhone, validationMessages } from "../../utils/validation";
 import "./PersonalInfoCard.css";
 
 export default function PersonalInfoCard({ user }) {
@@ -23,6 +24,15 @@ export default function PersonalInfoCard({ user }) {
   };
 
   const saveEditing = () => {
+    if (editingField === "email" && !isValidEmail(editValue)) {
+      alert(validationMessages.email);
+      return;
+    }
+    if (editingField === "phone" && !isValidPhone(editValue)) {
+      alert(validationMessages.phone);
+      return;
+    }
+
     setPersonalInfo({
       ...personalInfo,
       [editingField]: editValue,
@@ -188,7 +198,8 @@ export default function PersonalInfoCard({ user }) {
                     : "text"
                 }
                 value={editValue}
-                onChange={(e) => setEditValue(e.target.value)}
+                onChange={(e) => setEditValue(editingField === "phone" ? sanitizePhone(e.target.value) : e.target.value)}
+                inputMode={editingField === "phone" ? "tel" : undefined}
                 autoFocus
               />
 

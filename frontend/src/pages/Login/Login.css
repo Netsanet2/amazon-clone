@@ -68,3 +68,8 @@
   text-decoration: none;
   margin: 0 10px;
 }
+
+@media (max-width: 420px) {
+  .auth-divider, .auth-btn-secondary-link { width: min(350px, calc(100vw - 32px)); }
+  .auth-container { padding-right: 16px; padding-left: 16px; }
+}

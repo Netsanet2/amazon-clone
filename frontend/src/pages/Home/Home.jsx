@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import ProductCard from '../../components/ProductCard/ProductCard';
+import SharedProductCard from '../../components/ProductCard/ProductCard';
+import { Link } from 'react-router-dom';
+import products from '../../data/products';
 import './Home.css';
 import hero from '../../assets/school-hero.jpg';
 import { useLanguage } from '../LanguageContext/LanguageContext';
@@ -106,6 +108,80 @@ const heroSlides = [
   }
 ];
 
+const productIdByTile = {
+  Jeans: 21,
+  Tops: 22,
+  Dresses: 23,
+  Shoes: 24,
+  Backpacks: 25,
+  Electronics: 26,
+  Stationery: 27,
+  Books: 28,
+  Consoles: 29,
+  Headsets: 30,
+  Monitors: 31,
+  Mice: 32,
+  Cookers: 17,
+  Coffee: 18,
+  Dining: 19,
+  Tools: 20,
+  'MacBook Pro 14': 33,
+  Watches: 34,
+  Bags: 35,
+  Eyewear: 36,
+  Hats: 37,
+  'Ninja Blender': 38,
+  Fiction: 39,
+  'Non-Fiction': 40,
+  Comics: 41,
+  Kids: 42,
+  'Nintendo Switch': 43,
+  Makeup: 44,
+  Skincare: 45,
+  Hair: 46,
+  Fragrance: 47,
+  'Spalding NBA': 48,
+  'Dog Food': 49,
+  'Cat Toys': 50,
+  Beds: 51,
+  Leashes: 52,
+};
+
+function getSharedProduct(tile) {
+  const mappedProduct = products.find(
+    (product) => product.id === productIdByTile[tile.title]
+  );
+
+  if (mappedProduct) {
+    return mappedProduct;
+  }
+
+  const tileImage = tile.image?.split('?')[0];
+  const matchingImage = products.find(
+    (product) => product.image?.split('?')[0] === tileImage
+  );
+
+  if (matchingImage) {
+    return matchingImage;
+  }
+
+  return products[0];
+}
+
+function ProductCard({ product: tile }) {
+  const sharedProduct = getSharedProduct(tile);
+
+  return (
+    <SharedProductCard
+      product={{
+        ...sharedProduct,
+        title: tile.title,
+        image: tile.image,
+      }}
+    />
+  );
+}
+
 const Home = () => {
   const { language } = useLanguage();
   const t = translations[language] || translations.EN;
@@ -125,7 +201,8 @@ const Home = () => {
   return (
     <main className="home">
       {/* CLEAN SINGLE-HERO BANNER WITH DYNAMIC BACKGROUND */}
-      <section 
+      <Link
+        to="/products"
         className="hero" 
         style={{ backgroundImage: `url(${currentSlide.image})` }}
       >
@@ -133,7 +210,7 @@ const Home = () => {
           <h1>{t[currentSlide.titleKey] || t.heroTitle}</h1>
           <p>{t[currentSlide.subKey] || t.heroSub}</p>
         </div>
-      </section>
+      </Link>
 
       {/* THE 3-ROW GRID */}
       <div className="home-grid">
@@ -149,7 +226,7 @@ const Home = () => {
             <ProductCard product={{ title: 'Dresses', subtitle: 'under $30', price: '29.99', image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=400&q=80' }} />
             <ProductCard product={{ title: 'Shoes', subtitle: 'under $50', price: '49.99', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80' }} />
           </div>
-          <span className="box-link">{t.seeMore}</span>
+          <Link to="/products?category=Fashion" className="box-link">{t.seeMore}</Link>
         </div>
 
         {/* Box 2: School Supplies */}
@@ -189,7 +266,7 @@ const Home = () => {
               }} 
             />
           </div>
-          <span className="box-link">{t.shopNow}</span>
+          <Link to="/products" className="box-link">{t.shopNow}</Link>
         </div>
 
         {/* Box 3: Gaming */}
@@ -201,7 +278,7 @@ const Home = () => {
             <ProductCard product={{ title: 'Monitors', subtitle: '144Hz displays', price: '199.99', image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=400&q=80' }} />
             <ProductCard product={{ title: 'Mice', subtitle: 'Pro gaming', price: '49.99', image: 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=400&q=80' }} />
           </div>
-          <span className="box-link">{t.seeMore}</span>
+          <Link to="/products?category=Electronics" className="box-link">{t.seeMore}</Link>
         </div>
 
         {/* Box 4: Kitchen */}
@@ -233,7 +310,7 @@ const Home = () => {
               image: 'https://images.unsplash.com/photo-1506368249639-73a05d6f6488?auto=format&fit=crop&w=400&q=80' 
             }} />
           </div>
-          <span className="box-link">{t.exploreNow}</span>
+          <Link to="/products?category=Kitchen" className="box-link">{t.exploreNow}</Link>
         </div>
 
         {/* ================= ROW 2 ================= */}
@@ -241,13 +318,13 @@ const Home = () => {
         {/* Box 5: Single Item */}
         <div className="grid-box">
           <h2 className="box-title">{t.electronicsTitle}</h2>
-          <div className="single-item-layout">
+          <Link to={`/product/${getSharedProduct({ title: 'MacBook Pro 14', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80' }).id}`} className="single-item-layout">
             <div className="single-item-image">
               <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80" alt="MacBook Pro" onError={handleImgError} />
             </div>
             <span className="single-item-label">MacBook Pro 14"</span>
-          </div>
-          <span className="box-link">{t.shopNow}</span>
+          </Link>
+          <Link to="/products?category=Electronics" className="box-link">{t.shopNow}</Link>
         </div>
 
         {/* Box 6: Trending Fashion */}
@@ -276,22 +353,22 @@ const Home = () => {
               title: 'Hats', 
               subtitle: 'Caps & headwear', 
               price: '19.99', 
-              image: 'https://images.unsplash.com/photo-1534215754734-18e55d13ce35?auto=format&fit=crop&w=400&q=80'
+              image: 'https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=400&q=80'
             }} />
           </div>
-          <span className="box-link">{t.seeMore}</span>
+          <Link to="/products?category=Fashion" className="box-link">{t.seeMore}</Link>
         </div>
 
         {/* Box 7: Single Item */}
         <div className="grid-box">
           <h2 className="box-title">{t.homeTitle}</h2>
-          <div className="single-item-layout">
+          <Link to={`/product/${getSharedProduct({ title: 'Ninja Blender', image: 'https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=600&q=80' }).id}`} className="single-item-layout">
             <div className="single-item-image">
               <img src="https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=600&q=80" alt="Ninja Blender" onError={handleImgError} />
             </div>
             <span className="single-item-label">Ninja Blender</span>
-          </div>
-          <span className="box-link">{t.exploreNow}</span>
+          </Link>
+          <Link to="/products?category=Home" className="box-link">{t.exploreNow}</Link>
         </div>
 
         {/* Box 8: Books Grid */}
@@ -303,7 +380,7 @@ const Home = () => {
             <ProductCard product={{ title: 'Comics', subtitle: 'Marvel & DC', price: '9.99', image: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=400&q=80' }} />
             <ProductCard product={{ title: 'Kids', subtitle: 'Bedtime stories', price: '11.99', image: 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=400&q=80' }} />
           </div>
-          <span className="box-link">{t.seeMore}</span>
+          <Link to="/products?category=Books" className="box-link">{t.seeMore}</Link>
         </div>
 
         {/* ================= ROW 3 ================= */}
@@ -311,13 +388,13 @@ const Home = () => {
         {/* Box 9: Single Item */}
         <div className="grid-box">
           <h2 className="box-title">{t.toysTitle}</h2>
-          <div className="single-item-layout">
+          <Link to={`/product/${getSharedProduct({ title: 'Nintendo Switch', image: 'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?auto=format&fit=crop&w=600&q=80' }).id}`} className="single-item-layout">
             <div className="single-item-image">
               <img src="https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?auto=format&fit=crop&w=600&q=80" alt="Nintendo Switch" onError={handleImgError} />
             </div>
             <span className="single-item-label">Nintendo Switch</span>
-          </div>
-          <span className="box-link">{t.shopNow}</span>
+          </Link>
+          <Link to="/products?category=Electronics" className="box-link">{t.shopNow}</Link>
         </div>
 
         {/* Box 10: Beauty Grid */}
@@ -329,19 +406,19 @@ const Home = () => {
             <ProductCard product={{ title: 'Hair', subtitle: 'Care & style', price: '19.99', image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=400&q=80' }} />
             <ProductCard product={{ title: 'Fragrance', subtitle: 'Perfume', price: '79.99', image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=400&q=80' }} />
           </div>
-          <span className="box-link">{t.seeMore}</span>
+          <Link to="/products?category=Beauty" className="box-link">{t.seeMore}</Link>
         </div>
 
         {/* Box 11: Single Item */}
         <div className="grid-box">
           <h2 className="box-title">{t.sportsTitle}</h2>
-          <div className="single-item-layout">
+          <Link to={`/product/${getSharedProduct({ title: 'Spalding NBA', image: 'https://images.unsplash.com/photo-1519861531473-9200262188bf?auto=format&fit=crop&w=600&q=80' }).id}`} className="single-item-layout">
             <div className="single-item-image">
               <img src="https://images.unsplash.com/photo-1519861531473-9200262188bf?auto=format&fit=crop&w=600&q=80" alt="Spalding NBA" onError={handleImgError} />
             </div>
             <span className="single-item-label">Spalding NBA</span>
-          </div>
-          <span className="box-link">{t.shopNow}</span>
+          </Link>
+          <Link to="/products?category=Sports" className="box-link">{t.shopNow}</Link>
         </div>
 
         {/* Box 12: Pet Grid */}
@@ -353,7 +430,7 @@ const Home = () => {
             <ProductCard product={{ title: 'Beds', subtitle: 'Cozy', price: '49.99', image: 'https://images.unsplash.com/photo-1541599540903-216a46ca1dc0?auto=format&fit=crop&w=400&q=80' }} />
             <ProductCard product={{ title: 'Leashes', subtitle: 'Durable', price: '16.99', image: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&w=400&q=80' }} />
           </div>
-          <span className="box-link">{t.seeMore}</span>
+          <Link to="/products?category=Pets" className="box-link">{t.seeMore}</Link>
         </div>
 
       </div>

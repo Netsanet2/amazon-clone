@@ -74,7 +74,7 @@ export default function Account() {
     <div className="account-main-wrapper">
       <UserProfile />
 
-      <div className="account-grid">
+      <div className="account-cards-grid">
         {accountCards.map((card, index) => (
           <Link
             to={card.link}

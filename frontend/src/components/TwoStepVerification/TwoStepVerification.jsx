@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { isValidPhone, sanitizePhone, validationMessages } from "../../utils/validation";
 import "./TwoStepVerification.css";
 
 export default function TwoStepVerification({ onClose }) {
@@ -15,10 +16,8 @@ export default function TwoStepVerification({ onClose }) {
   const handleContinue = (e) => {
     e.preventDefault();
 
-    const phoneDigits = phone.replace(/\D/g, "");
-
-    if (phoneDigits.length < 7) {
-      alert("Please enter a valid phone number.");
+    if (!isValidPhone(phone)) {
+      alert(validationMessages.phone);
       return;
     }
 
@@ -131,14 +130,10 @@ export default function TwoStepVerification({ onClose }) {
                 const value = e.target.value;
 
                 // Allow numbers and common phone symbols
-                const cleanedValue = value.replace(
-                  /[^0-9+\-() ]/g,
-                  ""
-                );
-
-                setPhone(cleanedValue);
+                setPhone(sanitizePhone(value));
               }}
               placeholder="+251 900 000 000"
+              inputMode="tel"
               required
             />
 
