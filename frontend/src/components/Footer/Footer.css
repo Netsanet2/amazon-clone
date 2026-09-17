@@ -27,3 +27,14 @@
 }
 .footer-bottom .footer-logo { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: -0.5px; margin-bottom: 6px; }
 .footer-bottom .footer-logo span { color: #febd69; }
+
+@media (max-width: 600px) {
+  .footer { padding: 28px 16px 16px; }
+  .footer-top { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 16px; }
+  .footer-col h4 { font-size: 14px; }
+  .footer-col a { font-size: 13px; overflow-wrap: anywhere; }
+}
+
+@media (max-width: 380px) {
+  .footer-top { grid-template-columns: 1fr; }
+}

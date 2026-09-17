@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import TwoStepVerification from "../../components/TwoStepVerification/TwoStepVerification";
+import { isValidEmail, isValidPassword, isValidPhone, sanitizePhone, validationMessages } from "../../utils/validation";
 import "./Security.css";
 export default function Security() {
   const { user, logout } = useAuth();
@@ -39,6 +40,15 @@ export default function Security() {
 
     if (!editValue.trim()) {
       alert("Please enter a value.");
+      return;
+    }
+
+    if (editingField === "email" && !isValidEmail(editValue)) {
+      alert(validationMessages.email);
+      return;
+    }
+    if (editingField === "phone" && !isValidPhone(editValue)) {
+      alert(validationMessages.phone);
       return;
     }
 
@@ -80,8 +90,8 @@ export default function Security() {
       return;
     }
 
-    if (passwordData.newPassword.length < 6) {
-      alert("Password must be at least 6 characters.");
+    if (!isValidPassword(passwordData.newPassword)) {
+      alert(validationMessages.password);
       return;
     }
 
@@ -291,8 +301,9 @@ export default function Security() {
                     }
                     value={editValue}
                     onChange={(e) =>
-                      setEditValue(e.target.value)
+                      setEditValue(editingField === "phone" ? sanitizePhone(e.target.value) : e.target.value)
                     }
+                    inputMode={editingField === "phone" ? "tel" : undefined}
                     autoFocus
                     required
                   />
@@ -393,6 +404,7 @@ export default function Security() {
                     name="newPassword"
                     value={passwordData.newPassword}
                     onChange={handlePasswordChange}
+                    minLength={7}
                     required
                   />
 
@@ -409,6 +421,7 @@ export default function Security() {
                     name="confirmPassword"
                     value={passwordData.confirmPassword}
                     onChange={handlePasswordChange}
+                    minLength={7}
                     required
                   />
 

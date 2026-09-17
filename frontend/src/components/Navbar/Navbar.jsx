@@ -1,7 +1,9 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import { useLanguage } from "../../pages/LanguageContext/LanguageContext";
+import { useCart } from "../../context/CartContext";
+import { productCategories } from "../../data/products";
 import SideBar from "./SideBar";
 
 const navTranslations = {
@@ -121,13 +123,101 @@ const navTranslations = {
 
 export default function Navbar() {
   const { language, setLanguage } = useLanguage();
+  const { getCartCount } = useCart();
+  const location = useLocation();
+  const navigate = useNavigate();
   const tNav = navTranslations[language] || navTranslations.EN;
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [deliveryLocation, setDeliveryLocation] = useState(
+    () => localStorage.getItem("amazon-clone-delivery-location") || "Ethiopia"
+  );
+  const [deliveryPostalCode, setDeliveryPostalCode] = useState(
+    () => localStorage.getItem("amazon-clone-delivery-postal-code") || ""
+  );
+  const [deliveryDraft, setDeliveryDraft] = useState(deliveryLocation);
+  const [postalDraft, setPostalDraft] = useState(deliveryPostalCode);
+  const [isLocationOpen, setIsLocationOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const categoryMenuRef = useRef(null);
+  const locationMenuRef = useRef(null);
+
+  useEffect(() => {
+    const handleDocumentClick = (event) => {
+      if (!categoryMenuRef.current?.contains(event.target)) {
+        setIsCategoryMenuOpen(false);
+      }
+      if (!locationMenuRef.current?.contains(event.target)) {
+        setIsLocationOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setIsCategoryMenuOpen(false);
+        setIsLocationOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleDocumentClick);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleDocumentClick);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const category = params.get("category");
+    setSelectedCategory(productCategories.includes(category) ? category : "All");
+    setSearchTerm(params.get("search") || "");
+  }, [location.search]);
 
   const handleLanguageChange = (e) => {
     if (setLanguage) {
       setLanguage(e.target.value);
     }
+  };
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const params = new URLSearchParams();
+    if (searchTerm.trim()) {
+      params.set("search", searchTerm.trim());
+    }
+    if (selectedCategory !== "All") {
+      params.set("category", selectedCategory);
+    }
+    navigate(`/products${params.toString() ? `?${params.toString()}` : ""}`);
+  };
+
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+    setIsCategoryMenuOpen(false);
+    const params = new URLSearchParams();
+    if (searchTerm.trim()) {
+      params.set("search", searchTerm.trim());
+    }
+    if (category !== "All") {
+      params.set("category", category);
+    }
+    navigate(`/products${params.toString() ? `?${params.toString()}` : ""}`);
+  };
+
+  const openLocationMenu = () => {
+    setDeliveryDraft(deliveryLocation);
+    setPostalDraft(deliveryPostalCode);
+    setIsLocationOpen(true);
+  };
+
+  const saveDeliveryLocation = () => {
+    setDeliveryLocation(deliveryDraft);
+    setDeliveryPostalCode(postalDraft);
+    localStorage.setItem("amazon-clone-delivery-location", deliveryDraft);
+    localStorage.setItem("amazon-clone-delivery-postal-code", postalDraft);
+    setIsLocationOpen(false);
   };
 
   return (
@@ -145,28 +235,68 @@ export default function Navbar() {
         </div>
 
         {/* Deliver Location */}
-        <div className="nav-item nav-deliver">
-          <span className="nav-line1">{tNav.deliverTo}</span>
-          <span className="nav-line2">Ethiopia</span>
+        <div className="nav-location-wrapper" ref={locationMenuRef}>
+            <button type="button" className="nav-item nav-deliver" onClick={openLocationMenu} aria-expanded={isLocationOpen} aria-haspopup="dialog" aria-controls="delivery-location-dialog">
+              <span className="nav-line1">{tNav.deliverTo}</span>
+              <span className="nav-line2">{deliveryLocation}</span>
+          </button>
+          {isLocationOpen && (
+            <div id="delivery-location-dialog" className="location-popover" role="dialog" aria-modal="false" aria-label="Choose your delivery location">
+              <div className="location-popover-header">
+                <h2>Choose your delivery location</h2>
+                <button type="button" className="location-close" onClick={() => setIsLocationOpen(false)} aria-label="Close delivery location dialog">×</button>
+              </div>
+              <label htmlFor="delivery-country">Country/Region</label>
+              <select id="delivery-country" value={deliveryDraft} onChange={(event) => setDeliveryDraft(event.target.value)}>
+                <option>Ethiopia</option>
+                <option>United States</option>
+                <option>United Kingdom</option>
+                <option>Canada</option>
+                <option>Germany</option>
+              </select>
+              <label htmlFor="delivery-postal">Postal/ZIP code</label>
+              <input id="delivery-postal" value={postalDraft} onChange={(event) => setPostalDraft(event.target.value)} placeholder="Optional" />
+              <div className="location-actions">
+                <button type="button" onClick={() => setIsLocationOpen(false)}>Cancel</button>
+                <button type="button" onClick={saveDeliveryLocation}>Apply</button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Search Bar */}
-        <div className="nav-search">
-          <select className="search-select">
-            <option>{tNav.all}</option>
-          </select>
+        <form className="nav-search" onSubmit={handleSearch}>
+          <div className="search-category-wrapper" ref={categoryMenuRef}>
+            <button type="button" className="search-select" onClick={() => setIsCategoryMenuOpen((open) => !open)} aria-expanded={isCategoryMenuOpen} aria-haspopup="menu" aria-controls="search-category-menu">
+              {selectedCategory === "All" ? tNav.all : selectedCategory}
+              <span aria-hidden="true">▾</span>
+            </button>
+            {isCategoryMenuOpen && (
+              <div id="search-category-menu" className="search-category-menu" role="menu">
+                {productCategories.map((category) => (
+                  <button type="button" role="menuitem" key={category} className={selectedCategory === category ? "selected" : ""} onClick={() => handleCategorySelect(category)}>
+                    {category}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
           <input
             type="text"
             className="search-input"
             placeholder={tNav.searchPlaceholder}
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
           />
-          <button className="search-btn">🔍</button>
-        </div>
+          <button type="submit" className="search-btn" aria-label="Search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" /><path d="m16 16 5 5" /></svg>
+          </button>
+        </form>
 
         {/* Controls */}
         <div className="nav-right">
           {/* Language Selector */}
-          <div className="nav-item nav-dropdown-trigger">
+          <div className="nav-item nav-dropdown-trigger nav-account-trigger">
             <div className="nav-lang-box">
               <img 
                 src="https://flagcdn.com/w20/us.png" 
@@ -246,7 +376,7 @@ export default function Navbar() {
             <div className="nav-dropdown account-dropdown">
               <div className="dropdown-arrow"></div>
               <div className="account-top">
-                <Link to="/login" className="nav-signin-btn">
+                <Link to="/login" state={{ from: { pathname: "/account" } }} className="nav-signin-btn">
                   {tNav.signIn}
                 </Link>
                 <p className="new-customer-text">
@@ -282,7 +412,7 @@ export default function Navbar() {
 
           {/* Cart */}
           <Link to="/cart" className="nav-item nav-cart">
-            <span className="cart-count">0</span>
+            <span className="cart-count">{getCartCount()}</span>
             <span className="cart-text">{tNav.cart}</span>
           </Link>
         </div>
@@ -291,25 +421,30 @@ export default function Navbar() {
       {/* SECONDARY NAVBAR */}
       <div className="nav-secondary">
         {/* FIXED: State variable matched correctly to setIsSideBarOpen */}
-        <div className="all-menu" onClick={() => setIsSideBarOpen(true)}> 
+        <button
+          type="button"
+          className="all-menu"
+          onClick={() => setIsSideBarOpen(true)}
+          aria-label="Open navigation menu"
+        >
           <span>☰</span>
           <span>{tNav.all}</span>
-        </div>
-        <Link to="/todays-deals" className="nav-link">
+        </button>
+        <NavLink to="/todays-deals" className="nav-link">
           {tNav.deals}
-        </Link>
-        <Link to="/customer-service" className="nav-link">
+        </NavLink>
+        <NavLink to="/customer-service" className="nav-link">
           {tNav.service}
-        </Link>
-        <Link to="/registry" className="nav-link">
+        </NavLink>
+        <NavLink to="/registry" className="nav-link">
           {tNav.registry}
-        </Link>
-        <Link to="/gift-cards" className="nav-link">
+        </NavLink>
+        <NavLink to="/gift-cards" className="nav-link">
           {tNav.giftCards}
-        </Link>
-        <Link to="/sell" className="nav-link">
+        </NavLink>
+        <NavLink to="/sell" className="nav-link">
           {tNav.sell}
-        </Link>
+        </NavLink>
       </div>
 
       {/* RENDER SIDEBAR COMPONENT HERE */}

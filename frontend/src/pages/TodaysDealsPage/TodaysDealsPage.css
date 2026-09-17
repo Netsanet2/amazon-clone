@@ -111,39 +111,57 @@
 
 /* Sidebar */
 .deals-sidebar {
-  flex: 0 0 220px; /* Fixed width sidebar */
+  flex: 0 0 240px;
   border-right: 1px solid #e7e9ec;
   padding-right: 20px;
 }
 
 .filter-group {
-  margin-bottom: 25px;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eaeded;
+}
+
+.filter-group:last-child {
+  border-bottom: none;
 }
 
 .filter-group h4 {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
-  margin: 0 0 10px 0;
+  line-height: 1.25;
+  margin: 0 0 12px;
 }
 
 .radio-group, .checkbox-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 9px;
 }
 
 .filter-label {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
+  min-width: 0;
   font-size: 13px;
+  line-height: 1.35;
   cursor: pointer;
   color: #0f1111;
 }
 
 .filter-label input {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
   margin: 0;
+  accent-color: #007185;
   cursor: pointer;
+}
+
+.filter-label span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .stars {
@@ -156,9 +174,10 @@
   border: none;
   color: #007185;
   font-size: 13px;
+  line-height: 1.35;
   cursor: pointer;
-  padding: 5px 0 0 0;
-  margin-left: 20px; /* Align with text, not checkbox */
+  padding: 8px 0 0 25px;
+  margin: 0;
 }
 
 .see-more-btn:hover {
@@ -227,4 +246,19 @@
 
 .back-to-top-btn:hover {
   background-color: #485769;
+}
+
+@media (max-width: 768px) {
+  .deals-main-layout {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .deals-sidebar {
+    width: 100%;
+    flex-basis: auto;
+    border-right: none;
+    border-bottom: 1px solid #e7e9ec;
+    padding: 0 0 4px;
+  }
 }

@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 import Rating from "../Rating/Rating";
 import QuantitySelector from "../QuantitySelector/QuantitySelector";
 import AddToCart from "../AddToCart/AddToCart";
 import BuyNow from "../BuyNow/BuyNow";
+import AuthPrompt from "../AuthPrompt/AuthPrompt";
 
 import "./ProductInfo.css";
 
@@ -14,6 +17,8 @@ function ProductInfo({
 }) {
 
   const [quantity, setQuantity] = useState(1);
+  const { user } = useAuth();
+  const location = useLocation();
 
   const handleAddToCart = () => {
     onAddToCart(product, quantity);
@@ -91,6 +96,15 @@ function ProductInfo({
         <div className="delivery-location">
           📍 Deliver to your location
         </div>
+
+        {!user && (
+          <AuthPrompt
+            compact
+            title="Deliver to Ethiopia"
+            message="Sign in to see your delivery estimate."
+            destination={location}
+          />
+        )}
 
       </div>
 

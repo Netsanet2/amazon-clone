@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { isValidEmail, validationMessages } from "../../utils/validation";
 import "./GiftCardBuy.css";
 
 function GiftCardBuy() {
@@ -18,6 +19,10 @@ function GiftCardBuy() {
 
     if (!recipientEmail.trim()) {
       alert("Please enter the recipient's email.");
+      return;
+    }
+    if (!isValidEmail(recipientEmail)) {
+      alert(validationMessages.email);
       return;
     }
 

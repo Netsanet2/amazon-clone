@@ -9,26 +9,8 @@ body {
   background-color: #eaeded;
 }
 
-.amazon-header {
-  background-color: #131921;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 30px;
-}
-
-.logo {
-  font-size: 22px;
-  font-weight: bold;
-}
-
-.logo span {
-  color: #ff9900;
-  font-size: 14px;
-}
-
 .checkout-wrapper {
+  width: 100%;
   max-width: 1150px;
   margin: 20px auto;
   padding: 0 15px;
@@ -42,12 +24,14 @@ body {
 
 .checkout-grid {
   display: flex;
+  min-width: 0;
   gap: 20px;
   align-items: flex-start;
 }
 
 .checkout-left {
   flex: 2;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -55,6 +39,7 @@ body {
 
 .checkout-right {
   flex: 1;
+  min-width: 0;
 }
 
 .checkout-card {
@@ -93,6 +78,13 @@ body {
   font-size: 14px;
 }
 
+.field-error {
+  display: block;
+  margin-top: 4px;
+  color: #b12704;
+  font-size: 12px;
+}
+
 .form-group input:focus,
 .form-group select:focus {
   border-color: #e77600;
@@ -104,6 +96,8 @@ body {
   display: flex;
   gap: 15px;
 }
+
+.form-row > * { min-width: 0; flex: 1 1 0; }
 
 .place-order-btn {
   width: 100%;
@@ -144,4 +138,29 @@ hr {
   color: #565959;
   text-align: center;
   margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+  .checkout-grid {
+    flex-direction: column;
+  }
+
+  .checkout-left,
+  .checkout-right {
+    width: 100%;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .checkout-wrapper { margin-top: 12px; padding: 0 12px; }
+  .checkout-heading { font-size: 24px; }
+  .checkout-card { padding: 18px 14px; }
+}
+
+.optional-label {
+  color: #565959;
+  font-weight: normal;
 }

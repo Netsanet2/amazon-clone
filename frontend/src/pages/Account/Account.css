@@ -1,20 +1,24 @@
 .account-main-wrapper {
+  width: 100%;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 20px;
+  padding: clamp(16px, 3vw, 24px);
+  box-sizing: border-box;
   font-family: "Amazon Ember", Arial, sans-serif;
   color: #0f1111;
 }
 
-.account-grid {
+.account-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
 
 .account-card {
   display: flex;
+  min-width: 0;
   align-items: flex-start;
+  min-height: 92px;
   padding: 16px;
   border: 1px solid #d5d9d9;
   border-radius: 8px;
@@ -49,6 +53,10 @@
   line-height: 1.4;
 }
 
+.card-text {
+  min-width: 0;
+}
+
 .account-divider {
   border: none;
   border-top: 1px solid #e7e7e7;
@@ -57,7 +65,7 @@
 
 .account-sections-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: 24px;
 }
 
@@ -66,6 +74,10 @@
   font-weight: 700;
   margin: 0 0 10px 0;
   color: #0f1111;
+}
+
+.account-section-column {
+  min-width: 0;
 }
 
 .account-section-column ul {
@@ -87,4 +99,38 @@
 .account-section-column a:hover {
   color: #c45500;
   text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .account-cards-grid {
+    gap: 12px;
+  }
+
+  .account-card {
+    padding: 14px;
+  }
+
+  .card-icon {
+    margin-right: 12px;
+  }
+
+  .account-divider {
+    margin: 24px 0;
+  }
+
+  .account-sections-grid {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .account-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .account-cards-grid {
+    grid-template-columns: 1fr;
+  }
 }

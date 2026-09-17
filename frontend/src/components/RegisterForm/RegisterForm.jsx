@@ -1,19 +1,34 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { isValidEmail, isValidPassword, validationMessages } from '../../utils/validation';
 
 export default function RegisterForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const { register } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!isValidEmail(email)) {
+      setError(validationMessages.email);
+      return;
+    }
+    if (!isValidPassword(password)) {
+      setError(validationMessages.password);
+      return;
+    }
     if (name && email && password) {
       register(name, email, password);
-      navigate('/account');
+      const from = location.state?.from;
+      const destination = from?.pathname
+        ? `${from.pathname}${from.search || ''}${from.hash || ''}`
+        : '/account';
+      navigate(destination, { replace: true, state: from?.state });
     }
   };
 
@@ -56,8 +71,8 @@ export default function RegisterForm() {
           className="auth-input"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="At least 6 characters"
-          minLength={6}
+          placeholder="At least 7 characters"
+          minLength={7}
           required
         />
 
@@ -66,12 +81,14 @@ export default function RegisterForm() {
         </button>
       </form>
 
+      {error && <p className="field-error" role="alert">{error}</p>}
+
       <p className="auth-legal-text">
         By creating an account, you agree to Amazon's Clone <a href="#">Conditions of Use</a> and <a href="#">Privacy Notice</a>.
       </p>
 
       <div className="auth-help-link" style={{ marginTop: '22px', borderTop: '1px solid #e7e7e7', paddingTop: '14px' }}>
-        Already have an account? <Link to="/login">Sign in</Link>
+        Already have an account? <Link to="/login" state={location.state}>Sign in</Link>
       </div>
     </div>
   );

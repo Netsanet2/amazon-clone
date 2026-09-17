@@ -1,39 +1,28 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useCart } from '../../context/CartContext';
+import { getOrder } from '../../utils/orderStorage';
 import './Orders.css';
 
 function OrderDetails() {
   const { orderId } = useParams();
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
+  const order = getOrder(orderId);
 
-  // Mock order data
-  const order = {
-    id: orderId || '114-8291038-1029381',
-    date: 'September 2, 2026',
-    shippingAddress: {
-      name: 'Gidena Mehari',
-      street: 'Bole Road, House #104',
-      city: 'Addis Ababa',
-      country: 'Ethiopia'
-    },
-    paymentMethod: 'Visa ending in 8921',
-    summary: {
-      itemsSubtotal: '$29.99',
-      shipping: '$0.00',
-      totalBeforeTax: '$29.99',
-      estimatedTax: '$0.00',
-      grandTotal: '$29.99'
-    },
-    items: [
-      {
-        id: 1,
-        title: 'Wireless Bluetooth Headphones',
-        price: '$29.99',
-        status: 'Delivered',
-        deliveryDate: 'September 3, 2026',
-        image: 'https://via.placeholder.com/100'
-      }
-    ]
+  const handleBuyAgain = (item) => {
+    addToCart(item);
+    navigate('/cart');
   };
+
+  if (!order) {
+    return (
+      <div className="orders-wrapper">
+        <h1>Order not found</h1>
+        <Link to="/orders">Back to Your Orders</Link>
+      </div>
+    );
+  }
 
   return (
     <div className="orders-wrapper">
@@ -44,7 +33,7 @@ function OrderDetails() {
       <div className="details-header">
         <h1>Order Details</h1>
         <p className="order-meta">
-          Ordered on {order.date} | Order # {order.id}
+          Ordered on {new Date(order.date).toLocaleDateString()} | Order # {order.id}
         </p>
       </div>
 
@@ -53,9 +42,10 @@ function OrderDetails() {
         <div className="info-block">
           <h3>Shipping Address</h3>
           <p><strong>{order.shippingAddress.name}</strong></p>
-          <p>{order.shippingAddress.street}</p>
-          <p>{order.shippingAddress.city}</p>
-          <p>{order.shippingAddress.country}</p>
+          <p>{order.shippingAddress.address}</p>
+          <p>{order.shippingAddress.city}{order.shippingAddress.region ? `, ${order.shippingAddress.region}` : ''}</p>
+          <p>{order.shippingAddress.country}{order.shippingAddress.postalCode ? `, ${order.shippingAddress.postalCode}` : ''}</p>
+          <p>{order.shippingAddress.phone}</p>
         </div>
 
         <div className="info-block">
@@ -67,24 +57,24 @@ function OrderDetails() {
           <h3>Order Summary</h3>
           <div className="summary-line">
             <span>Item(s) Subtotal:</span>
-            <span>{order.summary.itemsSubtotal}</span>
+            <span>${order.summary.itemsSubtotal.toFixed(2)}</span>
           </div>
           <div className="summary-line">
             <span>Shipping & Handling:</span>
-            <span>{order.summary.shipping}</span>
+            <span>${order.summary.shipping.toFixed(2)}</span>
           </div>
           <div className="summary-line">
             <span>Total before tax:</span>
-            <span>{order.summary.totalBeforeTax}</span>
+            <span>${(order.summary.itemsSubtotal + order.summary.shipping - order.summary.savings).toFixed(2)}</span>
           </div>
           <div className="summary-line">
             <span>Estimated tax:</span>
-            <span>{order.summary.estimatedTax}</span>
+            <span>$0.00</span>
           </div>
           <hr />
           <div className="summary-line grand-total">
             <strong>Grand Total:</strong>
-            <strong>{order.summary.grandTotal}</strong>
+            <strong>${order.summary.total.toFixed(2)}</strong>
           </div>
         </div>
       </div>
@@ -95,11 +85,13 @@ function OrderDetails() {
           <div key={item.id} className="detail-item-row">
             <img src={item.image} alt={item.title} />
             <div className="detail-item-info">
-              <h2 className="status-text">{item.status} {item.deliveryDate}</h2>
-              <Link to="#" className="item-title">{item.title}</Link>
-              <p className="item-price">{item.price}</p>
+              <h2 className="status-text">Order placed</h2>
+              <Link to={`/product/${item.id}`} className="item-title">{item.title || item.name}</Link>
+              <p className="item-price">${Number(item.price).toFixed(2)} · Quantity: {item.quantity}</p>
               <div className="item-actions">
-                <button className="btn-primary-sm">Buy it again</button>
+                <button className="btn-primary-sm" onClick={() => handleBuyAgain(item)}>
+                  Buy it again
+                </button>
                 <button className="btn-secondary-sm">Write a product review</button>
               </div>
             </div>

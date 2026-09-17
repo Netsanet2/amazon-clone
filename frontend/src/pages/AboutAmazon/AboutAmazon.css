@@ -1,0 +1,62 @@
+.about-amazon-page {
+  min-height: 100vh;
+  background-color: #eaeded;
+  color: #0f1111;
+}
+
+.about-amazon-hero {
+  background-color: #ffffff;
+  padding: 60px 20px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.about-amazon-hero h1 {
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+.about-amazon-hero p {
+  max-width: 750px;
+  margin: 0 auto;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #565959;
+}
+
+.about-amazon-content {
+  max-width: 1100px;
+  margin: 35px auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.about-amazon-section {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  padding: 28px;
+  min-height: 220px;
+}
+
+.about-amazon-section h2 {
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+.about-amazon-section p {
+  color: #565959;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+@media (max-width: 768px) {
+  .about-amazon-content {
+    grid-template-columns: 1fr;
+  }
+
+  .about-amazon-hero h1 {
+    font-size: 30px;
+  }
+}

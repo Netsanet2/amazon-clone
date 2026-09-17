@@ -1,7 +1,7 @@
 import "./App.css";
-import { useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import products from "./data/products";
+import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate, useSearchParams } from "react-router-dom";
+import products, { productCategories } from "./data/products";
 import ProductListing from "./components/ProductListing/ProductListing";
 import Filters from "./components/Filters/Filters";
 import Sorting from "./components/Sorting/Sorting";
@@ -9,6 +9,7 @@ import Cart from "./pages/cart/Cart";
 import Checkout from "./pages/Checkout/Checkout";
 import Confirmation from "./pages/OrderConfirmation/Confirmation";
 import OrdersPage from "./pages/Orders/OrdersPage";
+import OrderDetails from "./pages/Orders/OrdersDetails";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
@@ -41,11 +42,24 @@ import SellPage from "./pages/SellPage/SellPage";
 import SellerIncentives from "./pages/SellerIncentives/SellerIncentives";
 import { LanguageProvider } from "./pages/LanguageContext/LanguageContext";
 import ProductDetails from "./pages/ProductDetails";
+import AboutAmazon from "./pages/AboutAmazon/AboutAmazon";
 
 function ProductRoutes() {
-  const [filters, setFilters] = useState({ category: "All", minPrice: "", maxPrice: "", rating: "0", availability: "All", brand: "All" });
+  const [searchParams] = useSearchParams();
+  const requestedCategory = searchParams.get("category");
+  const requestedSearch = searchParams.get("search") || "";
+  const initialCategory = productCategories.includes(requestedCategory) ? requestedCategory : "All";
+  const [filters, setFilters] = useState({ category: initialCategory, minPrice: "", maxPrice: "", rating: "0", availability: "All", brand: "All" });
   const [sortBy, setSortBy] = useState("default");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(requestedSearch);
+  useEffect(() => {
+    setFilters((currentFilters) => ({
+      ...currentFilters,
+      category: productCategories.includes(requestedCategory) ? requestedCategory : "All",
+    }));
+    setSearchTerm(requestedSearch);
+  }, [requestedCategory, requestedSearch]);
+
   const filteredProducts = products.filter((product) => {
     const searchMatch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
     return searchMatch && (filters.category === "All" || product.category === filters.category) &&
@@ -62,15 +76,15 @@ function ProductRoutes() {
     if (sortBy === "newest") return new Date(b.dateAdded) - new Date(a.dateAdded);
     return 0;
   });
-  const categories = ["All", "Electronics", "Fashion", "Beauty", "Watches", "Luxury", "Accessories"];
-  return <div style={{ display: "flex", gap: "20px", padding: "20px", alignItems: "flex-start" }}><Filters filters={filters} setFilters={setFilters} /><div style={{ flex: 1 }}><div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "20px" }}>{categories.map((category) => <button key={category} onClick={() => setFilters({ ...filters, category })}>{category}</button>)}</div><input type="text" placeholder="Search products..." value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} /><Sorting sortBy={sortBy} setSortBy={setSortBy} />{sortedProducts.length > 0 ? <ProductListing products={sortedProducts} /> : <p>No products found.</p>}</div></div>;
+  return <div className="products-page-layout"><Filters filters={filters} setFilters={setFilters} /><div className="products-page-content"><div className="products-category-buttons">{productCategories.map((category) => <button key={category} onClick={() => setFilters({ ...filters, category })}>{category}</button>)}</div><input className="products-search-input" type="text" placeholder="Search products..." value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} /><Sorting sortBy={sortBy} setSortBy={setSortBy} />{sortedProducts.length > 0 ? <ProductListing products={sortedProducts} /> : <p>No products found.</p>}</div></div>;
 }
 
 export default function App() {
   return <LanguageProvider><BrowserRouter><Navbar /><Routes>
-    <Route path="/" element={<Home />} /><Route path="/products" element={<ProductRoutes />} /><Route path="/product/:id" element={<ProductDetails />} />
+    <Route path="/" element={<Home />} /><Route path="/products" element={<ProductRoutes />} /><Route path="/product/:id" element={<ProductDetails />} /><Route path="/products/:id" element={<ProductDetails />} />
     <Route path="/customer-service" element={<CustomerServicePage />} /><Route path="/customer-service/:topic" element={<h1>Customer Service Topic Page</h1>} /><Route path="/todays-deals" element={<TodaysDealsPage />} /><Route path="/registry" element={<RegistryPage />} /><Route path="/sell" element={<SellPage />} /><Route path="/sell/incentives" element={<SellerIncentives />} /><Route path="/customer-preferences" element={<CustomerPreferences />} /><Route path="/labor-day" element={<h1>Labor Day Sale Page</h1>} />
-    <Route path="/cart" element={<Cart />} /><Route path="/checkout" element={<Checkout />} /><Route path="/confirmation" element={<Confirmation />} /><Route path="/orders" element={<OrdersPage />} /><Route path="/login" element={<Login />} /><Route path="/register" element={<Register />} /><Route path="/forgot-password" element={<ForgotPassword />} />
+    <Route path="/cart" element={<Cart />} /><Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} /><Route path="/confirmation" element={<Confirmation />} /><Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} /><Route path="/orders/:orderId" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} /><Route path="/login" element={<Login />} /><Route path="/register" element={<Register />} /><Route path="/forgot-password" element={<ForgotPassword />} />
     <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} /><Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} /><Route path="/security" element={<ProtectedRoute><Security /></ProtectedRoute>} /><Route path="/addresses" element={<ProtectedRoute><Addresses /></ProtectedRoute>} /><Route path="/payment-methods" element={<ProtectedRoute><PaymentMethods /></ProtectedRoute>} /><Route path="/lists" element={<ProtectedRoute><Lists /></ProtectedRoute>} /><Route path="/gift-cards" element={<ProtectedRoute><GiftCards /></ProtectedRoute>} /><Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} /><Route path="/archived-orders" element={<ProtectedRoute><ArchivedOrders /></ProtectedRoute>} /><Route path="/gift-cards/buy" element={<ProtectedRoute><GiftCardBuy /></ProtectedRoute>} /><Route path="/gift-cards/reload" element={<ProtectedRoute><GiftCardReload /></ProtectedRoute>} /><Route path="/gift-cards/activity" element={<ProtectedRoute><GiftCardActivity /></ProtectedRoute>} /><Route path="/prime" element={<ProtectedRoute><Prime /></ProtectedRoute>} /><Route path="/subscribe-save" element={<ProtectedRoute><SubscribeSave /></ProtectedRoute>} /><Route path="/manage-content" element={<ProtectedRoute><ManageContent /></ProtectedRoute>} /><Route path="/digital-downloads" element={<ProtectedRoute><DigitalDownloads /></ProtectedRoute>} /><Route path="/account-preferences" element={<ProtectedRoute><AccountPreferences /></ProtectedRoute>} /><Route path="*" element={<Navigate to="/" replace />} />
+    <Route path="/about-amazon" element={<AboutAmazon />} />
   </Routes><Footer /></BrowserRouter></LanguageProvider>;
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { isValidPhone, sanitizePhone, validationMessages } from "../../utils/validation";
 import "./AddressForm.css";
 
 export default function AddressForm({
@@ -20,12 +21,17 @@ export default function AddressForm({
 
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: name === "phone" ? sanitizePhone(value) : value,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!isValidPhone(formData.phone)) {
+      alert(validationMessages.phone);
+      return;
+    }
 
     onSave({
       ...formData,
@@ -122,6 +128,7 @@ export default function AddressForm({
               name="phone"
               value={formData.phone}
               onChange={handleChange}
+              inputMode="tel"
               required
             />
           </div>

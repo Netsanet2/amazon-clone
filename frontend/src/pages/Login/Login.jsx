@@ -1,9 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import './Login.css';
 
 export default function Login() {
+  const location = useLocation();
+
   return (
     <div className="auth-container">
       <Link to="/" className="auth-logo-link">
@@ -20,7 +22,7 @@ export default function Login() {
         <h5>New to Amazon?</h5>
       </div>
 
-      <Link to="/register" className="auth-btn-secondary-link">
+      <Link to="/register" state={location.state} className="auth-btn-secondary-link">
         <button className="auth-btn-secondary">Create your Amazon account</button>
       </Link>
 

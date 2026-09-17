@@ -1,5 +1,6 @@
 .filters {
-  width: 240px;
+  width: min(240px, 100%);
+  flex: 0 0 240px;
   padding: 20px;
   background: #ffffff;
   border: 1px solid #ddd;
@@ -45,4 +46,8 @@
 
 .reset-filters:hover {
   background: #333;
+}
+
+@media (max-width: 700px) {
+  .filters { flex-basis: auto; }
 }

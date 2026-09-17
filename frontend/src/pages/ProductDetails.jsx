@@ -1,16 +1,24 @@
-import { useParams, Link } from "react-router-dom";
+import { useState } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
 import products from "../data/products";
+import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
 import ProductGallery from "../components/ProductGallery/ProductGallery";
 import ProductInfo from "../components/ProductInfo/ProductInfo";
 import Reviews from "../components/Reviews/Reviews";
+import AuthPrompt from "../components/AuthPrompt/AuthPrompt";
 
 import "./ProductDetails.css";
 
 function ProductDetails() {
 
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
+  const { user } = useAuth();
+  const [showBuyNowPrompt, setShowBuyNowPrompt] = useState(false);
 
   const foundProduct = products.find(
     (item) => item.id === Number(id)
@@ -52,45 +60,10 @@ function ProductDetails() {
   /* Add to Cart */
 
   const handleAddToCart = (product, quantity) => {
-
-    const existingCart =
-      JSON.parse(localStorage.getItem("cart")) || [];
-
-    const existingProduct = existingCart.find(
-      (item) => item.id === product.id
-    );
-
-    let updatedCart;
-
-    if (existingProduct) {
-
-      updatedCart = existingCart.map((item) =>
-        item.id === product.id
-          ? {
-              ...item,
-              quantity: item.quantity + quantity
-            }
-          : item
-      );
-
-    } else {
-
-      updatedCart = [
-        ...existingCart,
-        {
-          ...product,
-          quantity
-        }
-      ];
-
+    for (let index = 0; index < quantity; index += 1) {
+      addToCart(product);
     }
-
-    localStorage.setItem(
-      "cart",
-      JSON.stringify(updatedCart)
-    );
-
-    alert(`${quantity} item(s) added to cart!`);
+    navigate("/cart");
   };
 
   /* Buy Now */
@@ -107,7 +80,12 @@ function ProductDetails() {
       JSON.stringify(order)
     );
 
-    alert("Proceeding to checkout...");
+    if (!user) {
+      setShowBuyNowPrompt(true);
+      return;
+    }
+
+    navigate("/checkout", { state: { buyNow: true } });
   };
 
   return (
@@ -177,6 +155,16 @@ function ProductDetails() {
         </ul>
 
       </section>
+
+      {showBuyNowPrompt && (
+        <AuthPrompt
+          modal
+          title="Sign in to continue with your purchase"
+          message="Please sign in to continue with your purchase."
+          destination={{ pathname: "/checkout", state: { buyNow: true } }}
+          onCancel={() => setShowBuyNowPrompt(false)}
+        />
+      )}
 
       {/* Customer Reviews */}
 

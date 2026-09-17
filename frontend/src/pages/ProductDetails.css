@@ -51,6 +51,7 @@
   padding: 25px;
 
   border: 1px solid #dddddd;
+  min-width: 0;
 }
 
 /* Gallery */
@@ -150,6 +151,8 @@
   .product-details-container {
     padding: 15px;
   }
+
+  .breadcrumb { flex-wrap: wrap; }
 
   .about-product {
     padding: 20px;
