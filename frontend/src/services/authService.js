@@ -4,13 +4,10 @@ import {
   signOut,
   sendPasswordResetEmail,
   updateProfile,
-  getAuth,
 } from "firebase/auth";
 
-import app from "../firebase";
+import { auth } from "../firebase";
 import { createUserProfile } from "./userService";
-
-const auth = getAuth(app);
 
 // Register a new user
 export const registerUser = async (name, email, password) => {
@@ -20,7 +17,6 @@ export const registerUser = async (name, email, password) => {
     email,
     password
   );
-  
 
   // 2. Add the user's name to Firebase Authentication
   await updateProfile(result.user, {
