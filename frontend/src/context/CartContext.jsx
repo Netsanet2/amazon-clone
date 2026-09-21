@@ -1,4 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import {
+  addCartItem,
+  getCartItems,
+  updateCartItem,
+  deleteCartItem,
+  clearCart as clearFirebaseCart,
+} from "../services/cartService";
 
 const CartContext = createContext();
 
@@ -14,64 +21,117 @@ export function CartProvider({ children }) {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const addToCart = (product) => {
-    setCartItems((currentItems) => {
-      const existingItem = currentItems.find(
+  // Load cart from Firebase when the user is logged in
+  useEffect(() => {
+    const loadCart = async () => {
+      try {
+        const items = await getCartItems();
+        setCartItems(items);
+      } catch (error) {
+        console.log("Firebase cart not loaded:", error.message);
+      }
+    };
+
+    loadCart();
+  }, []);
+
+  const addToCart = async (product) => {
+    try {
+      const existingItem = cartItems.find(
         (item) => item.id === product.id
       );
 
       if (existingItem) {
-        return currentItems.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
+        const newQuantity = existingItem.quantity + 1;
+
+        await updateCartItem(product.id, {
+          quantity: newQuantity,
+        });
+
+        setCartItems((currentItems) =>
+          currentItems.map((item) =>
+            item.id === product.id
+              ? { ...item, quantity: newQuantity }
+              : item
+          )
         );
+      } else {
+        const newItem = {
+          ...product,
+          quantity: 1,
+        };
+
+        await addCartItem(newItem);
+
+        setCartItems((currentItems) => [
+          ...currentItems,
+          newItem,
+        ]);
       }
-
-      return [...currentItems, { ...product, quantity: 1 }];
-    });
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+    }
   };
 
-  const removeFromCart = (productId) => {
-    setCartItems((currentItems) =>
-      currentItems.filter((item) => item.id !== productId)
-    );
+  const removeFromCart = async (productId) => {
+    try {
+      await deleteCartItem(productId);
+
+      setCartItems((currentItems) =>
+        currentItems.filter((item) => item.id !== productId)
+      );
+    } catch (error) {
+      console.error("Error removing item from cart:", error);
+    }
   };
 
-  const updateQuantity = (productId, newQuantity) => {
+  const updateQuantity = async (productId, newQuantity) => {
     if (newQuantity < 1) return;
 
-    setCartItems((currentItems) =>
-      currentItems.map((item) =>
-        item.id === productId
-          ? { ...item, quantity: newQuantity }
-          : item
-      )
-    );
+    try {
+      await updateCartItem(productId, {
+        quantity: newQuantity,
+      });
+
+      setCartItems((currentItems) =>
+        currentItems.map((item) =>
+          item.id === productId
+            ? { ...item, quantity: newQuantity }
+            : item
+        )
+      );
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+    }
   };
 
-  const clearCart = () => {
-    setCartItems([]);
+  const clearCart = async () => {
+    try {
+      await clearFirebaseCart();
+      setCartItems([]);
+    } catch (error) {
+      console.error("Error clearing cart:", error);
+    }
   };
 
-  const increaseQuantity = (productId) => {
-    setCartItems((currentItems) =>
-      currentItems.map((item) =>
-        item.id === productId
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      )
+  const increaseQuantity = async (productId) => {
+    const item = cartItems.find(
+      (item) => item.id === productId
     );
+
+    if (!item) return;
+
+    await updateQuantity(productId, item.quantity + 1);
   };
 
-  const decreaseQuantity = (productId) => {
-    setCartItems((currentItems) =>
-      currentItems.map((item) =>
-        item.id === productId && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
+  const decreaseQuantity = async (productId) => {
+    const item = cartItems.find(
+      (item) => item.id === productId
     );
+
+    if (!item || item.quantity <= 1) return;
+
+    await updateQuantity(productId, item.quantity - 1);
   };
 
   const saveForLater = (productId) => {
@@ -93,13 +153,13 @@ export function CartProvider({ children }) {
     });
   };
 
-  const moveToCart = (productId) => {
+  const moveToCart = async (productId) => {
     const item = savedItems.find(
       (item) => item.id === productId
     );
 
     if (item) {
-      setCartItems((currentItems) => [...currentItems, item]);
+      await addToCart(item);
 
       setSavedItems((currentItems) =>
         currentItems.filter((item) => item.id !== productId)
