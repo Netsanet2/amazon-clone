@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 
 import {
   registerUser,
@@ -7,11 +7,9 @@ import {
   logoutUser,
 } from "../services/authService";
 
-import app from "../firebase";
+import { auth } from "../firebase";
 
 const AuthContext = createContext(null);
-
-const auth = getAuth(app);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -43,8 +41,8 @@ export function AuthProvider({ children }) {
   };
 
   const register = async (name, email, password) => {
-  return await registerUser(name, email, password);
-};
+    return await registerUser(name, email, password);
+  };
 
   const logout = async () => {
     await logoutUser();
@@ -74,3 +72,4 @@ export function useAuth() {
 
   return context;
 }
+
