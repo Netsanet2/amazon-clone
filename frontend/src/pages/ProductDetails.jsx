@@ -59,11 +59,20 @@ function ProductDetails() {
 
   /* Add to Cart */
 
-  const handleAddToCart = (product, quantity) => {
-    for (let index = 0; index < quantity; index += 1) {
-      addToCart(product);
+  const handleAddToCart = async (product, quantity) => {
+    try {
+      if (!user) {
+        navigate("/login", {
+          state: { from: { pathname: "/cart" } },
+        });
+        return;
+      }
+
+      await addToCart(product, quantity);
+      navigate("/cart");
+    } catch (error) {
+      console.error("Unable to add product to cart:", error);
     }
-    navigate("/cart");
   };
 
   /* Buy Now */

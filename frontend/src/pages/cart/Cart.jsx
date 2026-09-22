@@ -8,11 +8,15 @@ import "./Cart.css";
 
 function Cart() {
   const { cartItems, savedItems, moveToCart } = useCart();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [showCheckoutPrompt, setShowCheckoutPrompt] = useState(false);
 
   const handleProceedToCheckout = () => {
+    if (authLoading) {
+      return;
+    }
+
     if (user) {
       navigate("/checkout");
       return;
@@ -237,9 +241,10 @@ function Cart() {
                 <button
                   type="button"
                   onClick={handleProceedToCheckout}
+                  disabled={authLoading}
                   className="checkout-button"
                 >
-                  Proceed to Checkout
+                  {authLoading ? "Loading..." : "Proceed to Checkout"}
                 </button>
               ) : (
                 <button
