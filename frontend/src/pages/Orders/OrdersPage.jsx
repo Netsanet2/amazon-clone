@@ -1,21 +1,60 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
-import { getOrders } from '../../utils/orderStorage';
+import { getUserOrders } from '../../services/orderService';
 import './Orders.css';
 
 function OrdersPage() {
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const { user } = useAuth();
-  const orders = getOrders();
+ const { user } = useAuth();
 
+const [orders, setOrders] = useState([]);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState("");
+useEffect(() => {
+  const loadOrders = async () => {
+    if (!user?.uid) {
+      setOrders([]);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const userOrders = await getUserOrders(user.uid);
+      setOrders(userOrders);
+    } catch (error) {
+      console.error("Failed to load orders:", error);
+      setError("Unable to load your orders.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  loadOrders();
+}, [user]);
   const handleBuyAgain = (item) => {
     addToCart(item);
     navigate('/cart');
   };
+if (loading) {
+  return (
+    <div className="orders-wrapper">
+      <h1>Your Orders</h1>
+      <p>Loading your orders...</p>
+    </div>
+  );
+}
 
+if (error) {
+  return (
+    <div className="orders-wrapper">
+      <h1>Your Orders</h1>
+      <p>{error}</p>
+    </div>
+  );
+}
   return (
     <div className="orders-wrapper">
       <h1>Your Orders</h1>
@@ -32,7 +71,7 @@ function OrdersPage() {
             <div className="order-header">
               <div>
                 <span className="label">ORDER PLACED</span>
-                <span>{new Date(order.date).toLocaleDateString()}</span>
+                <span>{new Date(order.createdAt).toLocaleDateString()}</span>
               </div>
               <div>
                 <span className="label">TOTAL</span>

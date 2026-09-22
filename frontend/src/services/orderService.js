@@ -1,49 +1,101 @@
-import { 
-  db, 
-  collection, 
-  addDoc, 
-  getDocs, 
-  doc, 
-  getDoc, 
-  query, 
-  where, 
-  orderBy, 
-  serverTimestamp 
-} from '../firebase/config'; // Adjust to match your firebase import path
+import {
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  getDoc,
+  query,
+  where,
+  serverTimestamp,
+} from "firebase/firestore";
 
-const ORDERS_COLLECTION = 'orders';
+import { db } from "../firebase";
 
-// Save new order to Firestore
+const ORDERS_COLLECTION = "orders";
+
+// Create a new order in Firestore
 export const createOrder = async (orderData) => {
   try {
-    const docRef = await addDoc(collection(db, ORDERS_COLLECTION), {
+    const docRef = await addDoc(
+      collection(db, ORDERS_COLLECTION),
+      {
+        ...orderData,
+        status: "Processing",
+        createdAt: serverTimestamp(),
+      }
+    );
+
+    return {
+      id: docRef.id,
       ...orderData,
-      status: 'Processing',
-      createdAt: serverTimestamp(),
-    });
-    return { id: docRef.id, ...orderData };
+    };
   } catch (error) {
     console.error("Error creating order:", error);
     throw error;
   }
 };
 
-// Fetch order history for logged-in user
+// Get all orders belonging to the logged-in user
 export const getUserOrders = async (userId) => {
   try {
     const q = query(
       collection(db, ORDERS_COLLECTION),
-      where('userId', '==', userId),
-      orderBy('createdAt', 'desc')
+      where("userId", "==", userId)
     );
+
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt: doc.data().createdAt?.toDate() ? doc.data().createdAt.toDate().toISOString() : new Date().toISOString(),
-    }));
+
+    const orders = querySnapshot.docs.map((orderDocument) => {
+      const data = orderDocument.data();
+
+      return {
+        id: orderDocument.id,
+        ...data,
+        createdAt: data.createdAt?.toDate
+          ? data.createdAt.toDate().toISOString()
+          : null,
+      };
+    });
+
+    // Sort locally so loading orders does not require a Firestore composite index.
+    return orders.sort((firstOrder, secondOrder) => {
+      const firstDate = firstOrder.createdAt
+        ? new Date(firstOrder.createdAt).getTime()
+        : 0;
+      const secondDate = secondOrder.createdAt
+        ? new Date(secondOrder.createdAt).getTime()
+        : 0;
+
+      return secondDate - firstDate;
+    });
   } catch (error) {
     console.error("Error fetching user orders:", error);
+    throw error;
+  }
+};
+
+// Get one order by its ID
+export const getOrderById = async (orderId) => {
+  try {
+    const orderDocument = await getDoc(
+      doc(db, ORDERS_COLLECTION, orderId)
+    );
+
+    if (!orderDocument.exists()) {
+      return null;
+    }
+
+    const data = orderDocument.data();
+
+    return {
+      id: orderDocument.id,
+      ...data,
+      createdAt: data.createdAt?.toDate
+        ? data.createdAt.toDate().toISOString()
+        : null,
+    };
+  } catch (error) {
+    console.error("Error fetching order:", error);
     throw error;
   }
 };
