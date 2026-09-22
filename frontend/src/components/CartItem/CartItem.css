@@ -173,9 +173,19 @@
     height: 140px;
   }
 
-  .cart-product-name { font-size: 18px; overflow-wrap: anywhere; }
-  .cart-actions { width: 100%; }
-  .cart-action-button { padding-right: 4px; padding-left: 4px; }
+  .cart-product-name {
+    font-size: 18px;
+    overflow-wrap: anywhere;
+  }
+
+  .cart-actions {
+    width: 100%;
+  }
+
+  .cart-action-button {
+    padding-right: 4px;
+    padding-left: 4px;
+  }
 
   .cart-item-total {
     min-width: 0;

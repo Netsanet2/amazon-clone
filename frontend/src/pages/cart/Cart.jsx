@@ -262,6 +262,7 @@ function Cart() {
         </div>
 
       </div>
+
       {showCheckoutPrompt && (
         <AuthPrompt
           modal
