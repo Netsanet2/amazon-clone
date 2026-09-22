@@ -6,6 +6,7 @@ import {
   loginUser,
   logoutUser,
 } from "../services/authService";
+import { getUserProfile } from "../services/userService";
 import { auth } from "../firebase";
 
 const AuthContext = createContext(null);
@@ -15,11 +16,17 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
+        const profile = await getUserProfile(firebaseUser.uid).catch((error) => {
+          console.error("Unable to load user profile:", error);
+          return null;
+        });
+
         setUser({
           uid: firebaseUser.uid,
           name:
+            profile?.name ||
             firebaseUser.displayName ||
             firebaseUser.email?.split("@")[0] ||
             "Customer",
