@@ -6,7 +6,6 @@ import {
   loginUser,
   logoutUser,
 } from "../services/authService";
-
 import { auth } from "../firebase";
 
 const AuthContext = createContext(null);
@@ -72,4 +71,3 @@ export function useAuth() {
 
   return context;
 }
-
