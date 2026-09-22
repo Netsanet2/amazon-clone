@@ -1,8 +1,48 @@
-/* =====================================================
-   APP-LEVEL STYLES — AMAZON CLONE
-   ===================================================== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #0f1111;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
 
 .app {
   min-height: 100vh;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.products-page-layout {
+  display: flex;
+  min-width: 0;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.products-page-content { flex: 1 1 auto; min-width: 0; }
+.products-category-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+.products-search-input { width: 100%; max-width: 420px; margin-bottom: 16px; padding: 9px 10px; border: 1px solid #aab0b0; border-radius: 4px; }
+
+@media (max-width: 700px) {
+  .products-page-layout { flex-direction: column; padding: 12px; }
+  .filters { width: 100%; }
+  .products-page-content { width: 100%; }
 }

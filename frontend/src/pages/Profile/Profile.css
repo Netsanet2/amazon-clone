@@ -1,0 +1,45 @@
+.profile-page {
+  min-height: 100vh;
+  background-color: #eaeded;
+  padding: 40px 20px;
+}
+
+.profile-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Page heading */
+
+.profile-title-section {
+  margin-bottom: 25px;
+}
+
+.profile-title-section h1 {
+  font-size: 30px;
+  font-weight: 400;
+  color: #0f1111;
+  margin: 0 0 8px;
+}
+
+.profile-title-section p {
+  font-size: 14px;
+  color: #565959;
+  margin: 0;
+}
+
+/* Responsive */
+
+@media (max-width: 600px) {
+  .profile-page {
+    padding: 25px 12px;
+  }
+
+  .profile-title-section h1 {
+    font-size: 24px;
+  }
+
+  .profile-title-section p {
+    font-size: 13px;
+  }
+}

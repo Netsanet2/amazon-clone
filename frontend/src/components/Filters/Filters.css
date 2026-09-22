@@ -1,0 +1,53 @@
+.filters {
+  width: min(240px, 100%);
+  flex: 0 0 240px;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  height: fit-content;
+}
+
+.filters h2 {
+  margin: 0 0 20px;
+  font-size: 22px;
+  color: #111;
+}
+
+.filter-group {
+  margin-bottom: 20px;
+}
+
+.filter-group h3 {
+  margin-bottom: 8px;
+  font-size: 15px;
+  color: #333;
+}
+
+.filter-group select,
+.filter-group input {
+  width: 100%;
+  padding: 9px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.reset-filters {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background: #111;
+  color: white;
+  cursor: pointer;
+}
+
+.reset-filters:hover {
+  background: #333;
+}
+
+@media (max-width: 700px) {
+  .filters { flex-basis: auto; }
+}

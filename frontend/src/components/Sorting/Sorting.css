@@ -1,0 +1,21 @@
+.sorting {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.sorting label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.sorting select {
+  padding: 9px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: white;
+  cursor: pointer;
+}

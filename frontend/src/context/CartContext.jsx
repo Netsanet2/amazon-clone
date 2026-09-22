@@ -21,7 +21,7 @@ export function CartProvider({ children }) {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // Load cart from Firebase when the user is logged in
+  // Load cart from Firebase
   useEffect(() => {
     const loadCart = async () => {
       try {

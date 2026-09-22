@@ -1,0 +1,115 @@
+.payment-card {
+  background-color: #ffffff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  padding: 24px;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.payment-card:hover {
+  border-color: #a8acac;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.default-payment {
+  border: 2px solid #007185;
+}
+
+.default-payment-badge {
+  display: inline-block;
+  align-self: flex-start;
+  background-color: #e7f3f5;
+  color: #007185;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 9px;
+  border-radius: 4px;
+  margin-bottom: 18px;
+}
+
+.payment-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.card-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #eaeded;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  flex-shrink: 0;
+}
+
+.payment-info h2 {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: #0f1111;
+}
+
+.card-number {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin: 0 0 7px;
+  color: #0f1111;
+}
+
+.card-name {
+  font-size: 13px;
+  margin: 0 0 4px;
+  color: #565959;
+}
+
+.card-expiry {
+  font-size: 12px;
+  margin: 0;
+  color: #767676;
+}
+
+.payment-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 25px;
+}
+
+.payment-actions button {
+  padding: 8px 14px;
+  border: 1px solid #888c8c;
+  border-radius: 20px;
+  background-color: #ffffff;
+  color: #0f1111;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.payment-actions button:hover {
+  background-color: #f7fafa;
+  border-color: #007185;
+  color: #007185;
+}
+
+@media (max-width: 500px) {
+  .payment-card {
+    padding: 18px;
+    min-height: auto;
+  }
+
+  .payment-actions {
+    flex-direction: column;
+  }
+
+  .payment-actions button {
+    width: 100%;
+  }
+}

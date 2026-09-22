@@ -1,0 +1,271 @@
+.orders-wrapper {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.orders-wrapper h1 {
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.order-card {
+  background: white;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.order-header {
+  background: #f0f2f2;
+  padding: 14px 20px;
+  display: flex;
+  gap: 40px;
+  border-bottom: 1px solid #d5d9d9;
+  font-size: 12px;
+  color: #565959;
+}
+
+.order-header a {
+  margin-top: 4px;
+  color: #007185;
+  text-decoration: none;
+}
+
+.order-header a:hover {
+  color: #c45500;
+  text-decoration: underline;
+}
+
+.order-header div {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-header .label {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.order-id {
+  margin-left: auto;
+}
+
+.order-body {
+  padding: 20px;
+}
+
+.order-shipping-address {
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #eaeded;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.order-shipping-address h3 {
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+
+.order-shipping-address p {
+  margin: 0;
+}
+
+.item-row {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.item-row img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.item-details h3 {
+  font-size: 15px;
+  color: #007185;
+  margin-bottom: 6px;
+}
+
+.item-price {
+  font-size: 14px;
+  color: #b12704;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.buy-again-btn {
+  background: #ffd814;
+  border: 1px solid #fcd200;
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.order-action-link {
+  display: inline-block;
+  margin-left: 10px;
+  color: #007185;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.order-action-link:hover {
+  color: #c45500;
+  text-decoration: underline;
+}
+
+.empty-orders {
+  padding: 32px;
+  background: #ffffff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+}
+
+.empty-orders h2 {
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.details-header {
+  margin-bottom: 20px;
+}
+
+.breadcrumb {
+  margin-bottom: 16px;
+  color: #007185;
+  font-size: 13px;
+}
+
+.details-header h1 {
+  font-size: 28px;
+  font-weight: 400;
+}
+
+.order-meta {
+  margin-top: 6px;
+  color: #565959;
+  font-size: 13px;
+}
+
+.details-card {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.info-block h3 {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.info-block p {
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.grand-total {
+  color: #b12704;
+  font-size: 16px;
+}
+
+.detail-item-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 8px 0 20px;
+  border-bottom: 1px solid #eaeded;
+}
+
+.detail-item-row:last-child {
+  padding-bottom: 8px;
+  border-bottom: none;
+}
+
+.detail-item-row img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.detail-item-info {
+  flex: 1;
+}
+
+.status-text {
+  margin-bottom: 8px;
+  color: #007600;
+  font-size: 15px;
+}
+
+.item-title {
+  color: #007185;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.item-title:hover {
+  color: #c45500;
+  text-decoration: underline;
+}
+
+.item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.btn-primary-sm,
+.btn-secondary-sm {
+  padding: 7px 12px;
+  border: 1px solid #d5d9d9;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.btn-primary-sm { background: #ffd814; border-color: #fcd200; }
+.btn-secondary-sm { background: #ffffff; }
+
+@media (max-width: 700px) {
+  .order-header,
+  .info-grid {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .order-id { margin-left: 0; }
+
+  .orders-wrapper { margin-top: 16px; padding: 0 12px; }
+  .order-header { display: flex; flex-wrap: wrap; padding: 12px; }
+  .order-header > div { min-width: min(140px, 100%); }
+  .item-row, .detail-item-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .order-body, .details-card { padding: 14px; }
+  .info-grid { display: grid; grid-template-columns: 1fr; }
+  .order-action-link { margin-left: 4px; }
+}

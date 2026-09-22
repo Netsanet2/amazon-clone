@@ -1,0 +1,136 @@
+.account-main-wrapper {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: clamp(16px, 3vw, 24px);
+  box-sizing: border-box;
+  font-family: "Amazon Ember", Arial, sans-serif;
+  color: #0f1111;
+}
+
+.account-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.account-card {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  min-height: 92px;
+  padding: 16px;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  background-color: #ffffff;
+  text-decoration: none;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.account-card:hover {
+  background-color: #f7fafa;
+  border-color: #a8acac;
+}
+
+.card-icon {
+  width: 50px;
+  height: 50px;
+  margin-right: 16px;
+  object-fit: contain;
+}
+
+.card-text h2 {
+  font-size: 17px;
+  font-weight: 400;
+  color: #0f1111;
+  margin: 0 0 4px 0;
+}
+
+.card-text p {
+  font-size: 13px;
+  color: #565959;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.card-text {
+  min-width: 0;
+}
+
+.account-divider {
+  border: none;
+  border-top: 1px solid #e7e7e7;
+  margin: 32px 0;
+}
+
+.account-sections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 24px;
+}
+
+.account-section-column h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  color: #0f1111;
+}
+
+.account-section-column {
+  min-width: 0;
+}
+
+.account-section-column ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.account-section-column li {
+  margin-bottom: 8px;
+}
+
+.account-section-column a {
+  font-size: 13px;
+  color: #0066c0;
+  text-decoration: none;
+}
+
+.account-section-column a:hover {
+  color: #c45500;
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .account-cards-grid {
+    gap: 12px;
+  }
+
+  .account-card {
+    padding: 14px;
+  }
+
+  .card-icon {
+    margin-right: 12px;
+  }
+
+  .account-divider {
+    margin: 24px 0;
+  }
+
+  .account-sections-grid {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .account-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .account-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
