@@ -5,6 +5,8 @@ import {
   useState,
 } from "react";
 
+import { useAuth } from "./AuthContext";
+
 import {
   addCartItem,
   getCartItems,
@@ -13,9 +15,7 @@ import {
   clearCart as clearFirebaseCart,
 } from "../services/cartService";
 
-import { useAuth } from "./AuthContext";
-
-const CartContext = createContext();
+const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
   const { user, loading: authLoading } = useAuth();
@@ -26,13 +26,14 @@ export function CartProvider({ children }) {
 
   const normalizeId = (value) => String(value ?? "");
 
+  // Reset cart when the user logs out.
   const resetCartState = () => {
     setCartItems([]);
     setSavedItems([]);
     setCartLoading(false);
   };
 
-  // Load the current user's cart after Firebase authentication is ready.
+  // Load the signed-in user's cart from Firebase.
   useEffect(() => {
     if (authLoading) {
       return;
@@ -64,19 +65,28 @@ export function CartProvider({ children }) {
     loadCart();
   }, [user, authLoading]);
 
-  // Add a product to the cart.
+  // Add a product to the Firebase cart.
   const addToCart = async (product, quantity = 1) => {
     if (!user) {
-      throw new Error("Please log in before adding items to the cart.");
+      throw new Error(
+        "Please log in before adding items to the cart."
+      );
     }
 
     try {
       const productId = normalizeId(product.id);
-      const quantityToAdd = Math.max(1, Number(quantity) || 1);
-      const existingItem = cartItems.find(
-        (item) => normalizeId(item.id) === productId
+
+      const quantityToAdd = Math.max(
+        1,
+        Number(quantity) || 1
       );
 
+      const existingItem = cartItems.find(
+        (item) =>
+          normalizeId(item.id) === productId
+      );
+
+      // Product already exists in cart.
       if (existingItem) {
         const newQuantity =
           Number(existingItem.quantity) + quantityToAdd;
@@ -97,46 +107,57 @@ export function CartProvider({ children }) {
               : item
           )
         );
-      } else {
-        const newItem = {
-          ...product,
-          id: productId,
-          productId,
-          quantity: quantityToAdd,
-        };
 
-        const savedItem = await addCartItem(newItem);
-
-        setCartItems((currentItems) => [
-          ...currentItems,
-          {
-            ...savedItem,
-            id: normalizeId(savedItem.id ?? productId),
-            productId: normalizeId(savedItem.productId ?? productId),
-          },
-        ]);
+        return;
       }
+
+      // Product is not already in cart.
+      const newItem = {
+        ...product,
+        id: productId,
+        productId,
+        quantity: quantityToAdd,
+      };
+
+      const savedItem = await addCartItem(newItem);
+
+      setCartItems((currentItems) => [
+        ...currentItems,
+        {
+          ...savedItem,
+          id: normalizeId(
+            savedItem.id ?? productId
+          ),
+          productId: normalizeId(
+            savedItem.productId ?? productId
+          ),
+        },
+      ]);
     } catch (error) {
       console.error(
         "Error adding item to cart:",
         error
       );
+
       throw error;
     }
   };
 
-  // Remove an item from the cart.
+  // Remove one item from the Firebase cart.
   const removeFromCart = async (productId) => {
     if (!user) return;
 
-    const normalizedProductId = normalizeId(productId);
+    const normalizedProductId =
+      normalizeId(productId);
 
     try {
       await deleteCartItem(normalizedProductId);
 
       setCartItems((currentItems) =>
         currentItems.filter(
-          (item) => normalizeId(item.id) !== normalizedProductId
+          (item) =>
+            normalizeId(item.id) !==
+            normalizedProductId
         )
       );
     } catch (error) {
@@ -154,21 +175,30 @@ export function CartProvider({ children }) {
   ) => {
     if (!user) return;
 
-    const normalizedProductId = normalizeId(productId);
+    const normalizedProductId =
+      normalizeId(productId);
+
     const quantity = Number(newQuantity);
 
-    if (!Number.isInteger(quantity) || quantity < 1) {
+    if (
+      !Number.isInteger(quantity) ||
+      quantity < 1
+    ) {
       return;
     }
 
     try {
-      await updateCartItem(normalizedProductId, {
-        quantity,
-      });
+      await updateCartItem(
+        normalizedProductId,
+        {
+          quantity,
+        }
+      );
 
       setCartItems((currentItems) =>
         currentItems.map((item) =>
-          normalizeId(item.id) === normalizedProductId
+          normalizeId(item.id) ===
+          normalizedProductId
             ? {
                 ...item,
                 id: normalizedProductId,
@@ -188,40 +218,54 @@ export function CartProvider({ children }) {
 
   // Increase quantity by one.
   const increaseQuantity = async (productId) => {
+    const normalizedProductId =
+      normalizeId(productId);
+
     const item = cartItems.find(
-      (item) => normalizeId(item.id) === normalizeId(productId)
+      (item) =>
+        normalizeId(item.id) ===
+        normalizedProductId
     );
 
     if (!item) return;
 
     await updateQuantity(
-      productId,
+      normalizedProductId,
       Number(item.quantity) + 1
     );
   };
 
   // Decrease quantity by one.
   const decreaseQuantity = async (productId) => {
+    const normalizedProductId =
+      normalizeId(productId);
+
     const item = cartItems.find(
-      (item) => normalizeId(item.id) === normalizeId(productId)
+      (item) =>
+        normalizeId(item.id) ===
+        normalizedProductId
     );
 
-    if (!item || Number(item.quantity) <= 1) {
+    if (
+      !item ||
+      Number(item.quantity) <= 1
+    ) {
       return;
     }
 
     await updateQuantity(
-      productId,
+      normalizedProductId,
       Number(item.quantity) - 1
     );
   };
 
-  // Remove all items from the current user's Firebase cart.
+  // Clear the current user's Firebase cart.
   const clearCart = async () => {
     if (!user) return;
 
     try {
       await clearFirebaseCart();
+
       setCartItems([]);
     } catch (error) {
       console.error(
@@ -232,25 +276,43 @@ export function CartProvider({ children }) {
   };
 
   // Save an item for later.
-  // This currently exists only in React state.
-  const saveForLater = (productId) => {
+  const saveForLater = async (productId) => {
     if (!user) return;
 
-    const normalizedProductId = normalizeId(productId);
+    const normalizedProductId =
+      normalizeId(productId);
 
-    setCartItems((currentItems) => {
-      const itemToSave = currentItems.find(
-        (item) => normalizeId(item.id) === normalizedProductId
+    const itemToSave = cartItems.find(
+      (item) =>
+        normalizeId(item.id) ===
+        normalizedProductId
+    );
+
+    if (!itemToSave) return;
+
+    try {
+      // Remove it from Firebase first.
+      await deleteCartItem(
+        normalizedProductId
       );
 
-      if (!itemToSave) {
-        return currentItems;
-      }
+      // Then remove it from the active cart.
+      setCartItems((currentItems) =>
+        currentItems.filter(
+          (item) =>
+            normalizeId(item.id) !==
+            normalizedProductId
+        )
+      );
 
+      // Add it to Saved for Later.
       setSavedItems((currentSavedItems) => {
-        const alreadySaved = currentSavedItems.some(
-          (item) => normalizeId(item.id) === normalizedProductId
-        );
+        const alreadySaved =
+          currentSavedItems.some(
+            (item) =>
+              normalizeId(item.id) ===
+              normalizedProductId
+          );
 
         if (alreadySaved) {
           return currentSavedItems;
@@ -265,20 +327,25 @@ export function CartProvider({ children }) {
           },
         ];
       });
-
-      return currentItems.filter(
-        (item) => normalizeId(item.id) !== normalizedProductId
+    } catch (error) {
+      console.error(
+        "Error saving item for later:",
+        error
       );
-    });
+    }
   };
 
-  // Move a saved item back to the Firebase cart.
+  // Move a saved item back into the cart.
   const moveToCart = async (productId) => {
     if (!user) return;
 
-    const normalizedProductId = normalizeId(productId);
+    const normalizedProductId =
+      normalizeId(productId);
+
     const item = savedItems.find(
-      (savedItem) => normalizeId(savedItem.id) === normalizedProductId
+      (savedItem) =>
+        normalizeId(savedItem.id) ===
+        normalizedProductId
     );
 
     if (!item) return;
@@ -289,7 +356,8 @@ export function CartProvider({ children }) {
       setSavedItems((currentItems) =>
         currentItems.filter(
           (savedItem) =>
-            normalizeId(savedItem.id) !== normalizedProductId
+            normalizeId(savedItem.id) !==
+            normalizedProductId
         )
       );
     } catch (error) {
@@ -311,7 +379,7 @@ export function CartProvider({ children }) {
     );
   };
 
-  // Calculate total number of products in cart.
+  // Calculate total number of items.
   const getCartCount = () => {
     return cartItems.reduce(
       (total, item) =>
@@ -326,15 +394,19 @@ export function CartProvider({ children }) {
         cartItems,
         savedItems,
         cartLoading,
+
         addToCart,
         removeFromCart,
         updateQuantity,
         increaseQuantity,
         decreaseQuantity,
+
         saveForLater,
         moveToCart,
+
         getSubtotal,
         getCartCount,
+
         clearCart,
       }}
     >

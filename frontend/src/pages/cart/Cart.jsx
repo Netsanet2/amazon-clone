@@ -1,28 +1,23 @@
-import { useState } from "react";
 import { useCart } from "../../context/CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import CartItem from "../../components/CartItem/CartItem";
-import AuthPrompt from "../../components/AuthPrompt/AuthPrompt";
 import "./Cart.css";
 
 function Cart() {
   const { cartItems, savedItems, moveToCart } = useCart();
-  const { user, loading: authLoading } = useAuth();
+  const { loading: authLoading } = useAuth();
   const navigate = useNavigate();
-  const [showCheckoutPrompt, setShowCheckoutPrompt] = useState(false);
 
   const handleProceedToCheckout = () => {
     if (authLoading) {
       return;
     }
 
-    if (user) {
-      navigate("/checkout");
-      return;
-    }
-
-    setShowCheckoutPrompt(true);
+    // Always send the customer to the existing checkout route. The route's
+    // ProtectedRoute redirects signed-out customers to login and preserves
+    // /checkout as the destination after authentication.
+    navigate("/checkout");
   };
 
   const subtotal = cartItems.reduce(
@@ -268,15 +263,6 @@ function Cart() {
 
       </div>
 
-      {showCheckoutPrompt && (
-        <AuthPrompt
-          modal
-          title="Sign in to continue to checkout"
-          message="Please sign in to continue with your order."
-          destination={{ pathname: "/checkout" }}
-          onCancel={() => setShowCheckoutPrompt(false)}
-        />
-      )}
     </div>
   );
 }

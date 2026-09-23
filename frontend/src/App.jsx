@@ -8,7 +8,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 
-import products, { productCategories } from "./data/products";
+import { getProducts } from "./services/productService";
 import ProductListing from "./components/ProductListing/ProductListing";
 import Filters from "./components/Filters/Filters";
 import Sorting from "./components/Sorting/Sorting";
@@ -53,7 +53,33 @@ import AboutAmazon from "./pages/AboutAmazon/AboutAmazon";
 
 function ProductRoutes() {
   const [searchParams] = useSearchParams();
+    const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const productCategories = [
+  "All",
+  ...new Set(products.map((product) => product.category)),
+];
   const requestedCategory = searchParams.get("category");
+  useEffect(() => {
+  const loadProducts = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const data = await getProducts();
+
+      setProducts(data);
+    } catch (error) {
+      console.error("Failed to load products:", error);
+      setError("Failed to load products.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  loadProducts();
+}, []);
   const requestedSearch = searchParams.get("search") || "";
 
   const initialCategory = productCategories.includes(requestedCategory)
@@ -115,7 +141,13 @@ function ProductRoutes() {
 
     return 0;
   });
+if (loading) {
+  return <p>Loading products...</p>;
+}
 
+if (error) {
+  return <p>{error}</p>;
+}
   return (
     <div className="products-page-layout">
       <Filters filters={filters} setFilters={setFilters} />

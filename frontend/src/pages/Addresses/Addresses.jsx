@@ -1,26 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddressCard from "../../components/AddressCard/AddressCard";
 import AddressForm from "../../components/AddressForm/AddressForm";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import {
+  getUserAddresses,
+  updateUserAddresses,
+} from "../../services/userService";
 import "./Addresses.css";
 
 export default function Addresses() {
+  const { user } = useAuth();
 
-  const [addresses, setAddresses] = useState([
-    {
-      id: 1,
-      name: "Saron Teklay",
-      street: "Bole Main Road",
-      city: "Addis Ababa",
-      region: "Addis Ababa",
-      country: "Ethiopia",
-      phone: "+251 900 000 000",
-      isDefault: true,
-    },
-  ]);
-
+  const [addresses, setAddresses] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
+
+  // Load addresses from Firebase
+  useEffect(() => {
+    const loadAddresses = async () => {
+      if (!user?.uid) {
+        setAddresses([]);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const savedAddresses = await getUserAddresses(user.uid);
+        setAddresses(savedAddresses);
+      } catch (error) {
+        console.error("Error loading addresses:", error);
+        alert("Unable to load your addresses.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAddresses();
+  }, [user?.uid]);
 
   const handleAdd = () => {
     setEditingAddress(null);
@@ -32,7 +50,7 @@ export default function Addresses() {
     setShowForm(true);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this address?"
     );
@@ -41,51 +59,92 @@ export default function Addresses() {
       return;
     }
 
-    setAddresses(
-      addresses.filter((address) => address.id !== id)
+    const updatedAddresses = addresses.filter(
+      (address) => address.id !== id
     );
+
+    // If the deleted address was the default,
+    // make the first remaining address the default.
+    const deletedAddress = addresses.find(
+      (address) => address.id === id
+    );
+
+    if (deletedAddress?.isDefault && updatedAddresses.length > 0) {
+      updatedAddresses[0].isDefault = true;
+    }
+
+    try {
+      await updateUserAddresses(user.uid, updatedAddresses);
+      setAddresses(updatedAddresses);
+    } catch (error) {
+      console.error("Error deleting address:", error);
+      alert("Unable to delete the address. Please try again.");
+    }
   };
 
-  const handleSetDefault = (id) => {
-    setAddresses(
-      addresses.map((address) => ({
-        ...address,
-        isDefault: address.id === id,
-      }))
-    );
+  const handleSetDefault = async (id) => {
+    const updatedAddresses = addresses.map((address) => ({
+      ...address,
+      isDefault: address.id === id,
+    }));
+
+    try {
+      await updateUserAddresses(user.uid, updatedAddresses);
+      setAddresses(updatedAddresses);
+    } catch (error) {
+      console.error("Error setting default address:", error);
+      alert("Unable to update the default address.");
+    }
   };
 
-  const handleSave = (addressData) => {
+  const handleSave = async (addressData) => {
+    let updatedAddresses;
 
     if (editingAddress) {
-
-      setAddresses(
-        addresses.map((address) =>
-          address.id === editingAddress.id
-            ? {
-                ...address,
-                ...addressData,
-              }
-            : address
-        )
+      updatedAddresses = addresses.map((address) =>
+        address.id === editingAddress.id
+          ? {
+              ...address,
+              ...addressData,
+              id: editingAddress.id,
+            }
+          : address
       );
-
     } else {
-
       const newAddress = {
         ...addressData,
         id: Date.now(),
         isDefault: addresses.length === 0,
       };
 
-      setAddresses([
-        ...addresses,
-        newAddress,
-      ]);
+      updatedAddresses = [...addresses, newAddress];
     }
 
-    setShowForm(false);
-    setEditingAddress(null);
+    // If this address is marked as default,
+    // make sure all other addresses are not default.
+    const savedAddress = editingAddress
+      ? updatedAddresses.find(
+          (address) => address.id === editingAddress.id
+        )
+      : updatedAddresses[updatedAddresses.length - 1];
+
+    if (savedAddress?.isDefault) {
+      updatedAddresses = updatedAddresses.map((address) => ({
+        ...address,
+        isDefault: address.id === savedAddress.id,
+      }));
+    }
+
+    try {
+      await updateUserAddresses(user.uid, updatedAddresses);
+
+      setAddresses(updatedAddresses);
+      setShowForm(false);
+      setEditingAddress(null);
+    } catch (error) {
+      console.error("Error saving address:", error);
+      alert("Unable to save the address. Please try again.");
+    }
   };
 
   const handleCancel = () => {
@@ -93,17 +152,26 @@ export default function Addresses() {
     setEditingAddress(null);
   };
 
+  if (loading) {
+    return (
+      <div className="addresses-page">
+        <div className="addresses-wrapper">
+          <p>Loading your addresses...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="addresses-page">
-
       <div className="addresses-wrapper">
         <div className="amazon-breadcrumb">
           <Link to="/account">Your Account</Link>
           <span aria-hidden="true">›</span>
           <span>Your Addresses</span>
         </div>
-        <div className="addresses-header">
 
+        <div className="addresses-header">
           <div>
             <h1>Your Addresses</h1>
 
@@ -111,9 +179,6 @@ export default function Addresses() {
               Manage the addresses you use for orders and gifts.
             </p>
           </div>
-
-          
-
         </div>
 
         {!showForm && (
@@ -135,11 +200,8 @@ export default function Addresses() {
 
         {!showForm && (
           <>
-
             <div className="addresses-section-header">
-              <h2>
-                Your saved addresses
-              </h2>
+              <h2>Your saved addresses</h2>
 
               <span>
                 {addresses.length}{" "}
@@ -150,11 +212,8 @@ export default function Addresses() {
             </div>
 
             {addresses.length === 0 ? (
-
               <div className="empty-addresses">
-                <div className="empty-icon">
-                  📍
-                </div>
+                <div className="empty-icon">📍</div>
 
                 <h2>
                   You don't have any saved addresses
@@ -171,11 +230,8 @@ export default function Addresses() {
                   Add your first address
                 </button>
               </div>
-
             ) : (
-
               <div className="addresses-grid">
-
                 {addresses.map((address) => (
                   <AddressCard
                     key={address.id}
@@ -196,16 +252,11 @@ export default function Addresses() {
                     Add another delivery address
                   </p>
                 </button>
-
               </div>
-
             )}
-
           </>
         )}
-
       </div>
-
     </div>
   );
 }

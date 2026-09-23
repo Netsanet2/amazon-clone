@@ -1,8 +1,43 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import products from "../data/products";
+
+import { getProducts } from "../services/productService";
+
 import "./Home.css";
 
 function Home() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const data = await getProducts();
+
+        setProducts(data);
+      } catch (error) {
+        console.error("Failed to load Home products:", error);
+        setError("Failed to load products.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, []);
+
+  if (loading) {
+    return <p>Loading products...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   return (
     <div className="home-page">
       {/* Hero Banner */}
@@ -11,7 +46,7 @@ function Home() {
           <h1>Welcome to Amazon Clone</h1>
           <p>Discover great products at amazing prices.</p>
 
-          <Link to="/products/1" className="shop-button">
+          <Link to="/product/1" className="shop-button">
             Shop Now
           </Link>
         </div>
@@ -24,34 +59,48 @@ function Home() {
         <div className="product-grid">
           {products.map((product) => (
             <Link
-              to={`/products/${product.id}`}
+              to={`/product/${product.id}`}
               className="home-product-card"
               key={product.id}
             >
               <img
-                src={product.images[0]}
+                src={
+                  product.image ||
+                  product.images?.[0] ||
+                  ""
+                }
                 alt={product.name}
               />
 
               <h3>{product.name}</h3>
 
               <div className="home-rating">
-                ★★★★★
+                {"★".repeat(Math.round(product.rating || 0))}
+                {"☆".repeat(
+                  5 - Math.round(product.rating || 0)
+                )}
+
                 <span>
-                  {product.reviews.toLocaleString()} ratings
+                  {product.reviews
+                    ? product.reviews.toLocaleString()
+                    : "0"}{" "}
+                  ratings
                 </span>
               </div>
 
               <div className="home-price">
-                ${product.price.toFixed(2)}
+                ${Number(product.price || 0).toFixed(2)}
               </div>
 
               <div className="home-old-price">
-                ${product.oldPrice.toFixed(2)}
+                $
+                {Number(
+                  product.oldPrice || product.price || 0
+                ).toFixed(2)}
               </div>
 
               <span className="home-deal">
-                -{product.discount}%
+                -{product.discount || 0}%
               </span>
             </Link>
           ))}

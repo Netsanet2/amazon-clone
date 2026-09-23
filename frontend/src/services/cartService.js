@@ -10,7 +10,6 @@ import {
 
 import { db, auth } from "../firebase";
 
-// Add a product to the current user's cart
 export const addCartItem = async (product) => {
   const user = auth.currentUser;
 
@@ -32,20 +31,38 @@ export const addCartItem = async (product) => {
     productId
   );
 
+  const quantity = Number(product.quantity);
+
+  if (!Number.isInteger(quantity) || quantity < 1) {
+    throw new Error(
+      "Cart quantity must be a positive integer"
+    );
+  }
+
   const cartItem = {
-    ...product,
     id: productId,
     productId,
-    quantity: Number(product.quantity) || 1,
+    name: product.name,
+    price: Number(product.price),
+    image: product.image,
+    quantity,
   };
+
+  if (
+    !cartItem.name ||
+    !Number.isFinite(cartItem.price) ||
+    !cartItem.image
+  ) {
+    throw new Error(
+      "Cart item is missing required product fields"
+    );
+  }
 
   await setDoc(cartItemRef, cartItem);
 
   return cartItem;
 };
 
-
-// Get all cart items for the current user
 export const getCartItems = async () => {
   const user = auth.currentUser;
 
@@ -68,15 +85,18 @@ export const getCartItems = async () => {
     return {
       ...data,
       id: String(document.id),
-      productId: String(data.productId ?? document.id),
+      productId: String(
+        data.productId ?? document.id
+      ),
       quantity: Number(data.quantity) || 1,
     };
   });
 };
 
-
-// Update a cart item
-export const updateCartItem = async (productId, updates) => {
+export const updateCartItem = async (
+  productId,
+  updates
+) => {
   const user = auth.currentUser;
 
   if (!user) {
@@ -100,7 +120,6 @@ export const updateCartItem = async (productId, updates) => {
   await updateDoc(cartItemRef, updates);
 };
 
-// Remove one item from the current user's cart
 export const deleteCartItem = async (productId) => {
   const user = auth.currentUser;
 
@@ -121,7 +140,6 @@ export const deleteCartItem = async (productId) => {
   await deleteDoc(cartItemRef);
 };
 
-// Remove all items from the current user's cart
 export const clearCart = async () => {
   const user = auth.currentUser;
 
@@ -129,8 +147,15 @@ export const clearCart = async () => {
     throw new Error("User is not logged in");
   }
 
-  const cartRef = collection(db, "carts", user.uid, "items");
+  const cartRef = collection(
+    db,
+    "carts",
+    user.uid,
+    "items"
+  );
+
   const snapshot = await getDocs(cartRef);
+
   const batch = writeBatch(db);
 
   snapshot.docs.forEach((document) => {
