@@ -166,7 +166,7 @@ function Checkout() {
       if (isBuyNowCheckout) {
         localStorage.removeItem('buyNow');
       } else {
-        clearCart();
+        await clearCart();
       }
 
       navigate('/confirmation');

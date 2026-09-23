@@ -6,16 +6,14 @@ import Rating from "../Rating/Rating";
 import QuantitySelector from "../QuantitySelector/QuantitySelector";
 import AddToCart from "../AddToCart/AddToCart";
 import BuyNow from "../BuyNow/BuyNow";
-import AuthPrompt from "../AuthPrompt/AuthPrompt";
 
 import "./ProductInfo.css";
 
 function ProductInfo({
   product,
   onAddToCart,
-  onBuyNow
+  onBuyNow,
 }) {
-
   const [quantity, setQuantity] = useState(1);
   const { user } = useAuth();
   const location = useLocation();
@@ -30,112 +28,69 @@ function ProductInfo({
 
   return (
     <div className="product-info">
-
-      {/* Product Title */}
-
       <h1 className="product-title">
         {product.name}
       </h1>
 
-      <div className="product-brand">
-        Brand:
-        <span>{product.brand}</span>
-      </div>
-
-      {/* Rating */}
-
-      <Rating
-        rating={product.rating}
-        reviews={product.reviews}
-      />
-
-      <div className="info-divider"></div>
-
-      {/* Deal */}
-
-      <div className="deal-badge">
-        Limited time deal
-      </div>
-
-      {/* Price */}
-
-      <div className="price-row">
-
-        <span className="discount-percent">
-          -{product.discount}%
-        </span>
-
-        <span className="current-price">
-          ${product.price.toFixed(2)}
-        </span>
-
-      </div>
-
-      <div className="list-price">
-        List Price:
-        <span>
-          ${product.oldPrice.toFixed(2)}
+      <div className="product-rating">
+        <Rating rating={product.rating} />
+        <span className="review-count">
+          {product.reviews} reviews
         </span>
       </div>
 
-      <div className="info-divider"></div>
-
-      {/* Delivery */}
-
-      <div className="delivery-info">
-
-        <div className="delivery-line">
-          <span>FREE delivery</span>
-          <strong> Tomorrow</strong>
-        </div>
-
-        <div className="delivery-line">
-          Order within <strong>8 hrs 32 mins</strong>
-        </div>
-
-        <div className="delivery-location">
-          📍 Deliver to your location
-        </div>
-
-        {!user && (
-          <AuthPrompt
-            compact
-            title="Deliver to Ethiopia"
-            message="Sign in to see your delivery estimate."
-            destination={location}
-          />
+      <div className="product-price-section">
+        {product.oldPrice > product.price && (
+          <span className="product-old-price">
+            ${Number(product.oldPrice).toFixed(2)}
+          </span>
         )}
 
+        <span className="product-price">
+          ${Number(product.price).toFixed(2)}
+        </span>
+
+        {product.discount > 0 && (
+          <span className="product-discount">
+            {product.discount}% off
+          </span>
+        )}
       </div>
 
-      {/* Stock */}
+      {product.description && (
+        <div className="product-description">
+          {product.description.map(
+            (description, index) => (
+              <p key={index}>{description}</p>
+            )
+          )}
+        </div>
+      )}
 
-      <div
-        className={
-          product.stock > 0
-            ? "stock in-stock"
-            : "stock out-of-stock"
-        }
-      >
-        {product.stock > 0
-          ? `In Stock (${product.stock} available)`
-          : "Currently unavailable"}
+      <div className="product-stock">
+        {product.stock > 0 ? (
+          <span className="in-stock">
+            In Stock
+          </span>
+        ) : (
+          <span className="out-of-stock">
+            Currently unavailable
+          </span>
+        )}
       </div>
 
       {product.stock > 0 && (
         <>
-          {/* Quantity */}
-
           <QuantitySelector
             quantity={quantity}
             setQuantity={setQuantity}
-            maxQuantity={Math.min(product.stock, 10)}
+            maxQuantity={Math.min(
+              product.stock,
+              10
+            )}
           />
 
-          {/* Purchase buttons */}
-
           <div className="purchase-buttons">
-
             <AddToCart
               onClick={handleAddToCart}
             />
@@ -143,43 +98,42 @@ function ProductInfo({
             <BuyNow
               onClick={handleBuyNow}
             />
-
           </div>
 
-          {/* Secure transaction */}
-
-          <div className="secure-payment">
-            🔒 Secure transaction
-          </div>
+          {!user && (
+            <p className="login-message">
+              You can add this item to your cart
+              after logging in.
+            </p>
+          )}
         </>
       )}
 
-      {/* Seller information */}
+      <div className="product-details">
+        <p>
+          <strong>Brand:</strong>{" "}
+          {product.brand}
+        </p>
 
-      <div className="seller-information">
+        <p>
+          <strong>Category:</strong>{" "}
+          {product.category}
+        </p>
 
-        <div className="seller-row">
-          <span>Ships from</span>
-          <strong>Amazon</strong>
-        </div>
+        {product.seller && (
+          <p>
+            <strong>Sold by:</strong>{" "}
+            {product.seller}
+          </p>
+        )}
 
-        <div className="seller-row">
-          <span>Sold by</span>
-          <strong>{product.seller}</strong>
-        </div>
-
-        <div className="seller-row">
-          <span>Returns</span>
-          <strong>30-day return policy</strong>
-        </div>
-
-        <div className="seller-row">
-          <span>Payment</span>
-          <strong>Secure transaction</strong>
-        </div>
-
+        {product.delivery && (
+          <p>
+            <strong>Delivery:</strong>{" "}
+            {product.delivery}
+          </p>
+        )}
       </div>
-
     </div>
   );
 }

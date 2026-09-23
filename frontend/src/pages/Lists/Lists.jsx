@@ -1,5 +1,10 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import {
+  getUserLists,
+  updateUserLists,
+} from "../../services/userService";
 import "./Lists.css";
 
 const defaultLists = [
@@ -24,34 +29,22 @@ const defaultLists = [
 ];
 
 export default function Lists() {
+  const { user } = useAuth();
+
   /* =====================================================
      LIST STATE
   ===================================================== */
 
-  const [lists, setLists] = useState(() => {
-    const savedLists = localStorage.getItem("amazonCloneLists");
+  const [lists, setLists] = useState([]);
+  const [selectedListId, setSelectedListId] = useState(null);
 
-    return savedLists
-      ? JSON.parse(savedLists)
-      : defaultLists;
-  });
-
-  const [selectedListId, setSelectedListId] = useState(() => {
-    const savedSelectedList = localStorage.getItem(
-      "amazonCloneSelectedList"
-    );
-
-    return savedSelectedList
-      ? Number(savedSelectedList)
-      : 1;
-  });
+  const [loading, setLoading] = useState(true);
 
   /* =====================================================
      CREATE LIST STATE
   ===================================================== */
 
   const [showCreateList, setShowCreateList] = useState(false);
-
   const [listName, setListName] = useState("");
 
   /* =====================================================
@@ -59,40 +52,60 @@ export default function Lists() {
   ===================================================== */
 
   const [editingListId, setEditingListId] = useState(null);
-
   const [editingListName, setEditingListName] = useState("");
 
   /* =====================================================
-     SAVE LISTS TO LOCAL STORAGE
+     LOAD LISTS FROM FIREBASE
   ===================================================== */
 
   useEffect(() => {
-    localStorage.setItem(
-      "amazonCloneLists",
-      JSON.stringify(lists)
-    );
-  }, [lists]);
+    const loadLists = async () => {
+      if (!user?.uid) {
+        setLists([]);
+        setLoading(false);
+        return;
+      }
 
-  useEffect(() => {
-    localStorage.setItem(
-      "amazonCloneSelectedList",
-      selectedListId
-    );
-  }, [selectedListId]);
+      try {
+        const savedLists = await getUserLists(user.uid);
+
+        if (savedLists.length > 0) {
+          setLists(savedLists);
+          setSelectedListId(savedLists[0].id);
+        } else {
+          setLists(defaultLists);
+          setSelectedListId(defaultLists[0].id);
+
+          await updateUserLists(
+            user.uid,
+            defaultLists
+          );
+        }
+      } catch (error) {
+        console.error("Error loading lists:", error);
+        alert("Unable to load your lists.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadLists();
+  }, [user?.uid]);
 
   /* =====================================================
      FIND SELECTED LIST
   ===================================================== */
 
   const selectedList =
-    lists.find((list) => list.id === selectedListId) ||
-    lists[0];
+    lists.find(
+      (list) => list.id === selectedListId
+    ) || lists[0];
 
   /* =====================================================
      CREATE A NEW LIST
   ===================================================== */
 
-  const createList = () => {
+  const createList = async () => {
     const trimmedName = listName.trim();
 
     if (!trimmedName) {
@@ -100,7 +113,6 @@ export default function Lists() {
       return;
     }
 
-    /* Prevent duplicate list names */
     const alreadyExists = lists.some(
       (list) =>
         list.name.toLowerCase() ===
@@ -108,7 +120,9 @@ export default function Lists() {
     );
 
     if (alreadyExists) {
-      alert("A list with this name already exists.");
+      alert(
+        "A list with this name already exists."
+      );
       return;
     }
 
@@ -118,26 +132,43 @@ export default function Lists() {
       items: [],
     };
 
-    setLists((currentLists) => [
-      ...currentLists,
+    const updatedLists = [
+      ...lists,
       newList,
-    ]);
+    ];
 
-    /* Automatically open the new list */
-    setSelectedListId(newList.id);
+    try {
+      await updateUserLists(
+        user.uid,
+        updatedLists
+      );
 
-    setShowCreateList(false);
+      setLists(updatedLists);
+      setSelectedListId(newList.id);
 
-    setListName("");
+      setShowCreateList(false);
+      setListName("");
 
-    alert(`List "${trimmedName}" created successfully.`);
+      alert(
+        `List "${trimmedName}" created successfully.`
+      );
+    } catch (error) {
+      console.error(
+        "Error creating list:",
+        error
+      );
+
+      alert(
+        "Unable to create the list. Please try again."
+      );
+    }
   };
 
   /* =====================================================
      DELETE LIST
   ===================================================== */
 
-  const deleteList = (listId) => {
+  const deleteList = async (listId) => {
     const listToDelete = lists.find(
       (list) => list.id === listId
     );
@@ -146,7 +177,6 @@ export default function Lists() {
       return;
     }
 
-    /* Don't allow the only list to be deleted */
     if (lists.length === 1) {
       alert(
         "You need to keep at least one list."
@@ -166,12 +196,28 @@ export default function Lists() {
       (list) => list.id !== listId
     );
 
-    setLists(remainingLists);
+    try {
+      await updateUserLists(
+        user.uid,
+        remainingLists
+      );
 
-    /* If deleting the currently selected list,
-       open another list */
-    if (selectedListId === listId) {
-      setSelectedListId(remainingLists[0].id);
+      setLists(remainingLists);
+
+      if (selectedListId === listId) {
+        setSelectedListId(
+          remainingLists[0].id
+        );
+      }
+    } catch (error) {
+      console.error(
+        "Error deleting list:",
+        error
+      );
+
+      alert(
+        "Unable to delete the list. Please try again."
+      );
     }
   };
 
@@ -188,8 +234,9 @@ export default function Lists() {
      SAVE RENAMED LIST
   ===================================================== */
 
-  const saveListName = () => {
-    const trimmedName = editingListName.trim();
+  const saveListName = async () => {
+    const trimmedName =
+      editingListName.trim();
 
     if (!trimmedName) {
       alert("Please enter a list name.");
@@ -204,36 +251,54 @@ export default function Lists() {
     );
 
     if (duplicateName) {
-      alert("A list with this name already exists.");
+      alert(
+        "A list with this name already exists."
+      );
       return;
     }
 
-    setLists((currentLists) =>
-      currentLists.map((list) =>
+    const updatedLists = lists.map(
+      (list) =>
         list.id === editingListId
           ? {
               ...list,
               name: trimmedName,
             }
           : list
-      )
     );
 
-    setEditingListId(null);
-    setEditingListName("");
+    try {
+      await updateUserLists(
+        user.uid,
+        updatedLists
+      );
+
+      setLists(updatedLists);
+      setEditingListId(null);
+      setEditingListName("");
+    } catch (error) {
+      console.error(
+        "Error renaming list:",
+        error
+      );
+
+      alert(
+        "Unable to rename the list. Please try again."
+      );
+    }
   };
 
   /* =====================================================
      REMOVE PRODUCT FROM SELECTED LIST
   ===================================================== */
 
-  const removeItem = (itemId) => {
+  const removeItem = async (itemId) => {
     if (!selectedList) {
       return;
     }
 
-    setLists((currentLists) =>
-      currentLists.map((list) =>
+    const updatedLists = lists.map(
+      (list) =>
         list.id === selectedList.id
           ? {
               ...list,
@@ -242,16 +307,29 @@ export default function Lists() {
               ),
             }
           : list
-      )
     );
+
+    try {
+      await updateUserLists(
+        user.uid,
+        updatedLists
+      );
+
+      setLists(updatedLists);
+    } catch (error) {
+      console.error(
+        "Error removing item:",
+        error
+      );
+
+      alert(
+        "Unable to remove the item. Please try again."
+      );
+    }
   };
 
   /* =====================================================
      ADD TO CART
-     
-     IMPORTANT:
-     Actual cart functionality belongs to the Cart teammate.
-     This button is intentionally left as an integration point.
   ===================================================== */
 
   const handleAddToCart = (item) => {
@@ -271,20 +349,38 @@ export default function Lists() {
   };
 
   /* =====================================================
+     LOADING
+  ===================================================== */
+
+  if (loading) {
+    return (
+      <div className="lists-container">
+        <div className="lists-wrapper">
+          <p>Loading your lists...</p>
+        </div>
+      </div>
+    );
+  }
+
+  /* =====================================================
      RETURN PAGE
   ===================================================== */
 
   return (
     <div className="lists-container">
       <div className="lists-wrapper">
-<div className="amazon-breadcrumb">
-  <Link to="/account">Your Account</Link>
-  <span>›</span>
-  <span>Your Lists</span>
-</div>
-        {/* =================================================
-            PAGE HEADER
-        ================================================= */}
+
+        <div className="amazon-breadcrumb">
+          <Link to="/account">
+            Your Account
+          </Link>
+
+          <span>›</span>
+
+          <span>Your Lists</span>
+        </div>
+
+        {/* PAGE HEADER */}
 
         <div className="lists-title-section">
           <h1 className="lists-header">
@@ -292,13 +388,12 @@ export default function Lists() {
           </h1>
 
           <p>
-            Manage the products you have saved for later.
+            Manage the products you have saved
+            for later.
           </p>
         </div>
 
-        {/* =================================================
-            LIST HEADER
-        ================================================= */}
+        {/* LIST HEADER */}
 
         <div className="list-info-card">
 
@@ -334,9 +429,7 @@ export default function Lists() {
 
         </div>
 
-        {/* =================================================
-            CREATE LIST FORM
-        ================================================= */}
+        {/* CREATE LIST FORM */}
 
         {showCreateList && (
           <div className="create-list-card">
@@ -377,9 +470,13 @@ export default function Lists() {
                 type="text"
                 value={listName}
                 onChange={(event) =>
-                  setListName(event.target.value)
+                  setListName(
+                    event.target.value
+                  )
                 }
-                onKeyDown={handleCreateKeyDown}
+                onKeyDown={
+                  handleCreateKeyDown
+                }
                 placeholder="For example, Birthday Wishlist"
                 autoFocus
               />
@@ -410,9 +507,7 @@ export default function Lists() {
           </div>
         )}
 
-        {/* =================================================
-            CREATED LISTS
-        ================================================= */}
+        {/* CREATED LISTS */}
 
         <section className="created-lists-section">
 
@@ -424,7 +519,8 @@ export default function Lists() {
               </h2>
 
               <p>
-                Select a list to view its saved products.
+                Select a list to view its
+                saved products.
               </p>
             </div>
 
@@ -442,10 +538,12 @@ export default function Lists() {
             {lists.map((list) => {
 
               const isSelected =
-                selectedListId === list.id;
+                selectedListId ===
+                list.id;
 
               const isEditing =
-                editingListId === list.id;
+                editingListId ===
+                list.id;
 
               return (
                 <div
@@ -457,19 +555,19 @@ export default function Lists() {
                   }`}
                 >
 
-                  {/* List icon */}
                   <div className="created-list-icon">
                     ♡
                   </div>
 
-                  {/* List information */}
                   <div className="created-list-content">
 
                     {isEditing ? (
 
                       <input
                         className="edit-list-input"
-                        value={editingListName}
+                        value={
+                          editingListName
+                        }
                         onChange={(event) =>
                           setEditingListName(
                             event.target.value
@@ -477,7 +575,8 @@ export default function Lists() {
                         }
                         onKeyDown={(event) => {
                           if (
-                            event.key === "Enter"
+                            event.key ===
+                            "Enter"
                           ) {
                             saveListName();
                           }
@@ -495,20 +594,21 @@ export default function Lists() {
 
                     <p className="list-item-count">
                       {list.items.length}{" "}
-                      {list.items.length === 1
+                      {list.items.length ===
+                      1
                         ? "item"
                         : "items"}
                     </p>
 
                     <p className="list-description">
-                      {list.items.length === 0
+                      {list.items.length ===
+                      0
                         ? "Your list is ready for products."
                         : "Products saved in this list."}
                     </p>
 
                   </div>
 
-                  {/* List actions */}
                   <div className="created-list-actions">
 
                     {isEditing ? (
@@ -516,7 +616,9 @@ export default function Lists() {
                       <>
                         <button
                           className="list-small-primary"
-                          onClick={saveListName}
+                          onClick={
+                            saveListName
+                          }
                         >
                           Save
                         </button>
@@ -524,8 +626,12 @@ export default function Lists() {
                         <button
                           className="list-small-secondary"
                           onClick={() => {
-                            setEditingListId(null);
-                            setEditingListName("");
+                            setEditingListId(
+                              null
+                            );
+                            setEditingListName(
+                              ""
+                            );
                           }}
                         >
                           Cancel
@@ -538,7 +644,9 @@ export default function Lists() {
                         <button
                           className="view-list-button"
                           onClick={() =>
-                            setSelectedListId(list.id)
+                            setSelectedListId(
+                              list.id
+                            )
                           }
                         >
                           {isSelected
@@ -549,7 +657,9 @@ export default function Lists() {
                         <button
                           className="edit-list-button"
                           onClick={() =>
-                            startEditingList(list)
+                            startEditingList(
+                              list
+                            )
                           }
                         >
                           Rename
@@ -558,7 +668,9 @@ export default function Lists() {
                         <button
                           className="delete-list-button"
                           onClick={() =>
-                            deleteList(list.id)
+                            deleteList(
+                              list.id
+                            )
                           }
                         >
                           Delete
@@ -577,9 +689,7 @@ export default function Lists() {
 
         </section>
 
-        {/* =================================================
-            SELECTED LIST
-        ================================================= */}
+        {/* SELECTED LIST */}
 
         {selectedList && (
           <section className="saved-items-section">
@@ -598,18 +708,18 @@ export default function Lists() {
 
               <span>
                 {selectedList.items.length}{" "}
-                {selectedList.items.length === 1
+                {selectedList.items.length ===
+                1
                   ? "item"
                   : "items"}
               </span>
 
             </div>
 
-            {/* =================================================
-                EMPTY LIST
-            ================================================= */}
+            {/* EMPTY LIST */}
 
-            {selectedList.items.length === 0 ? (
+            {selectedList.items.length ===
+            0 ? (
 
               <div className="empty-list">
 
@@ -622,8 +732,9 @@ export default function Lists() {
                 </h2>
 
                 <p>
-                  When you save products to this list,
-                  they'll appear here.
+                  When you save products to
+                  this list, they'll appear
+                  here.
                 </p>
 
                 <Link
@@ -637,73 +748,72 @@ export default function Lists() {
 
             ) : (
 
-              /* =================================================
-                 PRODUCTS
-              ================================================= */
-
               <div className="lists-grid">
 
-                {selectedList.items.map((item) => (
+                {selectedList.items.map(
+                  (item) => (
 
-                  <div
-                    key={item.id}
-                    className="lists-card"
-                  >
+                    <div
+                      key={item.id}
+                      className="lists-card"
+                    >
 
-                    {/* Temporary product image */}
-                    <div className="list-product-image">
-                      <span>
-                        Product
-                      </span>
-                    </div>
+                      <div className="list-product-image">
+                        <span>
+                          Product
+                        </span>
+                      </div>
 
-                    {/* Product information */}
-                    <div className="list-product-info">
+                      <div className="list-product-info">
 
-                      <h3>
-                        {item.title}
-                      </h3>
+                        <h3>
+                          {item.title}
+                        </h3>
 
-                      <p className="list-rating">
-                        {item.rating}
-                      </p>
+                        <p className="list-rating">
+                          {item.rating}
+                        </p>
 
-                      <p className="lists-price">
-                        {item.price}
-                      </p>
+                        <p className="lists-price">
+                          {item.price}
+                        </p>
 
-                      <p className="list-stock">
-                        In your list
-                      </p>
+                        <p className="list-stock">
+                          In your list
+                        </p>
 
-                      {/* Product actions */}
-                      <div className="list-actions">
+                        <div className="list-actions">
 
-                        <button
-                          className="list-primary-button"
-                          onClick={() =>
-                            handleAddToCart(item)
-                          }
-                        >
-                          Add to Cart
-                        </button>
+                          <button
+                            className="list-primary-button"
+                            onClick={() =>
+                              handleAddToCart(
+                                item
+                              )
+                            }
+                          >
+                            Add to Cart
+                          </button>
 
-                        <button
-                          className="list-secondary-button"
-                          onClick={() =>
-                            removeItem(item.id)
-                          }
-                        >
-                          Remove
-                        </button>
+                          <button
+                            className="list-secondary-button"
+                            onClick={() =>
+                              removeItem(
+                                item.id
+                              )
+                            }
+                          >
+                            Remove
+                          </button>
+
+                        </div>
 
                       </div>
 
                     </div>
 
-                  </div>
-
-                ))}
+                  )
+                )}
 
               </div>
 

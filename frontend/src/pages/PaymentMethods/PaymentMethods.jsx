@@ -1,23 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PaymentMethodCard from "../../components/PaymentMethodCard/PaymentMethodCard";
 import PaymentMethodForm from "../../components/PaymentMethodForm/PaymentMethodForm";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import {
+  getUserPayments,
+  updateUserPayments,
+} from "../../services/userService";
 import "./PaymentMethods.css";
 
 export default function PaymentMethods() {
-  const [payments, setPayments] = useState([
-    {
-      id: 1,
-      cardType: "Visa",
-      last4: "4242",
-      name: "Saron Teklay",
-      expiry: "12/28",
-      isDefault: true,
-    },
-  ]);
+  const { user } = useAuth();
 
+  const [payments, setPayments] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingPayment, setEditingPayment] = useState(null);
+
+  // Load payment methods from Firebase
+  useEffect(() => {
+    const loadPayments = async () => {
+      if (!user?.uid) {
+        setPayments([]);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const savedPayments = await getUserPayments(user.uid);
+        setPayments(savedPayments);
+      } catch (error) {
+        console.error("Error loading payment methods:", error);
+        alert("Unable to load your payment methods.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPayments();
+  }, [user?.uid]);
 
   // Open the form for adding a new payment method
   const handleAdd = () => {
@@ -32,7 +53,7 @@ export default function PaymentMethods() {
   };
 
   // Delete a payment method
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this payment method?"
     );
@@ -41,51 +62,104 @@ export default function PaymentMethods() {
       return;
     }
 
-    setPayments(
-      payments.filter((payment) => payment.id !== id)
+    const deletedPayment = payments.find(
+      (payment) => payment.id === id
     );
+
+    let updatedPayments = payments.filter(
+      (payment) => payment.id !== id
+    );
+
+    // If the deleted payment was the default,
+    // make the first remaining payment the default.
+    if (deletedPayment?.isDefault && updatedPayments.length > 0) {
+      updatedPayments = updatedPayments.map((payment, index) => ({
+        ...payment,
+        isDefault: index === 0,
+      }));
+    }
+
+    try {
+      await updateUserPayments(user.uid, updatedPayments);
+      setPayments(updatedPayments);
+    } catch (error) {
+      console.error("Error deleting payment method:", error);
+      alert(
+        "Unable to delete the payment method. Please try again."
+      );
+    }
   };
 
   // Make a payment method the default
-  const handleSetDefault = (id) => {
-    setPayments(
-      payments.map((payment) => ({
-        ...payment,
-        isDefault: payment.id === id,
-      }))
-    );
+  const handleSetDefault = async (id) => {
+    const updatedPayments = payments.map((payment) => ({
+      ...payment,
+      isDefault: payment.id === id,
+    }));
+
+    try {
+      await updateUserPayments(user.uid, updatedPayments);
+      setPayments(updatedPayments);
+    } catch (error) {
+      console.error(
+        "Error setting default payment method:",
+        error
+      );
+      alert("Unable to update the default payment method.");
+    }
   };
 
-  // Save either a new payment or an edited payment
-  const handleSave = (paymentData) => {
+  // Save either a new payment method or an edited payment method
+  const handleSave = async (paymentData) => {
+    let updatedPayments;
+
     if (editingPayment) {
-      // Editing existing payment
-      setPayments(
-        payments.map((payment) =>
-          payment.id === editingPayment.id
-            ? {
-                ...payment,
-                ...paymentData,
-              }
-            : payment
-        )
+      updatedPayments = payments.map((payment) =>
+        payment.id === editingPayment.id
+          ? {
+              ...payment,
+              ...paymentData,
+              id: editingPayment.id,
+            }
+          : payment
       );
     } else {
-      // Adding new payment
       const newPayment = {
         ...paymentData,
         id: Date.now(),
         isDefault: payments.length === 0,
       };
 
-      setPayments([
-        ...payments,
-        newPayment,
-      ]);
+      updatedPayments = [...payments, newPayment];
     }
 
-    setShowForm(false);
-    setEditingPayment(null);
+    // If this payment is default,
+    // make sure all other payments are not default.
+    const savedPayment = editingPayment
+      ? updatedPayments.find(
+          (payment) => payment.id === editingPayment.id
+        )
+      : updatedPayments[updatedPayments.length - 1];
+
+    if (savedPayment?.isDefault) {
+      updatedPayments = updatedPayments.map((payment) => ({
+        ...payment,
+        isDefault: payment.id === savedPayment.id,
+      }));
+    }
+
+    try {
+      await updateUserPayments(user.uid, updatedPayments);
+
+      setPayments(updatedPayments);
+      setShowForm(false);
+      setEditingPayment(null);
+    } catch (error) {
+      console.error("Error saving payment method:", error);
+      alert(
+        "Unable to save the payment method. Please try again."
+      );
+    }
   };
 
   // Close the form
@@ -94,15 +168,25 @@ export default function PaymentMethods() {
     setEditingPayment(null);
   };
 
+  if (loading) {
+    return (
+      <div className="payments-page">
+        <div className="payments-wrapper">
+          <p>Loading your payment methods...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="payments-page">
       <div className="payments-wrapper">
-<div className="amazon-breadcrumb">
-  <Link to="/account">Your Account</Link>
-  <span>›</span>
-  <span>Your Payments</span>
-</div>
-        {/* Page header */}
+        <div className="amazon-breadcrumb">
+          <Link to="/account">Your Account</Link>
+          <span>›</span>
+          <span>Your Payments</span>
+        </div>
+
         <div className="payments-header">
           <div>
             <h1>Your Payments</h1>
@@ -111,11 +195,8 @@ export default function PaymentMethods() {
               Manage your payment methods and billing information.
             </p>
           </div>
-
-          
         </div>
 
-        {/* Add button */}
         {!showForm && (
           <button
             className="add-payment-button"
@@ -125,7 +206,6 @@ export default function PaymentMethods() {
           </button>
         )}
 
-        {/* Add/Edit form */}
         {showForm && (
           <PaymentMethodForm
             payment={editingPayment}
@@ -134,10 +214,8 @@ export default function PaymentMethods() {
           />
         )}
 
-        {/* Payment methods */}
         {!showForm && (
           <>
-
             <div className="payments-section-header">
               <h2>Your payment methods</h2>
 
@@ -150,11 +228,7 @@ export default function PaymentMethods() {
             </div>
 
             {payments.length === 0 ? (
-
               <div className="empty-payments">
-
-                
-
                 <h2>
                   You don't have any saved payment methods
                 </h2>
@@ -169,13 +243,9 @@ export default function PaymentMethods() {
                 >
                   Add your first payment method
                 </button>
-
               </div>
-
             ) : (
-
               <div className="payments-grid">
-
                 {payments.map((payment) => (
                   <PaymentMethodCard
                     key={payment.id}
@@ -186,7 +256,6 @@ export default function PaymentMethods() {
                   />
                 ))}
 
-                {/* Add another card */}
                 <button
                   className="add-payment-card"
                   onClick={handleAdd}
@@ -201,13 +270,10 @@ export default function PaymentMethods() {
                     Add another card
                   </p>
                 </button>
-
               </div>
             )}
-
           </>
         )}
-
       </div>
     </div>
   );

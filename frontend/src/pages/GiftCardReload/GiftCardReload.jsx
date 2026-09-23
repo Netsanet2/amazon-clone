@@ -1,19 +1,79 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import {
+  getUserGiftCardBalance,
+  updateUserGiftCardBalance,
+  getUserGiftCardActivity,
+  updateUserGiftCardActivity,
+} from "../../services/userService";
 import "./GiftCardReload.css";
 
 function GiftCardReload() {
+  const { user } = useAuth();
+
   const [amount, setAmount] = useState(25);
   const [customAmount, setCustomAmount] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("visa");
   const [successMessage, setSuccessMessage] = useState("");
+
+  const [balance, setBalance] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [reloading, setReloading] = useState(false);
+
+  /* =====================================================
+     LOAD GIFT CARD BALANCE
+  ===================================================== */
+
+  useEffect(() => {
+    const loadGiftCardBalance = async () => {
+      if (!user?.uid) {
+        setBalance(0);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const savedBalance =
+          await getUserGiftCardBalance(user.uid);
+
+        setBalance(savedBalance);
+      } catch (error) {
+        console.error(
+          "Error loading gift card balance:",
+          error
+        );
+
+        alert(
+          "Unable to load your gift card balance."
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadGiftCardBalance();
+  }, [user?.uid]);
+
+  /* =====================================================
+     SELECTED AMOUNT
+  ===================================================== */
 
   const selectedAmount =
     customAmount !== ""
       ? Number(customAmount)
       : amount;
 
-  const handleReload = () => {
+  /* =====================================================
+     RELOAD GIFT CARD BALANCE
+  ===================================================== */
+
+  const handleReload = async () => {
+    if (!user?.uid) {
+      alert("Please log in to reload your gift card balance.");
+      return;
+    }
+
     if (!selectedAmount || selectedAmount <= 0) {
       alert("Please enter a valid amount.");
       return;
@@ -24,13 +84,74 @@ function GiftCardReload() {
       return;
     }
 
-    // Demo behavior
-    setSuccessMessage(
-      `$${selectedAmount.toFixed(
-        2
-      )} has been added to your gift card balance.`
-    );
+    try {
+      setReloading(true);
+
+      const newBalance =
+        balance + selectedAmount;
+
+      // Get existing activity
+      const existingActivity =
+        await getUserGiftCardActivity(user.uid);
+
+      // Create reload activity
+      const newActivity = {
+        id: Date.now().toString(),
+        description: "Gift card balance reload",
+        amount: selectedAmount,
+        type: "credit",
+        date: new Date().toLocaleDateString(
+          "en-US",
+          {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          }
+        ),
+      };
+
+      const updatedActivity = [
+        newActivity,
+        ...existingActivity,
+      ];
+
+      // Save new balance
+      await updateUserGiftCardBalance(
+        user.uid,
+        newBalance
+      );
+
+      // Save activity
+      await updateUserGiftCardActivity(
+        user.uid,
+        updatedActivity
+      );
+
+      // Update page
+      setBalance(newBalance);
+
+      setSuccessMessage(
+        `$${selectedAmount.toFixed(
+          2
+        )} has been added to your gift card balance.`
+      );
+    } catch (error) {
+      console.error(
+        "Error reloading gift card balance:",
+        error
+      );
+
+      alert(
+        "Unable to reload your gift card balance. Please try again."
+      );
+    } finally {
+      setReloading(false);
+    }
   };
+
+  /* =====================================================
+     PRESET AMOUNT
+  ===================================================== */
 
   const handlePresetAmount = (value) => {
     setAmount(value);
@@ -38,22 +159,44 @@ function GiftCardReload() {
     setSuccessMessage("");
   };
 
+  /* =====================================================
+     LOADING
+  ===================================================== */
+
+  if (loading) {
+    return (
+      <div className="gift-reload-page">
+        <div className="gift-reload-container">
+          <p>Loading your gift card balance...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="gift-reload-page">
       <div className="gift-reload-container">
 
         {/* Breadcrumb */}
+
         <div className="amazon-breadcrumb">
-          <Link to="/account">Your Account</Link>
+          <Link to="/account">
+            Your Account
+          </Link>
+
           <span>›</span>
 
-          <Link to="/gift-cards">Gift Cards</Link>
+          <Link to="/gift-cards">
+            Gift Cards
+          </Link>
+
           <span>›</span>
 
           <span>Reload Your Balance</span>
         </div>
 
         {/* Header */}
+
         <div className="gift-reload-header">
           <h1>Reload Your Balance</h1>
 
@@ -63,9 +206,11 @@ function GiftCardReload() {
         </div>
 
         {/* Main Layout */}
+
         <div className="gift-reload-layout">
 
           {/* Form */}
+
           <div className="gift-reload-form-card">
 
             <h2>Choose an amount</h2>
@@ -76,13 +221,15 @@ function GiftCardReload() {
                 <button
                   key={value}
                   className={
-                    amount === value && customAmount === ""
+                    amount === value &&
+                    customAmount === ""
                       ? "reload-amount-button selected"
                       : "reload-amount-button"
                   }
                   onClick={() =>
                     handlePresetAmount(value)
                   }
+                  disabled={reloading}
                 >
                   ${value}
                 </button>
@@ -97,6 +244,7 @@ function GiftCardReload() {
               </label>
 
               <div className="custom-amount-wrapper">
+
                 <span>$</span>
 
                 <input
@@ -110,7 +258,9 @@ function GiftCardReload() {
                     setSuccessMessage("");
                   }}
                   placeholder="Enter amount"
+                  disabled={reloading}
                 />
+
               </div>
 
               <small>
@@ -133,10 +283,13 @@ function GiftCardReload() {
                 onChange={(e) =>
                   setPaymentMethod(e.target.value)
                 }
+                disabled={reloading}
               />
 
               <div>
-                <strong>Visa ending in 1111</strong>
+                <strong>
+                  Visa ending in 1111
+                </strong>
 
                 <span>
                   Your saved payment method
@@ -155,10 +308,13 @@ function GiftCardReload() {
                 onChange={(e) =>
                   setPaymentMethod(e.target.value)
                 }
+                disabled={reloading}
               />
 
               <div>
-                <strong>Another payment method</strong>
+                <strong>
+                  Another payment method
+                </strong>
 
                 <span>
                   Choose a different payment method
@@ -170,11 +326,15 @@ function GiftCardReload() {
             <div className="reload-divider"></div>
 
             {/* Summary */}
+
             <div className="reload-summary">
 
               <div>
                 <span>Current balance</span>
-                <strong>$0.00</strong>
+
+                <strong>
+                  ${balance.toFixed(2)}
+                </strong>
               </div>
 
               <div>
@@ -186,11 +346,13 @@ function GiftCardReload() {
               </div>
 
               <div className="reload-total">
+
                 <span>New balance</span>
 
                 <strong>
-                  ${selectedAmount.toFixed(2)}
+                  ${(balance + selectedAmount).toFixed(2)}
                 </strong>
+
               </div>
 
             </div>
@@ -204,13 +366,17 @@ function GiftCardReload() {
             <button
               className="reload-now-button"
               onClick={handleReload}
+              disabled={reloading}
             >
-              Reload Now
+              {reloading
+                ? "Reloading..."
+                : "Reload Now"}
             </button>
 
           </div>
 
           {/* Information */}
+
           <aside className="gift-reload-info">
 
             <div className="info-card">
@@ -218,13 +384,14 @@ function GiftCardReload() {
               <h2>Gift Card Balance</h2>
 
               <div className="info-balance">
-                $0.00
+                ${balance.toFixed(2)}
               </div>
 
               <p>
-                Your current gift card balance is shown above.
-                Reloading adds funds that can be used toward
-                eligible purchases.
+                Your current gift card balance is
+                shown above. Reloading adds funds
+                that can be used toward eligible
+                purchases.
               </p>
 
             </div>
@@ -234,8 +401,10 @@ function GiftCardReload() {
               <h2>Why reload?</h2>
 
               <ul>
+
                 <li>
-                  Keep your gift card balance ready for shopping.
+                  Keep your gift card balance ready
+                  for shopping.
                 </li>
 
                 <li>
@@ -243,8 +412,10 @@ function GiftCardReload() {
                 </li>
 
                 <li>
-                  Use your balance toward eligible purchases.
+                  Use your balance toward eligible
+                  purchases.
                 </li>
+
               </ul>
 
             </div>
@@ -254,6 +425,7 @@ function GiftCardReload() {
         </div>
 
         {/* Bottom Navigation */}
+
         <div className="gift-reload-bottom-links">
 
           <Link to="/gift-cards">
